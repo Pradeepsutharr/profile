@@ -1,0 +1,131 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .col-1 {
+    @apply w-1/12;
+    padding: 0.75rem;
+  }
+  .col-2 {
+    @apply w-2/12;
+    padding: 0.75rem;
+  }
+  .col-3 {
+    @apply w-3/12;
+    padding: 0.75rem;
+  }
+  .col-4 {
+    @apply w-4/12;
+    padding: 0.75rem;
+  }
+  .col-5 {
+    @apply w-5/12;
+    padding: 0.75rem;
+  }
+  .col-6 {
+    @apply w-6/12;
+    padding: 0.75rem;
+  }
+  .col-7 {
+    @apply w-7/12;
+    padding: 0.75rem;
+  }
+  .col-8 {
+    @apply w-8/12;
+    padding: 0.75rem;
+  }
+  .col-9 {
+    @apply w-9/12;
+    padding: 0.75rem;
+  }
+  .col-10 {
+    @apply w-10/12;
+    padding: 0.75rem;
+  }
+  .col-11 {
+    @apply w-11/12;
+    padding: 0.75rem;
+  }
+  .col-12 {
+    @apply w-full;
+    padding: 0.75rem;
+  }
+}
+
+.p-0 {
+  padding: 0 !important;
+}
+
+body {
+  background-color: #121212;
+  position: relative;
+  margin: 48px 0 !important;
+}
+
+.gredient-jet {
+  background: linear-gradient(
+      to bottom right,
+      hsla(240, 1%, 18%, 0.251) 0%,
+      hsla(240, 2%, 11%, 0) 100%
+    ),
+    hsl(240, 2%, 13%);
+}
+
+.avatar-box {
+  background: linear-gradient(
+    to bottom right,
+    hsl(240, 1%, 25%) 3%,
+    hsl(0, 0%, 19%) 97%
+  );
+}
+
+.icon-box {
+  background: linear-gradient(
+    to bottom right,
+    hsl(0, 0%, 25%) 0%,
+    hsla(0, 0%, 25%, 0) 50%
+  );
+  z-index: 1;
+  position: relative;
+}
+
+.icon-box:before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  background: #202022;
+  border-radius: inherit;
+  z-index: -1;
+}
+
+.service-card {
+  background: linear-gradient(
+    to bottom right,
+    hsl(0, 0%, 25%) 0%,
+    hsla(0, 0%, 25%, 0) 50%
+  );
+}
+
+.timeline-item::after {
+  content: "";
+  width: 1.5px;
+  height: calc(100% + 15px);
+  background-color: #383838;
+  position: absolute;
+  top: -25%;
+  left: 2.8%;
+}
+
+.timeline-item h3::before {
+  content: "";
+  background-color: #ffdb70;
+  position: absolute;
+  left: -6.2%;
+  top: 32%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  z-index: 2;
+  box-shadow: 0px 0px 0px 5px #383838;
+}
