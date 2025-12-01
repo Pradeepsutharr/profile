@@ -5,7 +5,7 @@ import React from "react";
 
 function SideBar() {
   return (
-    <div className="px-8 py-10 flex flex-col items-center bg-[#1e1e1f] border border-stroke rounded-3xl lg:sticky top-0">
+    <div className="px-8 py-10 flex flex-col items-center bg-[#1e1e1f] border border-stroke rounded-3xl lg:sticky top-[60px]">
       <div className="avatar-box max-w-[150px] rounded-3xl">
         <Image
           src="/my-avatar.png"

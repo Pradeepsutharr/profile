@@ -23,7 +23,7 @@ export default function App({ Component, pageProps }) {
         // -----------------------------
         // ADMIN PAGES — NO LAYOUT
         // -----------------------------
-        <div className="container gredient-jet p-10 rounded-2xl">
+        <div className="container bg-[#1e1e1f] p-10 rounded-2xl">
           <div className="">
             <Component {...pageProps} />
           </div>
@@ -32,8 +32,8 @@ export default function App({ Component, pageProps }) {
         // -----------------------------
         // NORMAL PUBLIC LAYOUT
         // -----------------------------
-        <div className="layout">
-          <div className="container">
+        <div className="layout ">
+          <div className="container ">
             <div className="flex flex-wrap ">
               <aside className="side-bar col-12 lg:col-3">
                 <SideBar />

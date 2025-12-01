@@ -58,7 +58,7 @@ function ResumePage() {
                   {item.title.replace(",", " |")}
                 </h3>
 
-                <h4 className="text-primary mt-1">{item.company}</h4>
+                <h4 className="text-primary mt-1 capitalize">{item.company}</h4>
                 <span className="capitalize  text-subtle text-sm">
                   {item.start_date.replaceAll("-", "/")} -
                   {item?.end_date === null ? " present" : item.end_date}
@@ -88,10 +88,14 @@ function ResumePage() {
                   {item.degree}
                 </h3>
 
-                <h4 className="text-primary mt-1">{item.institution}</h4>
+                <h4 className="text-primary mt-1 capitalize">
+                  {item.institution}
+                </h4>
                 <span className="capitalize text-subtle text-sm">
                   {item.start_date.replaceAll("-", "/")} -{" "}
-                  {item?.end_date === null ? " present" : item.end_date}
+                  {item?.end_date === null
+                    ? " present"
+                    : item.end_date.replaceAll("-", "/")}
                 </span>
               </div>
             </div>

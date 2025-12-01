@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  devIndicators: false,
   reactCompiler: true,
   reactStrictMode: true,
   images: {
@@ -7,6 +8,10 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "pradeepsutharr.github.io",
+      },
+      {
+        protocol: "https",
+        hostname: "fcecfevebdgozzlzladp.supabase.co",
       },
     ],
   },

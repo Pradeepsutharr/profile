@@ -1,34 +1,98 @@
-// lib/storage.js
+// /lib/storage.js
 import { supabase } from "./supabaseClient";
 
 /**
- * Uploads a File (from <input type="file">) to the specified bucket path.
- * Returns { publicUrl, error } where publicUrl is a string you can put in an <img>.
- *
- * For public bucket: use .getPublicUrl(path).publicUrl
- * For private bucket: use createSignedUrl (requires server side / service role or use the client)
+ * Return a usable URL for a given bucket/path.
+ * If bucket is public this will return the public URL,
+ * otherwise it will create a signed URL (temporary).
  */
-export async function uploadFileToBucket({ bucket = "public", path, file }) {
-  // path example: `projects/164234234_image.png`
+export async function getUrlForPath(bucket, path, expiresInSeconds = 60 * 60) {
+  if (!bucket || !path) return null;
   try {
-    const { data, error } = await supabase.storage
+    // first try public url
+    const { data: pubData, error: pubErr } = supabase.storage
       .from(bucket)
-      .upload(path, file, { cacheControl: "3600", upsert: false });
+      .getPublicUrl(path);
+    // supabase v2 returns { publicURL } under data.publicURL or { publicURL } depending on SDK
+    // safe-check both shapes:
+    const publicURL =
+      pubData?.publicURL ?? pubData?.publicUrl ?? pubData?.public_path ?? null;
+    if (publicURL) return publicURL;
 
-    if (error) return { error };
-
-    // For public bucket:
-    const { publicUrl } = supabase.storage.from(bucket).getPublicUrl(path);
-    return { publicUrl, error: null };
+    // fallback to signed url for private buckets
+    const { data: signedData, error: signedErr } = await supabase.storage
+      .from(bucket)
+      .createSignedUrl(path, expiresInSeconds);
+    if (signedErr) {
+      console.warn("createSignedUrl error", signedErr);
+      return null;
+    }
+    return signedData?.signedURL ?? signedData?.signed_url ?? null;
   } catch (err) {
-    return { error: err };
+    console.error("getUrlForPath unexpected error", err);
+    return null;
   }
 }
 
 /**
- * Delete a file from bucket
+ * Upload a file and return an object { publicUrl, raw, error }.
+ * - raw is the upload response (contains path).
+ * - publicUrl will be either a publicURL or a signed URL (if private bucket).
  */
-export async function deleteFileFromBucket({ bucket = "public", path }) {
-  const { data, error } = await supabase.storage.from(bucket).remove([path]);
-  return { data, error };
+export async function uploadFileToBucket({
+  bucket,
+  path,
+  file,
+  expiresInSeconds = 60 * 60,
+}) {
+  if (!bucket || !path || !file) {
+    return {
+      publicUrl: null,
+      raw: null,
+      error: new Error("missing bucket/path/file"),
+    };
+  }
+
+  try {
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from(bucket)
+      .upload(path, file, {
+        cacheControl: "3600",
+        upsert: false,
+      });
+
+    if (uploadError) {
+      console.warn("storage.upload error", uploadError);
+      return { publicUrl: null, raw: uploadData ?? null, error: uploadError };
+    }
+
+    // uploadData will have { path, id, name, ... } — derive url from the returned path
+    // Note: some SDK versions return uploadData.key or uploadData.path; handle both
+    const pathVal =
+      uploadData?.path ?? uploadData?.Key ?? uploadData?.fullPath ?? null;
+    const pathToUse = pathVal || path; // fallback to the path we asked to upload
+
+    // get usable URL (public or signed)
+    const publicUrl = await getUrlForPath(bucket, pathToUse, expiresInSeconds);
+
+    return { publicUrl, raw: uploadData ?? { path: pathToUse }, error: null };
+  } catch (err) {
+    console.error("uploadFileToBucket unexpected error", err);
+    return { publicUrl: null, raw: null, error: err };
+  }
+}
+
+/**
+ * Delete file from bucket
+ */
+export async function deleteFileFromBucket({ bucket, path }) {
+  if (!bucket || !path) return { error: new Error("missing bucket or path") };
+  try {
+    const { data, error } = await supabase.storage.from(bucket).remove([path]);
+    if (error) return { error, data };
+    return { error: null, data };
+  } catch (err) {
+    console.error("deleteFileFromBucket unexpected", err);
+    return { error: err };
+  }
 }
