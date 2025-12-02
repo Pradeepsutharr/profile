@@ -88,6 +88,7 @@ body {
   );
   z-index: 1;
   position: relative;
+  box-shadow: 0 16px 30px hsla(0, 0%, 0%, 0.125);
 }
 
 .icon-box:before {
@@ -110,18 +111,18 @@ body {
 .timeline-item::after {
   content: "";
   width: 1.5px;
-  height: calc(100% + 15px);
+  height: calc(100% + 40px);
   background-color: #383838;
   position: absolute;
-  top: -25%;
-  left: 2.8%;
+  top: -45px;
+  left: -46.5px;
 }
 
 .timeline-item h3::before {
   content: "";
   background-color: #ffdb70;
   position: absolute;
-  left: -6.2%;
+  left: -50px;
   top: 32%;
   width: 8px;
   height: 8px;

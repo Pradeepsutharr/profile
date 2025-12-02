@@ -42,66 +42,69 @@ function ResumePage() {
 
       {/* experience */}
       <div className="mt-6">
-        <div className="flex items-center gap-5 ">
+        <div className="flex items-start gap-5 ">
           <div className="icon-box p-4 rounded-xl text-primary">
             <BookOpen size={20} />
           </div>
-          <h2 className="text-main text-2xl font-semibold">
-            Professional Experience
-          </h2>
+          <div>
+            <h2 className="text-main text-2xl font-semibold mt-[10px]">
+              Professional Experience
+            </h2>
+
+            {experience?.length > 0 &&
+              experience.map((item) => (
+                <div key={item.id} className="mt-5">
+                  <div className="timeline-item relative">
+                    <h3 className="degree capitalize text-main text-base font-medium relative">
+                      {item.title.replace(",", " |")}
+                    </h3>
+
+                    <h4 className="text-primary mt-1 capitalize">
+                      {item.company}
+                    </h4>
+                    <span className="capitalize  text-subtle text-sm">
+                      {item.start_date.replaceAll("-", "/")} -
+                      {item?.end_date === null ? " present" : item.end_date}
+                    </span>
+                  </div>
+                </div>
+              ))}
+          </div>
         </div>
-        {experience?.length > 0 &&
-          experience.map((item) => (
-            <div key={item.id} className="mt-5 relative timeline-item ">
-              <div className="ml-[73px]">
-                <h3 className="degree capitalize text-main text-base font-medium relative">
-                  {item.title.replace(",", " |")}
-                </h3>
-
-                <h4 className="text-primary mt-1 capitalize">{item.company}</h4>
-                <span className="capitalize  text-subtle text-sm">
-                  {item.start_date.replaceAll("-", "/")} -
-                  {item?.end_date === null ? " present" : item.end_date}
-                </span>
-              </div>
-            </div>
-          ))}
-
-        <div className="experience-card"></div>
       </div>
 
-      {/* resume */}
-      <div className="mt-16">
-        <div className="flex items-center gap-5 ">
+      <div className="mt-12">
+        <div className="flex items-start gap-5 ">
           <div className="icon-box p-4 rounded-xl text-primary">
             <BookOpen size={20} />
           </div>
-          <h2 className="text-main text-2xl font-semibold capitalize">
-            Education
-          </h2>
+          <div className="">
+            <h2 className="text-main text-2xl font-semibold mt-[10px]">
+              Education
+            </h2>
+
+            {education?.length > 0 &&
+              education.map((item) => (
+                <div key={item.id} className="mt-5">
+                  <div className="timeline-item relative">
+                    <h3 className="degree capitalize text-main text-base font-medium relative">
+                      {item.degree}
+                    </h3>
+
+                    <h4 className="text-primary mt-1 capitalize">
+                      {item.institution}
+                    </h4>
+                    <span className="capitalize text-subtle text-sm">
+                      {item.start_date.replaceAll("-", "/")} -{" "}
+                      {item?.end_date === null
+                        ? " present"
+                        : item.end_date.replaceAll("-", "/")}
+                    </span>
+                  </div>
+                </div>
+              ))}
+          </div>
         </div>
-        {education?.length > 0 &&
-          education.map((item) => (
-            <div key={item.id} className="mt-5 relative timeline-item ">
-              <div className="ml-[73px]">
-                <h3 className="degree capitalize text-main text-base font-medium relative">
-                  {item.degree}
-                </h3>
-
-                <h4 className="text-primary mt-1 capitalize">
-                  {item.institution}
-                </h4>
-                <span className="capitalize text-subtle text-sm">
-                  {item.start_date.replaceAll("-", "/")} -{" "}
-                  {item?.end_date === null
-                    ? " present"
-                    : item.end_date.replaceAll("-", "/")}
-                </span>
-              </div>
-            </div>
-          ))}
-
-        <div className="experience-card"></div>
       </div>
 
       {/* Skills */}

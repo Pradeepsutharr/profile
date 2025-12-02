@@ -1,22 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import { Trash2, Upload } from "lucide-react";
+import Image from "next/image";
 
-/**
- * Updated UserDataManagement
- * - Uses a fixed BUCKET = "avatars"
- * - Generates signed URLs for avatar_path when avatar_url missing
- * - Ensures uploads only happen when user session exists
- * - Avoids test uploads on mount (no probing that triggers RLS)
- */
-
-const BUCKET = "portfolio"; // use the bucket that exists in your project
+/* Use the bucket you already have in Supabase */
+const BUCKET = "portfolio";
 
 export default function UserDataManagement() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // modal + edit context
   const [mode, setMode] = useState("list"); // list | create | edit
   const [editing, setEditing] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -26,15 +19,12 @@ export default function UserDataManagement() {
     loadUsers();
   }, []);
 
-  // helper to get current user (v2 or v1)
   async function getCurrentUser() {
     try {
-      // supabase-js v2
       const maybe = await supabase.auth.getUser?.();
       if (maybe?.data?.user) return maybe.data.user;
     } catch (e) {}
     try {
-      // v1
       return supabase.auth.user?.() ?? null;
     } catch (e) {
       return null;
@@ -44,9 +34,11 @@ export default function UserDataManagement() {
   async function loadUsers() {
     setLoading(true);
     try {
+      // prefer active users first so UI shows the active user on top
       const { data, error } = await supabase
         .from("users")
         .select("*")
+        .order("is_active", { ascending: false })
         .order("created_at", { ascending: false });
 
       if (error) {
@@ -55,25 +47,17 @@ export default function UserDataManagement() {
         setLoading(false);
         return;
       }
-
       const rows = data || [];
 
-      // Convert avatar_path -> avatar_url via signed URLs when needed
+      // convert avatar_path -> avatar_url (signed) when needed
       const processed = await Promise.all(
         rows.map(async (u) => {
-          // If already has avatar_url, keep it
           if (u.avatar_url) return u;
-
-          // If no avatar path, nothing to do
           if (!u.avatar_path) return u;
-
           try {
-            // Use a 1 hour signed URL. Works for private/public buckets.
-            const expiresIn = 60 * 60; // 1 hour
             const { data: d, error: e } = await supabase.storage
               .from(BUCKET)
-              .createSignedUrl(u.avatar_path, expiresIn);
-
+              .createSignedUrl(u.avatar_path, 60 * 60);
             if (e) {
               console.warn("createSignedUrl err for", u.id, e);
               return { ...u, avatar_url: null };
@@ -96,14 +80,13 @@ export default function UserDataManagement() {
     }
   }
 
-  // ---------- CREATE / UPDATE handling ----------
+  // ---------- CREATE / UPDATE ----------
   async function handleCreate(form) {
     setSubmitting(true);
     try {
       const user = await getCurrentUser();
       if (!user) throw new Error("Not signed in. Please sign in first.");
 
-      // upload avatar if provided
       let avatar_path = form.avatarFilePath || null;
       let avatar_url = form.avatarUrl || null;
 
@@ -114,43 +97,40 @@ export default function UserDataManagement() {
           /\s/g,
           "_"
         )}`;
-
         const up = await supabase.storage.from(BUCKET).upload(path, file, {
           cacheControl: "3600",
           upsert: false,
         });
-
         setUploadingAvatar(false);
-        if (up.error) {
-          console.error("storage upload error:", up);
-          throw up.error;
-        }
-
+        if (up.error) throw up.error;
         avatar_path = path;
-
-        // Obtain public URL or signed URL depending on your preference:
-        // If bucket is public you can use getPublicUrl. I will use createSignedUrl for consistency:
         const { data: signedData, error: signedErr } = await supabase.storage
           .from(BUCKET)
           .createSignedUrl(path, 60 * 60);
-        if (!signedErr && signedData?.signedUrl)
-          avatar_url = signedData.signedUrl;
-        else {
-          const { publicURL } = supabase.storage
-            .from(BUCKET)
-            .getPublicUrl(path);
-          avatar_url = publicURL ?? null;
-        }
+        avatar_url =
+          !signedErr && signedData?.signedUrl ? signedData.signedUrl : null;
       }
 
+      // determine if this should be active: make first user active automatically
+      const isFirst = users.length === 0;
       const payload = buildPayloadFromForm(form, { avatar_path, avatar_url });
-      // attach auth id so RLS policy allowing auth.uid() = auth_id will pass
       payload.auth_id = user.id;
+      payload.is_active = !!isFirst;
 
       const res = await supabase.from("users").insert([payload]).select();
-      if (res.error) {
-        console.error("insert user error", res.error);
-        throw res.error;
+      if (res.error) throw res.error;
+
+      // if created user is active and not the only one (rare), ensure others are inactive.
+      if (payload.is_active) {
+        // set all other users to false (safety)
+        await supabase
+          .from("users")
+          .update({ is_active: false })
+          .ne("id", res.data[0].id);
+        await supabase
+          .from("users")
+          .update({ is_active: true })
+          .eq("id", res.data[0].id);
       }
 
       await loadUsers();
@@ -172,8 +152,8 @@ export default function UserDataManagement() {
       const user = await getCurrentUser();
       if (!user) throw new Error("Not signed in. Please sign in first.");
 
-      // optional guard: ensure editing row belongs to current user if you want strictness
       if (editing.auth_id && editing.auth_id !== user.id) {
+        // optional permission guard
         throw new Error("You can only update your own profile.");
       }
 
@@ -182,7 +162,6 @@ export default function UserDataManagement() {
 
       if (form.avatarFile) {
         setUploadingAvatar(true);
-        // delete previous if it exists (best-effort)
         if (avatar_path) {
           try {
             await supabase.storage.from(BUCKET).remove([avatar_path]);
@@ -190,7 +169,6 @@ export default function UserDataManagement() {
             console.warn("previous avatar delete failed", e);
           }
         }
-
         const file = form.avatarFile;
         const path = `${
           editing.id ?? user.id
@@ -199,26 +177,14 @@ export default function UserDataManagement() {
           cacheControl: "3600",
           upsert: false,
         });
-
         setUploadingAvatar(false);
-        if (up.error) {
-          console.error("storage upload error:", up);
-          throw up.error;
-        }
-
+        if (up.error) throw up.error;
         avatar_path = path;
-        // try to get signed url for display
         const { data: signedData, error: signedErr } = await supabase.storage
           .from(BUCKET)
           .createSignedUrl(path, 60 * 60);
-        if (!signedErr && signedData?.signedUrl)
-          avatar_url = signedData.signedUrl;
-        else {
-          const { publicURL } = supabase.storage
-            .from(BUCKET)
-            .getPublicUrl(path);
-          avatar_url = publicURL ?? null;
-        }
+        avatar_url =
+          !signedErr && signedData?.signedUrl ? signedData.signedUrl : null;
       } else if (form.avatarUrl && form.avatarUrl !== editing.avatar_url) {
         avatar_url = form.avatarUrl;
       }
@@ -232,10 +198,7 @@ export default function UserDataManagement() {
         .eq("id", editing.id)
         .select();
 
-      if (res.error) {
-        console.error("update user error", res.error);
-        throw res.error;
-      }
+      if (res.error) throw res.error;
 
       await loadUsers();
       closeModal();
@@ -249,11 +212,56 @@ export default function UserDataManagement() {
     }
   }
 
+  // ---------- ACTIVATE (enforce single active user) ----------
+  async function setActiveUser(u) {
+    if (!u || !u.id) return;
+    try {
+      const current = await getCurrentUser();
+      if (!current) throw new Error("Not signed in.");
+
+      setLoading(true);
+
+      // 1) get all IDs (this gives us a WHERE clause to use)
+      const { data: idsData, error: idsErr } = await supabase
+        .from("users")
+        .select("id");
+      if (idsErr) throw idsErr;
+
+      const ids = (idsData || []).map((r) => r.id).filter(Boolean);
+
+      // 2) set is_active = false for all existing ids (use .in)
+      if (ids.length > 0) {
+        const { error: offErr } = await supabase
+          .from("users")
+          .update({ is_active: false })
+          .in("id", ids);
+        if (offErr) throw offErr;
+      }
+
+      // 3) set selected user active
+      const { error: onErr } = await supabase
+        .from("users")
+        .update({ is_active: true })
+        .eq("id", u.id);
+
+      if (onErr) throw onErr;
+
+      await loadUsers();
+      alert(`${u.name || "User"} is now active`);
+    } catch (err) {
+      console.error("setActiveUser error", err);
+      alert("Activate failed: " + (err?.message || err));
+    } finally {
+      setLoading(false);
+    }
+  }
+
   // ---------- DELETE ----------
   async function handleDelete(u, e) {
     e?.stopPropagation?.();
     if (!confirm("Delete this user?")) return;
     try {
+      // attempt to delete avatar file from storage (best-effort)
       if (u.avatar_path) {
         try {
           await supabase.storage.from(BUCKET).remove([u.avatar_path]);
@@ -264,12 +272,30 @@ export default function UserDataManagement() {
 
       const { error } = await supabase.from("users").delete().eq("id", u.id);
       if (error) throw error;
+
+      // if deleted user was active, promote another user (first one) to active
+      if (u.is_active) {
+        const { data: remaining } = await supabase
+          .from("users")
+          .select("id")
+          .order("created_at", { ascending: false })
+          .limit(1);
+
+        if (remaining && remaining.length > 0) {
+          const promoteId = remaining[0].id;
+          await supabase
+            .from("users")
+            .update({ is_active: true })
+            .eq("id", promoteId);
+        }
+      }
+
       await loadUsers();
       if (editing?.id === u.id) closeModal();
       alert("Deleted");
     } catch (err) {
       console.error("delete user err", err);
-      alert("Delete failed");
+      alert("Delete failed: " + (err?.message || err));
     }
   }
 
@@ -313,11 +339,13 @@ export default function UserDataManagement() {
               className="border border-stroke mb-3 flex items-center justify-between p-3 rounded-lg cursor-pointer bg-background hover:bg-[#2b2b2d]"
             >
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-md overflow-hidden bg-[#0f0f10] flex items-center justify-center">
+                <div className="w-16 h-16 rounded-md overflow-hidden bg-[#0f0f10] flex items-center justify-center">
                   {u.avatar_url ? (
-                    <img
+                    <Image
                       src={u.avatar_url}
                       alt={u.name || "avatar"}
+                      width={40}
+                      height={40}
                       className="w-full h-full object-cover"
                     />
                   ) : (
@@ -328,12 +356,20 @@ export default function UserDataManagement() {
                 </div>
 
                 <div>
-                  <div className="text-main font-medium">{u.name || "—"}</div>
-                  <div className="text-subtle text-xs">
+                  <div className="text-main font-medium capitalize">
+                    {u.name || "—"}{" "}
+                    {u.is_active && (
+                      <span className="ml-2 text-xs px-2 py-0.5 rounded bg-green-600 text-white">
+                        Active
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="text-subtle text-xs mt-1">
                     {u.email || "—"} {u.phone ? `• ${u.phone}` : ""}
                   </div>
 
-                  <div className="mt-1 flex gap-2 flex-wrap">
+                  <div className=" flex gap-2 flex-wrap mt-2">
                     {(u.roles || []).slice(0, 5).map((r) => (
                       <span
                         key={r}
@@ -347,8 +383,23 @@ export default function UserDataManagement() {
               </div>
 
               <div className="flex items-center gap-2">
+                {!u.is_active && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveUser(u);
+                    }}
+                    className="px-3 py-1 rounded-md border border-stroke text-sm"
+                  >
+                    Activate
+                  </button>
+                )}
+
                 <button
-                  onClick={(e) => handleDelete(u, e)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDelete(u, e);
+                  }}
                   className="bg-red-600 p-2 rounded-md text-white"
                 >
                   <Trash2 size={16} />
@@ -405,11 +456,9 @@ function buildPayloadFromForm(
     avatar_url: avatar_url || null,
     metadata: form.metadata || {},
   };
-
   Object.keys(payload).forEach((k) => {
     if (payload[k] === null) delete payload[k];
   });
-
   return payload;
 }
 
@@ -646,7 +695,7 @@ function UserForm({ mode, initial, onCancel, onCreate, onUpdate, submitting }) {
       </h3>
       <div className="bg-primary w-10 h-[5px] rounded-full my-5" />
 
-      <div className="flex flex-col gap-y-4">
+      <div className="flex flex-col gap-y-8">
         <div>
           <label className="text-subtle block mb-1 text-sm">Name</label>
           <input
@@ -676,48 +725,50 @@ function UserForm({ mode, initial, onCancel, onCreate, onUpdate, submitting }) {
           </div>
         </div>
 
-        <div>
-          <label className="text-subtle block mb-1 text-sm">Birthday</label>
-          <input
-            type="date"
-            value={birthday}
-            onChange={(e) => setBirthday(e.target.value)}
-            className="p-2 rounded bg-transparent border border-stroke text-main"
-          />
-        </div>
-
-        {/* Titles */}
-        <div>
-          <label className="text-subtle block mb-1 text-sm">
-            Profile Titles (press Enter to add)
-          </label>
-          <div className="min-h-[44px] border border-stroke rounded p-2 flex items-center gap-2 flex-wrap bg-[#1e1e1f]">
-            {profileTitles.length === 0 ? (
-              <span className="text-subtle text-sm">No titles</span>
-            ) : (
-              profileTitles.map((t) => (
-                <span
-                  key={t}
-                  className="text-xs px-2 py-1 rounded bg-zinc-800 border border-stroke flex items-center gap-2"
-                >
-                  {t}
-                  <button
-                    onClick={() => removeTitle(t)}
-                    className="ml-1 text-subtle"
-                  >
-                    ×
-                  </button>
-                </span>
-              ))
-            )}
+        <div className="flex justify-between items-start m-[-.76rem]">
+          <div className="col-6">
+            <label className="text-subtle block mb-1 text-sm">Birthday</label>
+            <input
+              type="date"
+              value={birthday}
+              onChange={(e) => setBirthday(e.target.value)}
+              className="p-2 rounded bg-transparent border border-stroke text-main w-full"
+            />
           </div>
-          <input
-            value={titleInput}
-            onChange={(e) => setTitleInput(e.target.value)}
-            onKeyDown={addTitleFromInput}
-            placeholder="Add title and press Enter"
-            className="mt-2 p-2 rounded bg-transparent border border-stroke w-full"
-          />
+
+          {/* Titles */}
+          <div className="col-6">
+            <label className="text-subtle block mb-1 text-sm">
+              Profile Titles (press Enter to add)
+            </label>
+            <div className="min-h-[44px] border border-stroke rounded p-2 flex items-center gap-2 flex-wrap bg-[#1e1e1f]">
+              {profileTitles.length === 0 ? (
+                <span className="text-subtle text-sm">No titles</span>
+              ) : (
+                profileTitles.map((t) => (
+                  <span
+                    key={t}
+                    className="text-xs px-2 py-1 text-subtle rounded bg-zinc-800 border border-stroke flex items-center gap-2"
+                  >
+                    {t}
+                    <button
+                      onClick={() => removeTitle(t)}
+                      className="ml-1 text-subtle"
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))
+              )}
+            </div>
+            <input
+              value={titleInput}
+              onChange={(e) => setTitleInput(e.target.value)}
+              onKeyDown={addTitleFromInput}
+              placeholder="Add title and press Enter"
+              className="mt-2 p-2 rounded bg-transparent border border-stroke w-full text-subtle"
+            />
+          </div>
         </div>
 
         {/* Summaries */}
@@ -732,7 +783,7 @@ function UserForm({ mode, initial, onCancel, onCreate, onUpdate, submitting }) {
               profileSummaries.map((s) => (
                 <span
                   key={s}
-                  className="text-xs px-2 py-1 rounded bg-zinc-800 border border-stroke flex items-center gap-2"
+                  className="text-xs px-2 py-1 text-subtle rounded bg-zinc-800 border border-stroke flex items-center gap-2"
                 >
                   {s}
                   <button
@@ -750,7 +801,7 @@ function UserForm({ mode, initial, onCancel, onCreate, onUpdate, submitting }) {
             onChange={(e) => setSummaryInput(e.target.value)}
             onKeyDown={addSummaryFromInput}
             placeholder="Add summary and press Enter"
-            className="mt-2 p-2 rounded bg-transparent border border-stroke w-full"
+            className="mt-2 p-2 rounded bg-transparent border text-subtle border-stroke w-full"
           />
         </div>
 
@@ -766,7 +817,7 @@ function UserForm({ mode, initial, onCancel, onCreate, onUpdate, submitting }) {
               roles.map((r) => (
                 <span
                   key={r}
-                  className="text-xs px-2 py-1 rounded bg-zinc-800 border border-stroke flex items-center gap-2"
+                  className="text-xs px-2 py-1 text-subtle rounded bg-zinc-800 border border-stroke flex items-center gap-2"
                 >
                   {r}
                   <button
@@ -784,7 +835,7 @@ function UserForm({ mode, initial, onCancel, onCreate, onUpdate, submitting }) {
             onChange={(e) => setRoleInput(e.target.value)}
             onKeyDown={addRoleFromInput}
             placeholder="Add role and press Enter"
-            className="mt-2 p-2 rounded bg-transparent border border-stroke w-full"
+            className="mt-2 p-2 rounded bg-transparent border text-subtle border-stroke w-full"
           />
         </div>
 
@@ -824,37 +875,37 @@ function UserForm({ mode, initial, onCancel, onCreate, onUpdate, submitting }) {
               value={github}
               onChange={(e) => setGithub(e.target.value)}
               placeholder="GitHub URL"
-              className="p-2 rounded bg-transparent border border-stroke"
+              className="p-2 rounded bg-transparent border border-stroke text-subtle"
             />
             <input
               value={linkedin}
               onChange={(e) => setLinkedin(e.target.value)}
               placeholder="LinkedIn URL"
-              className="p-2 rounded bg-transparent border border-stroke"
+              className="p-2 rounded bg-transparent border border-stroke text-subtle"
             />
             <input
               value={twitter}
               onChange={(e) => setTwitter(e.target.value)}
               placeholder="Twitter URL"
-              className="p-2 rounded bg-transparent border border-stroke"
+              className="p-2 rounded bg-transparent border border-stroke text-subtle"
             />
             <input
               value={instagram}
               onChange={(e) => setInstagram(e.target.value)}
               placeholder="Instagram URL"
-              className="p-2 rounded bg-transparent border border-stroke"
+              className="p-2 rounded bg-transparent border border-stroke text-subtle"
             />
             <input
               value={facebook}
               onChange={(e) => setFacebook(e.target.value)}
               placeholder="Facebook URL"
-              className="p-2 rounded bg-transparent border border-stroke"
+              className="p-2 rounded bg-transparent border border-stroke text-subtle"
             />
             <input
               value={website}
               onChange={(e) => setWebsite(e.target.value)}
               placeholder="Website URL"
-              className="p-2 rounded bg-transparent border border-stroke"
+              className="p-2 rounded bg-transparent border border-stroke text-subtle"
             />
           </div>
         </div>
@@ -886,7 +937,7 @@ function UserForm({ mode, initial, onCancel, onCreate, onUpdate, submitting }) {
               value={avatarUrl || ""}
               onChange={onAvatarUrlChange}
               placeholder="Paste direct image URL (optional)"
-              className="flex-1 p-2 rounded bg-transparent border border-stroke"
+              className="flex-1 p-2 rounded bg-transparent border border-stroke text-subtle"
             />
 
             {avatarPreview && (
