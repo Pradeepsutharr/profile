@@ -3,8 +3,8 @@ export const SITE = {
   siteName: "Pradeep",
   siteUrl: "https://pradeep-suthar.vercel.app",
   // replace with real absolute URLs when you upload your logo/og image
-  logo: "https://pradeep-suthar.vercel.app/seo-logo.svg",
-  defaultOgImage: "https://pradeep-suthar.vercel.app/seo-logo.svg",
+  logo: "https://pradeep-suthar.vercel.app/seo_logo.svg",
+  defaultOgImage: "https://pradeep-suthar.vercel.app/seo_logo.svg",
   // twitter: "@pradeep_dev",
   locale: "en_IN",
 };
