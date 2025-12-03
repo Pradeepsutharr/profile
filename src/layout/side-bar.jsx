@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import SideBarSkeleton from "./sidebar-skeleton";
 
 const BUCKET = "portfolio";
 
@@ -54,10 +55,11 @@ export default function SideBar() {
     setLoading(false);
   }
 
-  if (loading) return <div className="text-white">Loading user...</div>;
+  if (loading) return <SideBarSkeleton />;
   if (!user) return <div className="text-red-400">No active user found.</div>;
 
   const socials = user.socials || {};
+
   return (
     <div className="px-8 py-10 flex flex-col items-center bg-[#1e1e1f] border border-stroke rounded-3xl lg:sticky top-[60px]">
       <div className="avatar-box max-w-[150px] rounded-3xl p-4">
