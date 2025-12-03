@@ -1,15 +1,69 @@
-import { Mail, PhoneCall, Map, Linkedin } from "lucide-react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabaseClient";
+import {
+  Mail,
+  PhoneCall,
+  Map,
+  Linkedin,
+  Github,
+  Instagram,
+  Globe,
+  Twitter,
+} from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import React from "react";
 
-function SideBar() {
+const BUCKET = "portfolio";
+
+export default function SideBar() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadActiveUser();
+  }, []);
+
+  async function loadActiveUser() {
+    setLoading(true);
+
+    const { data, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("is_active", true)
+      .single();
+
+    if (error) {
+      console.error("Failed to load active user:", error);
+      setUser(null);
+      setLoading(false);
+      return;
+    }
+
+    let avatar_url = data.avatar_url;
+
+    // If we only stored avatar_path, convert it to a public URL
+    if (data.avatar_path) {
+      const { data: publicData } = supabase.storage
+        .from(BUCKET)
+        .getPublicUrl(data.avatar_path);
+
+      avatar_url = publicData?.publicUrl || avatar_url || null;
+    }
+
+    setUser({ ...data, avatar_url });
+    setLoading(false);
+  }
+
+  if (loading) return <div className="text-white">Loading user...</div>;
+  if (!user) return <div className="text-red-400">No active user found.</div>;
+
+  const socials = user.socials || {};
   return (
     <div className="px-8 py-10 flex flex-col items-center bg-[#1e1e1f] border border-stroke rounded-3xl lg:sticky top-[60px]">
       <div className="avatar-box max-w-[150px] rounded-3xl">
         <Image
-          src="/my-avatar.png"
-          alt="Pradeep"
+          src={user?.avatar_url || "my-avatar.png"}
+          alt={user?.name}
           priority
           width={200}
           height={196}
@@ -17,10 +71,10 @@ function SideBar() {
       </div>
 
       <h1 className="uppercase text-main text-2xl font-semibold my-6">
-        {/* Pradeep kumar */}
+        {user.name}
       </h1>
       <span className="bg-[#2b2b2c] py-2 px-4 rounded-md text-white text-sm">
-        Product Designer
+        {user?.profile_titles[0]}
       </span>
 
       <div className="bg-[#383838] w-full min-h-[1px] my-8"></div>
@@ -33,12 +87,8 @@ function SideBar() {
           <div className="w-3/4">
             <span className="text-[#979798]">Email</span>
             <p className="text-main whitespace-nowrap overflow-hidden text-ellipsis">
-              <Link
-                href="mailto:pradeepsutharr7@gmail.com"
-                title=""
-                className=" "
-              >
-                pradeepsutharr7@gmail.com
+              <Link href={`mailto:${user?.email}`} title="" className=" ">
+                {user?.email}
               </Link>
             </p>
           </div>
@@ -51,7 +101,7 @@ function SideBar() {
           <div className="w-3/4">
             <span className="text-[#979798]">Phone</span>
             <p className="text-main whitespace-nowrap overflow-hidden text-ellipsis">
-              <Link href="tel:+917023927315" title="" className=" ">
+              <Link href={`tel:${user?.phone}`} title="" className=" ">
                 +91 7023927315
               </Link>
             </p>
@@ -65,42 +115,63 @@ function SideBar() {
           <div className="w-3/4">
             <span className="text-[#979798]">Location</span>
             <p
-              title=""
-              className="text-main whitespace-nowrap overflow-hidden text-ellipsis"
+              title={[
+                user?.location?.city,
+                user?.location?.state,
+                user?.location?.country,
+              ]
+                .filter(Boolean)
+                .join(", ")}
+              className="text-main whitespace-nowrap overflow-hidden text-ellipsis capitalize"
             >
-              Ahmedabad, Gujarat
+              {[
+                user?.location?.city,
+                user?.location?.state,
+                user?.location?.country,
+              ]
+                .filter(Boolean)
+                .join(", ")}
             </p>
           </div>
         </div>
         <div className="flex flex-wrap items-center justify-between ">
-          <Link
-            href="#"
-            className="icon-box max-w-[35px] max-h-[35px] min-w-[35px] min-h-[35px] flex items-center justify-center rounded-md text-subtle hover:text-primary"
-          >
-            <Linkedin size={18} />
-          </Link>
-          <Link
-            href="#"
-            className="icon-box max-w-[35px] max-h-[35px] min-w-[35px] min-h-[35px] flex items-center justify-center rounded-md text-subtle hover:text-primary"
-          >
-            <Linkedin size={18} />
-          </Link>
-          <Link
-            href="#"
-            className="icon-box max-w-[35px] max-h-[35px] min-w-[35px] min-h-[35px] flex items-center justify-center rounded-md text-subtle hover:text-primary"
-          >
-            <Linkedin size={18} />
-          </Link>
-          <Link
-            href="#"
-            className="icon-box max-w-[35px] max-h-[35px] min-w-[35px] min-h-[35px] flex items-center justify-center rounded-md text-subtle hover:text-primary"
-          >
-            <Linkedin size={18} />
-          </Link>
+          {socials?.Github && (
+            <Link
+              href={user?.socials?.github || ""}
+              className="icon-box max-w-[35px] max-h-[35px] min-w-[35px] min-h-[35px] flex items-center justify-center rounded-md text-subtle hover:text-primary"
+            >
+              <Github size={18} />
+            </Link>
+          )}
+
+          {socials?.linkedin && (
+            <Link
+              href={user?.socials?.Linkedin || ""}
+              className="icon-box max-w-[35px] max-h-[35px] min-w-[35px] min-h-[35px] flex items-center justify-center rounded-md text-subtle hover:text-primary"
+            >
+              <Linkedin size={18} />
+            </Link>
+          )}
+
+          {socials?.instagram && (
+            <Link
+              href={user?.socials?.Instagram || ""}
+              className="icon-box max-w-[35px] max-h-[35px] min-w-[35px] min-h-[35px] flex items-center justify-center rounded-md text-subtle hover:text-primary"
+            >
+              <Instagram size={18} />
+            </Link>
+          )}
+
+          {socials?.twitter && (
+            <Link
+              href={user?.socials?.twitter || ""}
+              className="icon-box max-w-[35px] max-h-[35px] min-w-[35px] min-h-[35px] flex items-center justify-center rounded-md text-subtle hover:text-primary"
+            >
+              <Twitter size={18} />
+            </Link>
+          )}
         </div>
       </div>
     </div>
   );
 }
-
-export default SideBar;
