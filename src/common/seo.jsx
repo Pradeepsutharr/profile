@@ -6,25 +6,26 @@ import PropTypes from "prop-types";
  * - Defaults tuned for a Front-End Developer & Product Designer
  * - Accepts page-level overrides for title/description/og/twitter/schema
  * - Renders Person + WebSite JSON-LD by default and merges page structuredData if provided
+ *
+ * NOTE:
+ * - Replace DEFAULTS.logo and DEFAULTS.defaultOgImage with absolute URLs after you upload them.
+ * - Update DEFAULTS.twitterHandle and `defaultSameAs` with your real social profile URLs.
  */
 
 const DEFAULTS = {
   siteName: "Pradeep",
-  // replace with your real domain, e.g. "https://pradeep.dev"
-  siteUrl: "https://pradeep.dev",
-  // absolute URL to your logo (used for structured data / OG)
-  logo: "https://pradeep.dev/images/seo-logo.png",
-  // absolute URL to your default OG image
-  defaultOgImage: "https://pradeep.dev/images/og-image.png",
-  // update with your twitter handle if available (include @)
-  twitterHandle: "@pradeep_dev",
+  // your live website
+  siteUrl: "https://pradeep-suthar.vercel.app",
+  logo: "https://pradeep-suthar.vercel.app/seo-logo.svg",
+  defaultOgImage: "https://pradeep-suthar.vercel.app/seo-logo.svg",
+  // twitterHandle: "@pradeep_dev",
   locale: "en_IN",
-  fbAppId: "", // optional
+  // fbAppId: "",
   defaultTitle: "Pradeep | Front-End Developer & Product Designer",
   defaultDescription:
     "I design and build fast, accessible, and delightful user experiences using React, Next.js and modern design systems. Case studies and frontend projects.",
   defaultKeywords:
-    "Front-End Developer, Product Designer, React, Next.js, UI UX, Design Systems, Frontend Portfolio, Pradeep",
+    "Front-End Developer, Product Designer, UI UX Designer, UI UX Design, React, Next.js, UI UX, Design Systems, Frontend Portfolio, Pradeep",
 };
 
 // Person schema (for personal portfolio)
@@ -71,11 +72,12 @@ const SEO = ({
   const image = ogImage ?? DEFAULTS.defaultOgImage;
   const socialTitle = ogTitle ?? pageTitle ?? DEFAULTS.siteName;
 
-  // default social profiles — replace these with your actual profiles
+  // default social profiles — update these with your real profile URLs
   const defaultSameAs = [
-    "https://twitter.com/pradeep_dev",
-    "https://www.linkedin.com/in/pradeep",
-    "https://github.com/pradeep",
+    // replace or remove entries as needed
+    // "https://twitter.com/your_handle",
+    "https://www.linkedin.com/in/pradeep-suthar-a47432273/",
+    "https://github.com/sutharpradip",
   ];
 
   // Core structured data (Person + WebSite)
@@ -148,13 +150,13 @@ const SEO = ({
         <meta property="fb:app_id" content={DEFAULTS.fbAppId} />
       )}
 
-      {/* Twitter */}
+      {/* Twitter
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:creator" content={DEFAULTS.twitterHandle} />
       <meta name="twitter:site" content={DEFAULTS.twitterHandle} />
       <meta name="twitter:title" content={socialTitle} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={image} />
+      <meta name="twitter:image" content={image} /> */}
 
       {/* Performance / assets */}
       <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -164,15 +166,12 @@ const SEO = ({
         crossOrigin="true"
       />
       <link rel="manifest" href="/site.webmanifest" />
-      <link rel="icon" type="image/png" href="/favicon-16.png" />
-      <link rel="icon" type="image/png" href="/favicon-32.png" />
       <link
         rel="apple-touch-icon"
         sizes="180x180"
         href="/apple-touch-icon.png"
       />
 
-      {/* Structured Data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -180,7 +179,6 @@ const SEO = ({
         }}
       />
 
-      {/* allow insertion of page-specific head tags */}
       {children}
     </Head>
   );

@@ -60,7 +60,7 @@ export default function SideBar() {
   const socials = user.socials || {};
   return (
     <div className="px-8 py-10 flex flex-col items-center bg-[#1e1e1f] border border-stroke rounded-3xl lg:sticky top-[60px]">
-      <div className="avatar-box max-w-[150px] rounded-3xl">
+      <div className="avatar-box max-w-[150px] rounded-3xl p-4">
         <Image
           src={user?.avatar_url || "my-avatar.png"}
           alt={user?.name}
@@ -135,9 +135,10 @@ export default function SideBar() {
           </div>
         </div>
         <div className="flex flex-wrap items-center justify-between ">
-          {socials?.Github && (
+          {socials?.github && (
             <Link
               href={user?.socials?.github || ""}
+              target="_blank"
               className="icon-box max-w-[35px] max-h-[35px] min-w-[35px] min-h-[35px] flex items-center justify-center rounded-md text-subtle hover:text-primary"
             >
               <Github size={18} />
@@ -147,6 +148,7 @@ export default function SideBar() {
           {socials?.linkedin && (
             <Link
               href={user?.socials?.Linkedin || ""}
+              target="_blank"
               className="icon-box max-w-[35px] max-h-[35px] min-w-[35px] min-h-[35px] flex items-center justify-center rounded-md text-subtle hover:text-primary"
             >
               <Linkedin size={18} />
@@ -155,7 +157,8 @@ export default function SideBar() {
 
           {socials?.instagram && (
             <Link
-              href={user?.socials?.Instagram || ""}
+              href={user?.socials?.instagram || ""}
+              target="_blank"
               className="icon-box max-w-[35px] max-h-[35px] min-w-[35px] min-h-[35px] flex items-center justify-center rounded-md text-subtle hover:text-primary"
             >
               <Instagram size={18} />
@@ -165,6 +168,7 @@ export default function SideBar() {
           {socials?.twitter && (
             <Link
               href={user?.socials?.twitter || ""}
+              target="_blank"
               className="icon-box max-w-[35px] max-h-[35px] min-w-[35px] min-h-[35px] flex items-center justify-center rounded-md text-subtle hover:text-primary"
             >
               <Twitter size={18} />
