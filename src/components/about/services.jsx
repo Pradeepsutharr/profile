@@ -27,8 +27,8 @@ function Services() {
       <div className="flex flex-wrap items-center justify-between m-[-.75rem]">
         {services?.map((service) => (
           <div key={service.id} className="col-12 md:col-6 ">
-            <div className="icon-box service-card flex items-start justify-between rounded-xl px-5 py-4 min-h-[164px]">
-              <div className="col-2">
+            <div className="icon-box service-card flex flex-wrap items-center justify-between rounded-xl px-5 py-4 min-h-[164px]">
+              <div className="col-12 md:col-3 lg:col-2 ">
                 <Image
                   src={service.icon}
                   alt={service.title}
@@ -36,7 +36,7 @@ function Services() {
                   height={50}
                 />
               </div>
-              <div className="col-10">
+              <div className="col-12 md:col-9 lg:col-10">
                 <h3 className="text-main font-semibold text-xl">
                   {service.title}
                 </h3>

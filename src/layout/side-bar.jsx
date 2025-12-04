@@ -64,23 +64,32 @@ export default function SideBar() {
   const socials = user.socials || {};
 
   return (
-    <div className="lg:px-8  px-4 lg:py-10 py-4 flex flex-col items-center bg-[#1e1e1f] border border-stroke rounded-2xl lg:rounded-3xl relative lg:sticky lg:top-[60px] overflow-hidden h-[113px] lg:h-auto transition-all duration-700">
+    <div
+      className={`lg:px-8 px-4 lg:py-10 py-4 flex flex-col items-center bg-[#1e1e1f] border border-stroke rounded-2xl lg:rounded-3xl relative lg:sticky lg:top-[60px] overflow-hidden
+        ${
+          open ? "max-h-[900px]" : "max-h-[113px]"
+        } lg:max-h-none transition-all duration-700 ease-in-out`}
+      aria-expanded={open}
+    >
+      {/* Toggle: visible only on small screens */}
       <button
         onClick={() => setOpen((prev) => !prev)}
-        className="absolute right-0 top-0 gredient-jet p-2 toggle-btn"
+        className="absolute block lg:hidden right-0 top-0 p-2 toggle-btn"
+        aria-label={open ? "Collapse sidebar" : "Expand sidebar"}
       >
+        {/* Show Ellipsis when collapsed, X when open */}
         {open ? (
-          <Ellipsis color="#ffdb70" size={18} />
-        ) : (
           <X color="#ffdb70" size={18} />
+        ) : (
+          <Ellipsis color="#ffdb70" size={18} />
         )}
       </button>
 
       <div className="flex lg:flex-col items-center gap-6 lg:gap-0 w-full transition-all duration-700">
-        <div className="avatar-box max-w-[80px] lg:max-w-[150px] rounded-2xl lg:rounded-3xl p-4 transition-all duration-700">
+        <div className="avatar-box max-w-[80px] lg:max-w-[150px] rounded-2xl lg:rounded-3xl p-4 transition-all duration-700 flex-shrink-0">
           <Image
-            src={user?.avatar_url || "my-avatar.png"}
-            alt={user?.name}
+            src={user?.avatar_url || "/my-avatar.png"}
+            alt={user?.name || "avatar"}
             priority
             width={200}
             height={196}
@@ -92,14 +101,16 @@ export default function SideBar() {
             {user.name}
           </h1>
           <span className="bg-[#2b2b2c] lg:py-2 py-1 px-4 rounded-md text-white text-xs lg:text-sm">
-            {user?.profile_titles[0]}
+            {Array.isArray(user?.profile_titles)
+              ? user?.profile_titles[0]
+              : user?.profile_titles}
           </span>
         </div>
       </div>
 
       <div className="bg-[#383838] w-full min-h-[1px] my-8"></div>
 
-      <div className="w-full flex flex-col gap-y-8">
+      <div className="w-full flex flex-col gap-y-8 px-1">
         <div className="flex items-center gap-4 ">
           <div className="w-1/4 icon-box bg-[#202022] text-primary max-w-[48px] max-h-[48px] min-w-[48px] min-h-[48px] flex items-center justify-center rounded-lg ">
             <Mail size={20} />
@@ -107,7 +118,7 @@ export default function SideBar() {
           <div className="w-3/4">
             <span className="text-[#979798]">Email</span>
             <p className="text-main whitespace-nowrap overflow-hidden text-ellipsis">
-              <Link href={`mailto:${user?.email}`} title="" className=" ">
+              <Link href={`mailto:${user?.email}`} title="">
                 {user?.email}
               </Link>
             </p>
@@ -121,8 +132,8 @@ export default function SideBar() {
           <div className="w-3/4">
             <span className="text-[#979798]">Phone</span>
             <p className="text-main whitespace-nowrap overflow-hidden text-ellipsis">
-              <Link href={`tel:${user?.phone}`} title="" className=" ">
-                +91 7023927315
+              <Link href={`tel:${user?.phone || ""}`} title="">
+                {user?.phone || "+91 7023927315"}
               </Link>
             </p>
           </div>
@@ -154,10 +165,11 @@ export default function SideBar() {
             </p>
           </div>
         </div>
-        <div className="flex flex-wrap items-center justify-between ">
+
+        <div className="flex flex-wrap items-center justify-between gap-2">
           {socials?.github && (
             <Link
-              href={user?.socials?.github || ""}
+              href={socials.github}
               target="_blank"
               className="icon-box max-w-[35px] max-h-[35px] min-w-[35px] min-h-[35px] flex items-center justify-center rounded-md text-subtle hover:text-primary"
             >
@@ -167,7 +179,7 @@ export default function SideBar() {
 
           {socials?.linkedin && (
             <Link
-              href={user?.socials?.Linkedin || ""}
+              href={socials.linkedin}
               target="_blank"
               className="icon-box max-w-[35px] max-h-[35px] min-w-[35px] min-h-[35px] flex items-center justify-center rounded-md text-subtle hover:text-primary"
             >
@@ -177,7 +189,7 @@ export default function SideBar() {
 
           {socials?.instagram && (
             <Link
-              href={user?.socials?.instagram || ""}
+              href={socials.instagram}
               target="_blank"
               className="icon-box max-w-[35px] max-h-[35px] min-w-[35px] min-h-[35px] flex items-center justify-center rounded-md text-subtle hover:text-primary"
             >
@@ -187,7 +199,7 @@ export default function SideBar() {
 
           {socials?.twitter && (
             <Link
-              href={user?.socials?.twitter || ""}
+              href={socials.twitter}
               target="_blank"
               className="icon-box max-w-[35px] max-h-[35px] min-w-[35px] min-h-[35px] flex items-center justify-center rounded-md text-subtle hover:text-primary"
             >
