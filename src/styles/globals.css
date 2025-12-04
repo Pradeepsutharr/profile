@@ -60,7 +60,20 @@
 body {
   background-color: #121212;
   position: relative;
-  margin: 48px 0 !important;
+  /* margin: 48px 0 !important; */
+}
+
+.mobile-navbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #2b2b2cbf;
+  backdrop-filter: blur(10px);
+  border: 1px solid #383838;
+  border-radius: 18px 18px 0 0;
+  box-shadow: 0 16px 30px hsla(0, 0%, 0%, 0.25);
+  z-index: 5;
 }
 
 .gredient-jet {
@@ -89,6 +102,29 @@ body {
   z-index: 1;
   position: relative;
   box-shadow: 0 16px 30px hsla(0, 0%, 0%, 0.125);
+}
+.toggle-btn {
+  background: linear-gradient(
+    to bottom right,
+    hsl(0, 0%, 25%) 0%,
+    hsla(0, 0%, 25%, 0) 50%
+  );
+  box-shadow: 0 16px 30px hsla(0, 0%, 0%, 0.25);
+  border-radius: 0 15px;
+}
+.toggle-btn::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  background: linear-gradient(
+      to bottom right,
+      hsla(240, 1%, 18%, 0.251) 0%,
+      hsla(240, 2%, 11%, 0) 100%
+    ),
+    hsl(240, 2%, 13%);
+  transition: 0.25s ease;
+  z-index: -1;
 }
 
 .icon-box:before {

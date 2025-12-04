@@ -9,6 +9,8 @@ import {
   Instagram,
   Globe,
   Twitter,
+  Ellipsis,
+  X,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -19,6 +21,7 @@ const BUCKET = "portfolio";
 export default function SideBar() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     loadActiveUser();
@@ -61,23 +64,38 @@ export default function SideBar() {
   const socials = user.socials || {};
 
   return (
-    <div className="px-8 py-10 flex flex-col items-center bg-[#1e1e1f] border border-stroke rounded-3xl lg:sticky top-[60px]">
-      <div className="avatar-box max-w-[150px] rounded-3xl p-4">
-        <Image
-          src={user?.avatar_url || "my-avatar.png"}
-          alt={user?.name}
-          priority
-          width={200}
-          height={196}
-        />
-      </div>
+    <div className="lg:px-8  px-4 lg:py-10 py-4 flex flex-col items-center bg-[#1e1e1f] border border-stroke rounded-2xl lg:rounded-3xl relative lg:sticky lg:top-[60px] overflow-hidden h-[113px] lg:h-auto transition-all duration-700">
+      <button
+        onClick={() => setOpen((prev) => !prev)}
+        className="absolute right-0 top-0 gredient-jet p-2 toggle-btn"
+      >
+        {open ? (
+          <Ellipsis color="#ffdb70" size={18} />
+        ) : (
+          <X color="#ffdb70" size={18} />
+        )}
+      </button>
 
-      <h1 className="uppercase text-main text-2xl font-semibold my-6">
-        {user.name}
-      </h1>
-      <span className="bg-[#2b2b2c] py-2 px-4 rounded-md text-white text-sm">
-        {user?.profile_titles[0]}
-      </span>
+      <div className="flex lg:flex-col items-center gap-6 lg:gap-0 w-full transition-all duration-700">
+        <div className="avatar-box max-w-[80px] lg:max-w-[150px] rounded-2xl lg:rounded-3xl p-4 transition-all duration-700">
+          <Image
+            src={user?.avatar_url || "my-avatar.png"}
+            alt={user?.name}
+            priority
+            width={200}
+            height={196}
+          />
+        </div>
+
+        <div className="lg:text-center">
+          <h1 className="uppercase text-main text-lg lg:text-2xl font-semibold lg:my-6 mb-2 ">
+            {user.name}
+          </h1>
+          <span className="bg-[#2b2b2c] lg:py-2 py-1 px-4 rounded-md text-white text-xs lg:text-sm">
+            {user?.profile_titles[0]}
+          </span>
+        </div>
+      </div>
 
       <div className="bg-[#383838] w-full min-h-[1px] my-8"></div>
 
