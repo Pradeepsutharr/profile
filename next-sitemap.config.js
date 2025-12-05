@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: "https://pradeep-suthar.vercel.app",
+  siteUrl: "https://pradeep-suthar.vercel.app/",
   generateRobotsTxt: true,
-  sitemapSize: 7000,
+  generateIndexSitemap: true,
 };
