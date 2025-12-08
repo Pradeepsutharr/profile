@@ -13,11 +13,11 @@ const SEOConfig = {
   home: {
     pageTitle: "Pradeep | Product Designer & Front-End Developer",
     pageDescription:
-      "I design and build fast, accessible, and delightful user interfaces using React, Next.js and modern design systems. Explore my UI/UX work and frontend projects.",
+      "Pradeep | A Product Designer and Front-End Developer crafting intuitive, elegant, and performance-driven digital experiences using UI/UX principles, React, Next.js, and modern design systems.",
     keywords:
       "Product Designer, Front-End Developer, UI UX Designer, React Developer, Next.js Developer, Web Designer India, Portfolio Designer, Interface Design Expert",
     ogTitle:
-      "Pradeep | Product Designer & Front-End Developer Creating High-Performance Digital Experiences",
+      "Pradeep | Product Designer & Front-End Developer Crafting Exceptional Digital Experiences",
     ogImage: SITE.defaultOgImage,
     ogUrl: `${SITE.siteUrl}/`,
     ogType: "website",
@@ -26,7 +26,7 @@ const SEOConfig = {
   },
 
   about: {
-    pageTitle: "About | Pradeep – Product Designer & Front-End Developer",
+    pageTitle: "About | Pradeep - Product Designer & Front-End Developer",
     pageDescription:
       "I'm Pradeep, a front-end developer and product designer crafting human-centered digital experiences. I blend UI/UX, aesthetics, and performance engineering.",
     keywords:
@@ -40,7 +40,7 @@ const SEOConfig = {
   },
 
   resume: {
-    pageTitle: "Resume | Pradeep – Product Designer & Front-End Developer",
+    pageTitle: "Resume | Pradeep - Product Designer & Front-End Developer",
     pageDescription:
       "Explore my resume: skills, experience, UI/UX expertise, React and Next.js projects, design systems, and frontend engineering background.",
     keywords:
