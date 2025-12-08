@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import ProjectCard from "./project-card";
+import ProjectsSkeleton from "./projects-skeleton";
 
 function ProjectsComponent() {
   const [projects, setProjects] = useState([]);
@@ -25,6 +26,8 @@ function ProjectsComponent() {
       setLoading(false);
     })();
   }, []);
+
+  if (loading) return <ProjectsSkeleton />;
 
   // Handle category filter
   const handleFilter = (category) => {

@@ -53,6 +53,11 @@
   }
 }
 
+html {
+  font-size: 15px;
+  scroll-behavior: smooth;
+}
+
 .p-0 {
   padding: 0 !important;
 }

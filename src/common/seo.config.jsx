@@ -15,8 +15,9 @@ const SEOConfig = {
     pageDescription:
       "I design and build fast, accessible, and delightful user interfaces using React, Next.js and modern design systems. Explore my UI/UX work and frontend projects.",
     keywords:
-      "Front-End Developer, Product Designer, UI UX Designer, React Developer, Next.js Developer, Interface Design, Pradeep Portfolio",
-    ogTitle: "Pradeep | Product Designer & Front-End Developer",
+      "Product Designer, Front-End Developer, UI UX Designer, React Developer, Next.js Developer, Web Designer India, Portfolio Designer, Interface Design Expert",
+    ogTitle:
+      "Pradeep | Product Designer & Front-End Developer Creating High-Performance Digital Experiences",
     ogImage: SITE.defaultOgImage,
     ogUrl: `${SITE.siteUrl}/`,
     ogType: "website",
@@ -44,7 +45,8 @@ const SEOConfig = {
       "Explore my resume: skills, experience, UI/UX expertise, React and Next.js projects, design systems, and frontend engineering background.",
     keywords:
       "Pradeep Resume, Frontend Developer Resume, Product Designer Resume, UI UX Resume, React Resume, Next.js Resume",
-    ogTitle: "Pradeep Resume | Front-End Developer & Product Designer",
+    ogTitle:
+      "Pradeep Resume | Proven Expertise in Product Design, UI/UX & Front-End Development",
     ogImage: SITE.defaultOgImage,
     ogUrl: `${SITE.siteUrl}/resume`,
     ogType: "article",
@@ -55,10 +57,11 @@ const SEOConfig = {
   portfolio: {
     pageTitle: "Portfolio | Front-End Projects & Product Design Work",
     pageDescription:
-      "View selected frontend development and product design projects built with React, Next.js, and modern UI/UX principles focused on usability and performance.",
+      "Browse Pradeep’s portfolio showcasing UI/UX design work, product design case studies, and front-end development projects built with React, Next.js, and modern design systems.",
     keywords:
-      "Frontend Portfolio, UI UX Portfolio, React Projects, Next.js Portfolio, Product Design Work, Interface Design Portfolio",
-    ogTitle: "Pradeep Portfolio | Front-End & Product Design",
+      "UI UX Portfolio, Product Design Portfolio, Front-End Developer Projects, React Projects, Next.js Portfolio, Website Design Work, Interface Design Portfolio",
+    ogTitle:
+      "Pradeep Portfolio | UI/UX Design, Product Design & Front-End Development Work",
     ogImage: SITE.defaultOgImage,
     ogUrl: `${SITE.siteUrl}/portfolio`,
     ogType: "website",
@@ -69,10 +72,11 @@ const SEOConfig = {
   contact: {
     pageTitle: "Contact | Hire Product Designer & Front-End Developer",
     pageDescription:
-      "Contact Pradeep for frontend development, product design, UI/UX work, freelance projects, or collaborations. Available for React and Next.js roles.",
+      "Contact Pradeep for UI/UX design, product design, and front-end development services. Available for freelance work, collaborations, and React/Next.js development projects.",
     keywords:
-      "Contact Pradeep, Hire Frontend Developer, Hire Product Designer, React Developer Contact, Next.js Hire, UI UX Contact",
-    ogTitle: "Contact Pradeep | Let's Work Together",
+      "Hire Product Designer, Hire Front-End Developer, Hire UI UX Designer, React Developer Hire, Next.js Developer Hire, Contact Pradeep, Freelance Designer India",
+    ogTitle:
+      "Contact Pradeep | Work With a Skilled Product Designer & Front-End Developer",
     ogImage: SITE.defaultOgImage,
     ogUrl: `${SITE.siteUrl}/contact`,
     ogType: "website",
@@ -97,10 +101,11 @@ const SEOConfig = {
   default: {
     pageTitle: "Pradeep",
     pageDescription:
-      "Pradeep – Front-End Developer and Product Designer creating intuitive, accessible, and high-performance web experiences using React, Next.js, and design systems.",
+      "Pradeep | A Product Designer and Front-End Developer crafting intuitive, elegant, and performance-driven digital experiences using UI/UX principles, React, Next.js, and modern design systems.",
     keywords:
-      "Front-End Developer, Product Designer, UI UX, React, Next.js, Portfolio, Web Design",
-    ogTitle: "Pradeep | Front-End Developer & Product Designer",
+      "Product Designer, Front-End Developer, UI UX, React, Next.js, Web Designer, Digital Product Designer, Portfolio Website",
+    ogTitle:
+      "Pradeep | Product Designer & Front-End Developer Crafting Exceptional Digital Experiences",
     ogImage: SITE.defaultOgImage,
     ogUrl: SITE.siteUrl,
     ogType: "website",

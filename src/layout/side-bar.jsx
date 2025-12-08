@@ -65,7 +65,7 @@ export default function SideBar() {
 
   return (
     <div
-      className={`lg:px-8 px-4 lg:py-10 py-4 flex flex-col items-center bg-[#1e1e1f] border border-stroke rounded-2xl lg:rounded-3xl relative lg:sticky lg:top-[60px] overflow-hidden
+      className={`lg:px-6 px-4 lg:py-10 py-4 flex flex-col items-center bg-[#1e1e1f] border border-stroke rounded-2xl lg:rounded-3xl relative lg:sticky lg:top-[60px] overflow-hidden
         ${
           open ? "max-h-[900px]" : "max-h-[113px]"
         } lg:max-h-none transition-all duration-700 ease-in-out`}
@@ -97,7 +97,7 @@ export default function SideBar() {
         </div>
 
         <div className="lg:text-center">
-          <h1 className="uppercase text-main text-lg lg:text-2xl font-semibold lg:my-6 mb-2 ">
+          <h1 className="capitalize text-main text-lg lg:text-2xl font-semibold lg:my-6 mb-2 ">
             {user.name}
           </h1>
           <span className="bg-[#2b2b2c] lg:py-2 py-1 px-4 rounded-md text-white text-xs lg:text-sm">

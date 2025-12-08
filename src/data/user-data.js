@@ -18,17 +18,17 @@ export const user_data = {
     {
       id: 1,
       description:
-        "Passionate Front-End Developer and Product Designer with over 3+ years of experience transforming complex ideas into engaging, user-friendly digital experiences. Known for a keen eye for design and a strong technical acumen, I excel at bridging the gap between aesthetics and functionality.",
+        "I design and build high-performance digital experiences through a blend of UI/UX design, front-end engineering, and modern React/Next.js development. With 3+ years of experience, I specialize in creating clean, accessible, and conversion-focused interfaces that strengthen brand identity and improve user engagement.",
     },
     {
       id: 2,
       description:
-        "Proficient in HTML, CSS, JavaScript, and modern frameworks like Next.Js & React.Js, I thrive on creating visually stunning interfaces that not only meet user needs but also elevate brand identity. I’m committed to innovation, collaboration, and delivering top-tier digital solutions that resonate with users and drive business success.",
+        "As a Product Designer & Front-End Developer, I focus on turning ideas into polished digital products combining usability, visual craftsmanship, and scalable front-end architecture. My work helps startups, businesses, and creators deliver fast, intuitive, and visually striking experiences that users trust.",
     },
     {
       id: 3,
       description:
-        "My job is to build your website so that it is functional and user-friendly but at the same time attractive. Moreover, I add personal touch to your product and make sure that is eye-catching and easy to use. My aim is to bring across your message and identity in the most creative way.",
+        "Whether it’s designing a user flow, crafting a pixel-perfect UI, or developing a responsive interface, I ensure every detail aligns with both user needs and business goals.",
     },
   ],
 };

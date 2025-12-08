@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { BookOpen } from "lucide-react";
+import ResumeSkeleton from "./resume-skeleton";
 
 function ResumePage() {
   const [skills, setSkills] = useState([]);
@@ -34,6 +35,8 @@ function ResumePage() {
       setLoading(false);
     })();
   }, []);
+
+  if (loading) return <ResumeSkeleton />;
 
   return (
     <section>

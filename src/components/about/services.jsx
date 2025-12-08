@@ -2,9 +2,11 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import Image from "next/image";
+import ServicesSkeleton from "./service-skeleton";
 
 function Services() {
   const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -18,9 +20,11 @@ function Services() {
         return;
       }
       setServices(data || []);
+      setLoading(false);
     })();
   }, []);
-  // console.log(services);
+
+  if (loading) return <ServicesSkeleton />;
 
   return (
     <section>
@@ -48,6 +52,16 @@ function Services() {
           </div>
         ))}
       </div>
+      <p className="text-subtle text-[15px] mt-10 leading-relaxed">
+        I help brands and businesses create modern, responsive, and
+        user-centered digital products through a strong combination of UI/UX
+        design, front-end development, and product thinking. My expertise
+        includes React, Next.js, Tailwind, design systems, accessibility, and
+        high-performance interface development. If you're looking for a Product
+        Designer or Front-End Developer who can design and develop seamless
+        digital experiences, I can help bring your vision to life with precision
+        and creativity.
+      </p>
     </section>
   );
 }

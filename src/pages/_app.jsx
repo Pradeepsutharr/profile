@@ -56,7 +56,7 @@ export default function App({ Component, pageProps }) {
                   <SideBar />
                 </aside>
                 <div className="main-content col-12 lg:col-9 ">
-                  <div className="bg-[#1e1e1f] border border-stroke rounded-2xl lg:rounded-3xl overflow-hidden lg:relative lg:px-8 lg:py-10 px-4 py-4 mb-20 md:mb-18 lg:mb-0 transition-all duration-transition-all duration-700">
+                  <div className="bg-[#1e1e1f] border border-stroke rounded-2xl lg:rounded-3xl overflow-hidden lg:relative lg:px-6 lg:py-10 px-4 py-4 mb-20 md:mb-18 lg:mb-0 transition-all duration-transition-all duration-700">
                     <div className="navbar hidden lg:flex absolute right-0 top-0">
                       <Navbar />
                     </div>
