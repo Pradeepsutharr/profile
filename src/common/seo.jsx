@@ -119,6 +119,7 @@ const SEO = ({
       <link rel="canonical" href={canonical} />
 
       {/* SEO */}
+      <meta name="application-name" content="Pradeep" />
       <meta name="description" content={description} />
       <meta name="keywords" content={keywordString} />
       <meta name="author" content={DEFAULTS.siteName} />
