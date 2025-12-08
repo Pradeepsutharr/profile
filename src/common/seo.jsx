@@ -129,7 +129,10 @@ const SEO = ({
       />
       <meta name="theme-color" content="#0b4b6f" />
       <meta name="distribution" content="Global" />
-      <meta name="owner" content={new URL(DEFAULTS.siteUrl).hostname} />
+      <meta
+        name="owner"
+        content="Pradeep – Product Designer & Front-End Developer"
+      />
       <meta
         name="robots"
         content={
