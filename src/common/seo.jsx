@@ -28,6 +28,16 @@ const DEFAULTS = {
     "Front-End Developer, Product Designer, UI UX Designer, UI UX Design, React, Next.js, UI UX, Design Systems, Frontend Portfolio, Pradeep",
 };
 
+const organizationSchema = ({ siteUrl, siteName, logo, sameAs = [] }) => ({
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": `${siteUrl}/#organization`,
+  name: siteName,
+  url: siteUrl,
+  logo: { "@type": "ImageObject", url: logo },
+  sameAs: sameAs,
+});
+
 // Person schema (for personal portfolio)
 const buildPersonSchema = ({ siteUrl, siteName, logo, sameAs = [] }) => ({
   "@type": "Person",
@@ -93,10 +103,18 @@ const SEO = ({
     siteName: DEFAULTS.siteName,
   });
 
+  const organization = organizationSchema({
+    siteUrl: DEFAULTS.siteUrl,
+    siteName: DEFAULTS.siteName,
+    logo: DEFAULTS.logo,
+    sameAs: defaultSameAs,
+  });
+
   // Merge default schema with page-level structuredData if given
   const jsonLdArray = [
     { "@context": "https://schema.org" },
     personSchema,
+    organization,
     websiteSchema,
   ];
 
