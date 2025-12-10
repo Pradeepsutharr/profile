@@ -87,7 +87,6 @@ export default async function handler(req, res) {
       },
     });
 
-    // replace your existing `html = `...`` with this:
     const html = `
 <!doctype html>
 <html lang="en">
@@ -121,9 +120,9 @@ export default async function handler(req, res) {
 </head>
 <body>
   <div class="container" role="article" aria-label="New contact message">
-    <div class="header" role="banner" style="width:36px;height:36px;border-radius:6px; overflow:hidden;">
-      <div class="brand"><img src="https://pradeep-suthar.vercel.app/favicon.svg" alt="logo"  />
-</div>
+    <div class="header" role="banner" >
+      <div class="brand" style="overflow:hidden; padding:5px; "><img src="https://pradeep-suthar.vercel.app/web-app-manifest-192x192.png" alt="logo"  />
+      </div>
       <div>
         <div class="title">New message from your portfolio</div>
         <div style="font-size:12px; opacity:0.92;">Contact form — ${escapeHtml(
@@ -204,7 +203,6 @@ export default async function handler(req, res) {
     const info = await transporter.sendMail(mailOptions);
     console.log("Email sent:", info?.messageId);
 
-    // Return success — include DB insert id if available
     return res.status(200).json({
       ok: true,
       inserted: insertData ? { id: insertData.id } : null,
@@ -219,7 +217,6 @@ export default async function handler(req, res) {
   }
 }
 
-// small helpers
 function escapeHtml(str = "") {
   return String(str)
     .replaceAll("&", "&amp;")
