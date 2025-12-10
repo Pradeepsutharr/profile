@@ -58,7 +58,7 @@ function MobileNavbar() {
     <nav className="mobile-navbar">
       <ul className="flex items-center justify-evenly">
         {nav_data?.map((item) => (
-          <li>
+          <li key={item.id}>
             <Link
               href={item.link}
               className={`text-main py-5 px-2 block capitalize ${

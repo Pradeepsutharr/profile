@@ -1,25 +1,31 @@
+// pages/contact.jsx  (or wherever your contact page lives)
 import React, { useState } from "react";
-import {
-  Send,
-  Paperclip,
-  CheckCircle,
-  Clock,
-  Calendar,
-  MessageCircle,
-} from "lucide-react";
+import { Send, Paperclip, CheckCircle } from "lucide-react";
+// IMPORTANT: import the singleton supabase client (adjust path if necessary)
+import { supabase } from "@/lib/supabaseClient";
 
 /**
  * ContactPage
- * - Uses project theme classes (bg-primary, text-main, border-stroke, icon-box)
- * - No external dependencies besides lucide-react
+ * - Layout/design preserved exactly
+ * - Uses shared supabase client (no createClient inside component)
+ *
+ * Requirements:
+ * - NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local
+ * - Storage bucket named "contact-attachments" exists in Supabase (or change BUCKET_NAME)
+ * - pages/api/send-contact exists and proxies to your Supabase Edge Function
  */
+
+const BUCKET_NAME = "portfolio"; // change if your bucket name differs
+const MAX_FILE_MB = 8; // client-side file size limit
+
 function ContactPage() {
   const [form, setForm] = useState({
     name: "",
     email: "",
-    phone: "", // <- added phone to initial state
+    phone: "",
     topic: "Project Inquiry",
     message: "",
+    website: "", // honeypot (hidden)
   });
   const [file, setFile] = useState(null);
   const [errors, setErrors] = useState({});
@@ -42,10 +48,8 @@ function ContactPage() {
       e.email = "Please enter a valid email.";
     if (!form.message.trim()) e.message = "Please write a short message.";
 
-    // Phone validation: optional, but if present must be valid
-    // Accepts optional +, digits, spaces and dashes. Must contain 7-15 digits.
     if (form.phone && form.phone.trim()) {
-      const cleaned = form.phone.replace(/[^\d]/g, ""); // remove non-digits
+      const cleaned = form.phone.replace(/[^\d]/g, "");
       if (cleaned.length < 7 || cleaned.length > 15) {
         e.phone = "Please enter a valid phone number (7–15 digits).";
       } else if (!/^\+?[0-9\s\-()]+$/.test(form.phone)) {
@@ -53,8 +57,40 @@ function ContactPage() {
           "Phone may include only numbers, spaces, dashes and an optional +.";
       }
     }
-
     return e;
+  }
+
+  async function uploadAttachment(fileToUpload) {
+    // client-side size check
+    if (fileToUpload.size > MAX_FILE_MB * 1024 * 1024) {
+      return {
+        publicUrl: null,
+        error: `File is too large (max ${MAX_FILE_MB} MB).`,
+      };
+    }
+
+    try {
+      const fd = new FormData();
+      fd.append("file", fileToUpload);
+
+      const res = await fetch("/api/upload-attachment", {
+        method: "POST",
+        body: fd,
+      });
+
+      const json = await res.json();
+      if (!res.ok) {
+        return { publicUrl: null, error: json?.error || "Upload failed" };
+      }
+
+      return {
+        publicUrl: json.publicUrl || null,
+        error: null,
+        filename: json.filename || fileToUpload.name,
+      };
+    } catch (err) {
+      return { publicUrl: null, error: String(err) };
+    }
   }
 
   async function handleSubmit(e) {
@@ -63,34 +99,72 @@ function ContactPage() {
     const eobj = validate();
     if (Object.keys(eobj).length) {
       setErrors(eobj);
-      // focus first invalid field optionally
       return;
     }
+
+    // honeypot client check
+    if (form.website && form.website.trim() !== "") return;
 
     setSubmitting(true);
     setSuccess(false);
 
     try {
-      // TODO: Replace with your actual submit logic (Supabase, Email API, etc.)
-      // Example: send to /api/contact with FormData if file present.
-      await new Promise((r) => setTimeout(r, 900)); // emulate network delay
+      let attachment_url = null;
+      let attachment_name = null;
 
-      // Clear on success
-      setForm({
-        name: "",
-        email: "",
-        phone: "", // reset phone
-        topic: "Project Inquiry",
-        message: "",
+      if (file) {
+        const { publicUrl, error, filename } = await uploadAttachment(file);
+        if (error) {
+          console.error("Attachment upload error:", error);
+          setErrors({ form: `Attachment upload error: ${error}` });
+          setSubmitting(false);
+          return;
+        }
+        attachment_url = publicUrl;
+        attachment_name = filename || file.name;
+      }
+
+      const payload = {
+        name: form.name.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim(),
+        topic: form.topic,
+        message: form.message.trim(),
+        website: form.website || "",
+        attachment_url,
+        attachment_name,
+      };
+
+      const res = await fetch("/api/send-contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
-      setFile(null);
-      setSuccess(true);
+
+      const json = await res.json();
+
+      if (!res.ok) {
+        console.error("submit error", json);
+        setErrors({
+          form: json?.error || "Failed to send message. Please try again.",
+        });
+      } else {
+        setForm({
+          name: "",
+          email: "",
+          phone: "",
+          topic: "Project Inquiry",
+          message: "",
+          website: "",
+        });
+        setFile(null);
+        setSuccess(true);
+      }
     } catch (err) {
-      console.error("submit error", err);
-      // Optionally show a failure message
+      console.error("submit exception", err);
+      setErrors({ form: "Network error. Please try again." });
     } finally {
       setSubmitting(false);
-      // hide success after few seconds
       setTimeout(() => setSuccess(false), 4500);
     }
   }
@@ -174,7 +248,6 @@ function ContactPage() {
                   } text-main focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary`}
                   aria-invalid={!!errors.phone}
                 />
-
                 {errors.phone && (
                   <p className="text-xs text-red-400 mt-2">{errors.phone}</p>
                 )}
@@ -211,7 +284,7 @@ function ContactPage() {
                   errors.message ? "border-red-500" : "border-stroke"
                 } text-main focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary resize-none`}
                 aria-invalid={!!errors.message}
-              ></textarea>
+              />
               {errors.message && (
                 <p className="text-xs text-red-400 mt-2">{errors.message}</p>
               )}
@@ -225,7 +298,6 @@ function ContactPage() {
                 onChange={handleFileChange}
                 className="hidden"
               />
-
               <label htmlFor="attachment" className="ml-0">
                 <div className="icon-box px-3 py-2 rounded-xl bg-transparent text-main cursor-pointer inline-flex items-center gap-3">
                   <Paperclip color="#ffdb70" size={16} />
@@ -242,6 +314,24 @@ function ContactPage() {
                 </div>
               )}
             </div>
+
+            {/* hidden honeypot */}
+            <input
+              type="text"
+              name="website"
+              value={form.website}
+              onChange={(e) =>
+                setForm((s) => ({ ...s, website: e.target.value }))
+              }
+              style={{ display: "none" }}
+              autoComplete="off"
+              tabIndex={-1}
+            />
+
+            {/* server/form error */}
+            {errors.form && (
+              <p className="text-xs text-red-400 mt-3">{errors.form}</p>
+            )}
 
             <div className="mt-6 flex items-center gap-3">
               <button
@@ -269,9 +359,6 @@ function ContactPage() {
             </div>
           </form>
         </div>
-
-        {/* Info column (left-sidebar style) */}
-        {/* ...aside commented out... */}
       </div>
     </section>
   );
