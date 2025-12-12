@@ -1,4 +1,3 @@
-// pages/api/upload-attachment.js
 import formidable from "formidable";
 import fs from "fs";
 import { createClient } from "@supabase/supabase-js";
@@ -9,7 +8,7 @@ export const config = {
   },
 };
 
-const BUCKET = "portfolio"; // change if your bucket differs
+const BUCKET = "portfolio";
 const MAX_FILE_MB = 12;
 
 function parseForm(req) {

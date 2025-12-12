@@ -11,6 +11,8 @@ import ExperienceManager from "./experience-manager";
 import EducationManager from "./education-manager";
 import UserDataManagement from "./user-data-management";
 import { LogOut } from "lucide-react";
+import EmailsPage from "./emails/emails";
+import Image from "next/image";
 
 export default function AdminDashboard() {
   const [checking, setChecking] = useState(true);
@@ -86,6 +88,7 @@ export default function AdminDashboard() {
     { key: "experience", label: "experience", component: ExperienceManager },
     { key: "education", label: "education", component: EducationManager },
     { key: "userData", label: "userData", component: UserDataManagement },
+    { key: "Emails", label: "emails", component: EmailsPage },
   ];
 
   // find component to render
@@ -93,24 +96,23 @@ export default function AdminDashboard() {
     TABS.find((t) => t.key === activeTab)?.component || ProjectsManager;
 
   return (
-    <div>
+    <div className="">
       <ActivityTracker
         timeoutMs={24 * 60 * 60 * 1000}
         onLogout={handleLogout}
       />
 
-      <div className="flex justify-between items-start">
-        <div>
-          <h1 className="text-3xl text-main font-semibold">Admin</h1>
-          <div className="bg-primary w-10 h-[5px] rounded-full my-5"></div>
-        </div>
+      <div className="flex justify-between items-center bg-[#2b2b2d] px-10 py-3 sticky top-0 w-full z-10">
+        <h1 className="text-3xl text-main font-semibold">
+          <Image src="/seo-logo.svg" width={50} height={50} alt="logo" />
+        </h1>
 
         <button
           onClick={handleLogout}
           disabled={loggingOut}
           aria-busy={loggingOut}
           className={
-            "bg-red-500 text-main font-medium py-2 px-4 flex items-center gap-2 rounded-full " +
+            "bg-red-500 text-main font-medium p-2 flex items-center gap-2 rounded-md " +
             (loggingOut ? "opacity-70 cursor-not-allowed" : "")
           }
         >
@@ -137,38 +139,39 @@ export default function AdminDashboard() {
                   d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
                 ></path>
               </svg>
-              Logging out...
             </>
           ) : (
             <>
-              LogOut <LogOut size={18} />
+              <LogOut size={18} />
             </>
           )}
         </button>
       </div>
 
-      <div className="flex gap-6 -ml-3 mt-4">
+      <div className="flex gap-6 -ml-3 mt-4 px-10 relative">
         {/* Sidebar tabs */}
-        <div className="w-60 flex flex-col gap-4">
-          {TABS.map((tab) => {
-            const isActive = activeTab === tab.key;
+        <aside className="">
+          <div className="w-60 flex flex-col gap-4 sticky top-20 self-start ">
+            {TABS.map((tab) => {
+              const isActive = activeTab === tab.key;
 
-            return (
-              <button
-                key={tab.key}
-                onClick={() => setActiveTab(tab.key)}
-                className={
-                  "py-3 px-3 rounded-md text-start font-medium transition-all capitalize " +
-                  (isActive
-                    ? "bg-primary text-black shadow"
-                    : "bg-[#2b2b2d] text-subtle hover:bg-[#484849]")
-                }
-              >
-                {tab.label}
-              </button>
-            );
-          })}
-        </div>
+              return (
+                <button
+                  key={tab.key}
+                  onClick={() => setActiveTab(tab.key)}
+                  className={
+                    "py-3 px-3 rounded-md text-start font-medium transition-all capitalize " +
+                    (isActive
+                      ? "bg-primary text-black shadow"
+                      : "bg-[#2b2b2d] text-subtle hover:bg-[#484849]")
+                  }
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
+          </div>
+        </aside>
 
         {/* Main content area */}
         <div className="flex-1">

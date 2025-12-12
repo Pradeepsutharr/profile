@@ -40,7 +40,7 @@ export default function App({ Component, pageProps }) {
           // -----------------------------
           // ADMIN PAGES — NO LAYOUT
           // -----------------------------
-          <div className="container bg-[#1e1e1f] p-10 rounded-2xl">
+          <div className="mt-[-3rem]">
             <div className="">
               <Component {...pageProps} />
             </div>
