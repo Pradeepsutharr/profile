@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { supabase } from "../../lib/supabaseClient";
+import { supabase } from "../../../lib/supabaseClient";
 import { Trash2, Upload } from "lucide-react";
 import Image from "next/image";
 
 /* Use the bucket you already have in Supabase */
 const BUCKET = "portfolio";
 
-export default function UserDataManagement() {
+export default function UserData() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -50,26 +50,40 @@ export default function UserDataManagement() {
       const rows = data || [];
 
       // convert avatar_path -> avatar_url (signed) when needed
-      const processed = await Promise.all(
-        rows.map(async (u) => {
-          if (u.avatar_url) return u;
-          if (!u.avatar_path) return u;
-          try {
-            const { data: d, error: e } = await supabase.storage
-              .from(BUCKET)
-              .createSignedUrl(u.avatar_path, 60 * 60);
-            if (e) {
-              console.warn("createSignedUrl err for", u.id, e);
-              return { ...u, avatar_url: null };
-            }
-            const url = d?.signedUrl ?? d?.signedURL ?? null;
-            return { ...u, avatar_url: url };
-          } catch (err) {
-            console.warn("signed url err", err);
-            return { ...u, avatar_url: null };
-          }
-        })
-      );
+      // const processed = await Promise.all(
+      //   rows.map(async (u) => {
+      //     if (u.avatar_url) return u;
+      //     if (!u.avatar_path) return u;
+      //     try {
+      //       const { data: d, error: e } = await supabase.storage
+      //         .from(BUCKET)
+      //         .createSignedUrl(u.avatar_path, 60 * 60);
+      //       if (e) {
+      //         console.warn("createSignedUrl err for", u.id, e);
+      //         return { ...u, avatar_url: null };
+      //       }
+      //       const url = d?.signedUrl ?? d?.signedURL ?? null;
+      //       return { ...u, avatar_url: url };
+      //     } catch (err) {
+      //       console.warn("signed url err", err);
+      //       return { ...u, avatar_url: null };
+      //     }
+      //   })
+      // );
+
+      const processed = rows.map((u) => {
+        let avatar_url = u.avatar_url || null;
+
+        if (u.avatar_path) {
+          const { data } = supabase.storage
+            .from(BUCKET)
+            .getPublicUrl(u.avatar_path);
+
+          avatar_url = data?.publicUrl || null;
+        }
+
+        return { ...u, avatar_url };
+      });
 
       setUsers(processed);
     } catch (err) {
@@ -104,11 +118,16 @@ export default function UserDataManagement() {
         setUploadingAvatar(false);
         if (up.error) throw up.error;
         avatar_path = path;
-        const { data: signedData, error: signedErr } = await supabase.storage
-          .from(BUCKET)
-          .createSignedUrl(path, 60 * 60);
-        avatar_url =
-          !signedErr && signedData?.signedUrl ? signedData.signedUrl : null;
+        // const { data: signedData, error: signedErr } = await supabase.storage
+        //   .from(BUCKET)
+        //   .createSignedUrl(path, 60 * 60);
+        // avatar_url =
+        //   !signedErr && signedData?.signedUrl ? signedData.signedUrl : null;
+
+        const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
+
+        avatar_path = path;
+        avatar_url = data?.publicUrl || null;
       }
 
       // determine if this should be active: make first user active automatically
@@ -180,11 +199,16 @@ export default function UserDataManagement() {
         setUploadingAvatar(false);
         if (up.error) throw up.error;
         avatar_path = path;
-        const { data: signedData, error: signedErr } = await supabase.storage
-          .from(BUCKET)
-          .createSignedUrl(path, 60 * 60);
-        avatar_url =
-          !signedErr && signedData?.signedUrl ? signedData.signedUrl : null;
+        // const { data: signedData, error: signedErr } = await supabase.storage
+        //   .from(BUCKET)
+        //   .createSignedUrl(path, 60 * 60);
+        // avatar_url =
+        //   !signedErr && signedData?.signedUrl ? signedData.signedUrl : null;
+
+        const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
+
+        avatar_path = path;
+        avatar_url = data?.publicUrl || null;
       } else if (form.avatarUrl && form.avatarUrl !== editing.avatar_url) {
         avatar_url = form.avatarUrl;
       }
@@ -341,14 +365,20 @@ export default function UserDataManagement() {
               <div className="flex items-center gap-3">
                 <div className="w-16 h-16 rounded-md overflow-hidden bg-[#0f0f10] flex items-center justify-center">
                   {u.avatar_url ? (
-                    <Image
+                    <img
                       src={u.avatar_url}
                       alt={u.name || "avatar"}
-                      width={40}
-                      height={40}
                       className="w-full h-full object-cover"
+                      referrerPolicy="no-referrer"
                     />
                   ) : (
+                    // <Image
+                    //   src={u.avatar_url}
+                    //   alt={u.name || "avatar"}
+                    //   width={40}
+                    //   height={40}
+                    //   className="w-full h-full object-cover"
+                    // />
                     <div className="text-subtle">
                       {(u.name || "U").charAt(0)}
                     </div>
@@ -373,7 +403,7 @@ export default function UserDataManagement() {
                     {(u.roles || []).slice(0, 5).map((r) => (
                       <span
                         key={r}
-                        className="text-xs px-2 py-0.5 rounded bg-zinc-800 border border-stroke"
+                        className="text-xs text-primary px-2 py-0.5 rounded bg-zinc-800 border border-stroke"
                       >
                         {r}
                       </span>

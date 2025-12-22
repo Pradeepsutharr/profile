@@ -18,45 +18,41 @@ export default function App({ Component, pageProps }) {
   // check if this is an admin route
   const isAdminRoute = router.pathname.startsWith("/admin");
 
+  const getLayout = Component.getLayout || ((page) => page);
+
   return (
     <>
       <Script
         async
         src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-      ></Script>
+      />
 
       <Script strategy="lazyOnload">
         {`
-          // Google Analytics
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', '${GA_ID}');
-        `}
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '${GA_ID}');
+      `}
       </Script>
 
-      <div className={font.className}>
+      <div className={`${font.className}`}>
         {isAdminRoute ? (
-          // -----------------------------
-          // ADMIN PAGES — NO LAYOUT
-          // -----------------------------
+          // ADMIN ROUTES → layout decided by page
           <div className="mt-[-3rem]">
-            <div className="">
-              <Component {...pageProps} />
-            </div>
+            {getLayout(<Component {...pageProps} />)}
           </div>
         ) : (
-          // -----------------------------
-          // NORMAL PUBLIC LAYOUT
-          // -----------------------------
-          <div className="layout ">
-            <div className="container ">
-              <div className="flex flex-wrap ">
+          // PUBLIC ROUTES → same as before
+          <div className="layout">
+            <div className="container">
+              <div className="flex flex-wrap">
                 <aside className="side-bar col-12 lg:col-3">
                   <SideBar />
                 </aside>
-                <div className="main-content col-12 lg:col-9 ">
-                  <div className="bg-[#1e1e1f] border border-stroke rounded-2xl lg:rounded-3xl overflow-hidden lg:relative lg:px-6 lg:py-10 px-4 py-4 mb-20 md:mb-18 lg:mb-0 transition-all duration-transition-all duration-700">
+
+                <div className="main-content col-12 lg:col-9">
+                  <div className="bg-[#1e1e1f] border border-stroke rounded-2xl lg:rounded-3xl overflow-hidden lg:relative lg:px-6 lg:py-10 px-4 py-4 mb-20">
                     <div className="navbar hidden lg:flex absolute right-0 top-0">
                       <Navbar />
                     </div>

@@ -180,10 +180,10 @@ function ContactPage() {
       <div className="bg-primary w-10 h-[5px] rounded-full my-5"></div>
       <div className="flex items-start gap-8">
         <div className="flex-1">
-          <h1 className="text-subtle leading-loose">
+          <h1 className="text-subtle leading-loose mb-10 ">
             Have a project or just want to say hi? I typically reply within{" "}
-            <strong>12-24 hours</strong>. Share a short brief and I’ll get back
-            with next steps.
+            <strong>12-24 hours</strong>. <br></br> Share a short brief and I’ll
+            get back with next steps.
           </h1>
 
           <form onSubmit={handleSubmit} className="mt-6">
