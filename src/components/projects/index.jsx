@@ -37,7 +37,7 @@ function ProjectsComponent() {
       setFiltered(projects);
     } else {
       const filteredList = projects.filter(
-        (p) => p.category?.toLowerCase() === category.toLowerCase()
+        (p) => p.category?.toLowerCase() === category.toLowerCase(),
       );
       setFiltered(filteredList);
     }
@@ -64,7 +64,7 @@ function ProjectsComponent() {
       </div>
 
       {/* PROJECT CARDS */}
-      <div className="flex flex-wrap items-center justify-between mt-6 m-[-.75rem]">
+      <div className="flex flex-wrap items-center justify-center mt-6 m-[-.75rem]">
         {loading && <p>Loading...</p>}
 
         {!loading &&

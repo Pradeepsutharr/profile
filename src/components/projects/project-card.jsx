@@ -29,7 +29,7 @@ function ProjectCard({ image, title, category, slug }) {
           <Eye color="#ffdb70" size={20} />
         </div>
       </div>
-      <h2 className="text-main text-base font-medium mt-3 capitalize">
+      <h2 className="text-main text-base font-medium mt-3 capitalize line-clamp-1">
         {title}
       </h2>
       <span className="text-subtle font-light capitalize">{category}</span>

@@ -37,6 +37,7 @@ function Navbar() {
         break;
 
       case "/portfolio":
+      case "/portfolio/[slug]":
         setIsActive("/portfolio");
         break;
 
