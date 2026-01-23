@@ -6,7 +6,7 @@ import SEOConfig from "@/common/seo.config";
 export default function Home() {
   return (
     <>
-      <SEO {...SEOConfig.home} />
+      <SEO {...SEOConfig.home} isHome />
       <About />
     </>
   );

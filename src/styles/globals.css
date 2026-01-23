@@ -215,3 +215,15 @@ body {
 .swiper-pagination-bullet-active {
   background: #f5c76a !important;
 }
+
+.swiper-slide-project {
+  height: 19.6875rem;
+  max-width: 35rem;
+}
+
+.swiper-slide {
+  opacity: 0.5;
+}
+.swiper-slide-active {
+  opacity: 1;
+}

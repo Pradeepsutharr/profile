@@ -210,8 +210,9 @@ function ProjectDetailsComponent({ projectData }) {
 
               {projectDetails?.project_images?.length > 0 && (
                 <Swiper
-                  slidesPerView={2}
+                  slidesPerView="auto"
                   spaceBetween={24}
+                  centeredSlides
                   loop
                   grabCursor={true}
                   onBeforeInit={(swiper) => {
@@ -221,20 +222,20 @@ function ProjectDetailsComponent({ projectData }) {
                     prevEl: ".custom-prev",
                     nextEl: ".custom-next",
                   }}
-                  breakpoints={{
-                    320: {
-                      slidesPerView: 1,
-                    },
-                    640: {
-                      slidesPerView: 1,
-                    },
-                    768: {
-                      slidesPerView: 2,
-                    },
-                    1024: {
-                      slidesPerView: 2,
-                    },
-                  }}
+                  // breakpoints={{
+                  //   320: {
+                  //     slidesPerView: 1,
+                  //   },
+                  //   640: {
+                  //     slidesPerView: 1,
+                  //   },
+                  //   768: {
+                  //     slidesPerView: 2,
+                  //   },
+                  //   1024: {
+                  //     slidesPerView: 2,
+                  //   },
+                  // }}
                   pagination={{
                     el: paginationEl,
                     clickable: true,
@@ -246,7 +247,10 @@ function ProjectDetailsComponent({ projectData }) {
                   className="project-slider"
                 >
                   {projectDetails.project_images.map((img, index) => (
-                    <SwiperSlide key={index} className="project-slide">
+                    <SwiperSlide
+                      key={index}
+                      className="project-slide swiper-slide-project"
+                    >
                       <Image
                         src={img}
                         alt={`${projectDetails.title} preview ${index + 1}`}
