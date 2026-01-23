@@ -111,7 +111,7 @@ export default function SideBar() {
       <div className="bg-[#383838] w-full min-h-[1px] my-8"></div>
 
       <div className="w-full flex flex-col gap-y-8 px-1">
-        <div className="flex items-center gap-4 ">
+        <div className="flex items-center gap-4 " data-nosnippet>
           <div className="w-1/4 icon-box bg-[#202022] text-primary max-w-[48px] max-h-[48px] min-w-[48px] min-h-[48px] flex items-center justify-center rounded-lg ">
             <Mail size={20} />
           </div>
@@ -125,7 +125,7 @@ export default function SideBar() {
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4" data-nosnippet>
           <div className="w-1/4 icon-box bg-[#202022] text-primary max-w-[48px] max-h-[48px] min-w-[48px] min-h-[48px] flex items-center justify-center rounded-lg ">
             <PhoneCall size={20} />
           </div>
@@ -139,7 +139,7 @@ export default function SideBar() {
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 data-nosnippet">
           <div className="w-1/4 icon-box bg-[#202022] text-primary max-w-[48px] max-h-[48px] min-w-[48px] min-h-[48px] flex items-center justify-center rounded-lg ">
             <Map size={20} />
           </div>
@@ -166,7 +166,10 @@ export default function SideBar() {
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-2">
+        <div
+          className="flex flex-wrap items-center justify-between gap-2"
+          data-nosnippet
+        >
           {socials?.github && (
             <Link
               href={socials.github}

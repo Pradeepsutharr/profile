@@ -90,7 +90,7 @@ export default function AdminLogin() {
   };
 
   return (
-    <section className="py-12 lg:py-16 grid place-items-center">
+    <section className="py-12 lg:py-16 grid place-items-center h-[100vh]">
       <form
         onSubmit={handleSignIn}
         className="gredient-jet p-8 rounded-xl border border-stroke flex flex-col gap-y-5 w-full max-w-[450px]"
@@ -101,7 +101,7 @@ export default function AdminLogin() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
-            className={`py-2 text-main w-full px-3 rounded-lg bg-transparent border ${
+            className={`py-3 text-main w-full px-3 rounded-lg bg-transparent border ${
               errors.email ? "border-red-500" : "border-stroke"
             } bg-[#323335] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary`}
           />
@@ -117,7 +117,7 @@ export default function AdminLogin() {
             value={pw}
             onChange={(e) => setPw(e.target.value)}
             placeholder="Password"
-            className={`py-2 text-main w-full px-3 rounded-lg bg-transparent border ${
+            className={`py-3 text-main w-full px-3 rounded-lg bg-transparent border ${
               errors.pw ? "border-red-500" : "border-stroke"
             } bg-[#323335] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary`}
           />
@@ -138,7 +138,7 @@ export default function AdminLogin() {
         <button
           type="submit"
           disabled={loading}
-          className="block bg-primary py-2 rounded-full mt-8 disabled:opacity-60 disabled:cursor-not-allowed"
+          className="block bg-primary py-3 rounded-full mt-8 disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {loading ? "Signing..." : "Sign in"}
         </button>
