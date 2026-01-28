@@ -14,21 +14,25 @@ export const user_data = {
       title: "Front-end developer",
     },
   ],
+
+  MainTitle:
+    "UI Designer, UX Researcher & Frontend Developer Building User-Centered Digital Products",
+
   summary: [
     {
       id: 1,
       description:
-        "I design and build high-performance digital experiences through a blend of UI/UX design, front-end engineering, and modern React/Next.js development. With 3+ years of experience, I specialize in creating clean, accessible, and conversion-focused interfaces that strengthen brand identity and improve user engagement.",
+        "I’m a UI Designer, UX Researcher, Product Designer, and Frontend Developer helping startups and businesses design and build high-impact digital products. I combine user research, interface design, product thinking, and modern frontend development to create experiences that users love and products that scale.",
     },
     {
       id: 2,
       description:
-        "As a Product Designer & Front-End Developer, I focus on turning ideas into polished digital products combining usability, visual craftsmanship, and scalable front-end architecture. My work helps startups, businesses, and creators deliver fast, intuitive, and visually striking experiences that users trust.",
+        "From validating ideas through UX research to crafting pixel-perfect UI designs and building production-ready interfaces using React and Next.js, I deliver complete product solutions — not just screens.",
     },
-    {
-      id: 3,
-      description:
-        "Whether it’s designing a user flow, crafting a pixel-perfect UI, or developing a responsive interface, I ensure every detail aligns with both user needs and business goals.",
-    },
+    // {
+    //   id: 3,
+    //   description:
+    //     "Whether it’s designing a user flow, crafting a pixel-perfect UI, or developing a responsive interface, I ensure every detail aligns with both user needs and business goals.",
+    // },
   ],
 };
