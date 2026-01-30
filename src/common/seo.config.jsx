@@ -84,6 +84,63 @@ const SEOConfig = {
     canonical: `${SITE.siteUrl}/contact`,
   },
 
+  uiDesign: {
+    pageTitle: "UI Designer for Modern Web & SaaS Products | Pradeep",
+    pageDescription:
+      "Professional UI design services for startups and digital products. I create clean, responsive, and conversion-focused interfaces that improve usability and engagement.",
+    keywords:
+      "UI Designer, UI Design Services, Web UI Design, SaaS UI Designer, Interface Designer, Responsive UI Design, Startup UI Designer",
+    ogTitle: "UI Design Services | Modern Interfaces for Web & SaaS Products",
+    ogImage: SITE.defaultOgImage,
+    ogUrl: `${SITE.siteUrl}/services/ui-design`,
+    ogType: "website",
+    locale: SITE.locale,
+    canonical: `${SITE.siteUrl}/services/ui-design`,
+  },
+
+  productDesign: {
+    pageTitle: "Product Designer for Startups & SaaS | Pradeep",
+    pageDescription:
+      "Product design services for startups and SaaS. From UX strategy to UI design and MVP creation, I help founders turn ideas into scalable digital products.",
+    keywords:
+      "Product Designer, Product Design Services, SaaS Product Designer, MVP Design, Startup Product Designer, Digital Product Design",
+    ogTitle: "Product Design Services | From Idea to Scalable Digital Product",
+    ogImage: SITE.defaultOgImage,
+    ogUrl: `${SITE.siteUrl}/services/product-design`,
+    ogType: "website",
+    locale: SITE.locale,
+    canonical: `${SITE.siteUrl}/services/product-design`,
+  },
+
+  uxResearch: {
+    pageTitle: "UX Research Services for User-Centered Products | Pradeep",
+    pageDescription:
+      "UX research services including user interviews, usability testing, and journey mapping to help teams build products backed by real user insights.",
+    keywords:
+      "UX Researcher, UX Research Services, User Research, Usability Testing, User Experience Research, UX Strategy",
+    ogTitle: "UX Research Services | Build Products Users Actually Want",
+    ogImage: SITE.defaultOgImage,
+    ogUrl: `${SITE.siteUrl}/services/ux-research`,
+    ogType: "website",
+    locale: SITE.locale,
+    canonical: `${SITE.siteUrl}/services/ux-research`,
+  },
+
+  frontendDevelopment: {
+    pageTitle: "Frontend Developer (React & Next.js) | Pradeep",
+    pageDescription:
+      "Frontend development using React and Next.js. I build fast, SEO-friendly, and scalable web applications with modern architecture and performance optimization.",
+    keywords:
+      "Frontend Developer, React Developer, Next.js Developer, Frontend Development Services, Web App Development, JavaScript Developer",
+    ogTitle:
+      "Frontend Development with React & Next.js | High-Performance Web Apps",
+    ogImage: SITE.defaultOgImage,
+    ogUrl: `${SITE.siteUrl}/services/frontend-development`,
+    ogType: "website",
+    locale: SITE.locale,
+    canonical: `${SITE.siteUrl}/services/frontend-development`,
+  },
+
   //  caseStudies: {
   //   pageTitle: "Case Studies | Product Design & Frontend Engineering",
   //   pageDescription:

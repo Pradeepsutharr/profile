@@ -1,4 +1,3 @@
-// import ServiceLayout from "@/components/service-layout/ServiceLayout";
 import SEO from "@/common/seo";
 import SEOConfig from "@/common/seo.config";
 import Link from "next/link";
@@ -6,42 +5,55 @@ import Link from "next/link";
 const services = [
   {
     id: 1,
-    title: "Web application UI",
+    title: "Product discovery and UX strategy",
   },
   {
     id: 2,
-    title: "Landing pages",
+    title: "Wireframing and user flows",
   },
   {
     id: 3,
-    title: "Design systems",
+    title: "UI design",
   },
   {
     id: 4,
-    title: "High-fidelity mockups",
+    title: "Design systems",
+  },
+  {
+    id: 5,
+    title: "MVP design",
+  },
+  {
+    id: 6,
+    title: "Handoff-ready assets for development",
   },
 ];
 
-export default function UIDesign() {
+export default function ProductDesign() {
   return (
     <>
-      <SEO {...SEOConfig.uiDesign} />
+      <SEO {...SEOConfig.productDesign} />
+
       <section>
         <span className="text-2xl md:text-3xl text-main font-semibold">
-          UI Design
+          Product Design
         </span>
 
         <div className="bg-primary w-10 h-[5px] rounded-full my-5" />
 
         <h1 className="text-primary text-xl md:text-3xl font-semibold leading-relaxed">
-          UI Designer for Modern Web & SaaS Products
+          Product Design for Startups and SaaS
         </h1>
 
         <p className="text-subtle mt-2">
-          I design clean, intuitive, and conversion-focused user interfaces for
-          web applications and digital products. My UI design process focuses on
-          clarity, usability, and visual consistency — ensuring every screen
-          feels purposeful and easy to use.
+          I help founders turn ideas into complete digital products. My product
+          design process covers everything from early concept validation to
+          polished UI and implementation-ready designs.
+        </p>
+        <p className="text-subtle mt-2">
+          I focus on building products that solve real problems, combining UX
+          strategy, interface design, and frontend thinking to deliver scalable
+          solutions.
         </p>
 
         <div className="mt-8">
@@ -65,29 +77,29 @@ export default function UIDesign() {
 
         <div className="mt-8">
           <h2 className="text-main text-xl font-semibold mb-2">
-            My UI Design Approach
+            My Product Design Process
           </h2>
 
           <p className="text-subtle">
-            I start by understanding your product goals and users, then
-            translate insights into structured layouts, typography systems, and
-            consistent visual components. Every design decision is made to
-            improve engagement and reduce friction.
+            I work closely with stakeholders to define product goals, map user
+            journeys, and design experiences that align with business
+            objectives. Whether you’re building an MVP or improving an existing
+            product, I ensure every feature has purpose.
           </p>
           <p className="text-subtle mt-2">
-            <strong>Best for:</strong> Startups, SaaS products, MVPs, and
-            growing businesses.
+            <strong>Best for:</strong> startups, SaaS platforms, and early-stage
+            products.
           </p>
         </div>
 
         <p className="mt-8 text-sm text-main">
           Related services:{" "}
-          <Link href="/services/ux-research" className="text-primary">
-            UX Research
+          <Link href="/services/ui-design" className="text-primary">
+            Ui-Design
           </Link>
           ,{" "}
-          <Link href="/services/product-design" className="text-primary">
-            Product Design
+          <Link href="/services/frontend-development" className="text-primary">
+            Front-end Development
           </Link>
         </p>
       </section>

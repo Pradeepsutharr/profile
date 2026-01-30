@@ -1,4 +1,3 @@
-// import ServiceLayout from "@/components/service-layout/ServiceLayout";
 import SEO from "@/common/seo";
 import SEOConfig from "@/common/seo.config";
 import Link from "next/link";
@@ -6,42 +5,53 @@ import Link from "next/link";
 const services = [
   {
     id: 1,
-    title: "Web application UI",
+    title: "React.js development",
   },
   {
     id: 2,
-    title: "Landing pages",
+    title: "Next.js applications",
   },
   {
     id: 3,
-    title: "Design systems",
+    title: "Responsive layouts",
   },
   {
     id: 4,
-    title: "High-fidelity mockups",
+    title: "Component-based architecture",
+  },
+  {
+    id: 5,
+    title: "Performance optimization",
+  },
+  {
+    id: 6,
+    title: "SEO-friendly implementation",
   },
 ];
 
-export default function UIDesign() {
+export default function FrontendDevelopment() {
   return (
     <>
-      <SEO {...SEOConfig.uiDesign} />
+      <SEO {...SEOConfig.frontendDevelopment} />
       <section>
         <span className="text-2xl md:text-3xl text-main font-semibold">
-          UI Design
+          Frontend Development
         </span>
 
         <div className="bg-primary w-10 h-[5px] rounded-full my-5" />
 
         <h1 className="text-primary text-xl md:text-3xl font-semibold leading-relaxed">
-          UI Designer for Modern Web & SaaS Products
+          Frontend Development Using React & Next.js
         </h1>
 
         <p className="text-subtle mt-2">
-          I design clean, intuitive, and conversion-focused user interfaces for
-          web applications and digital products. My UI design process focuses on
-          clarity, usability, and visual consistency — ensuring every screen
-          feels purposeful and easy to use.
+          I build fast, scalable, and SEO-friendly frontend applications using
+          React and Next.js. My frontend development focuses on clean
+          architecture, responsive layouts, and performance optimization.
+        </p>
+        <p className="text-subtle mt-2">
+          I convert designs into production-ready interfaces that load quickly
+          and work seamlessly across devices.
         </p>
 
         <div className="mt-8">
@@ -65,25 +75,24 @@ export default function UIDesign() {
 
         <div className="mt-8">
           <h2 className="text-main text-xl font-semibold mb-2">
-            My UI Design Approach
+            My Frontend Development Approach
           </h2>
 
           <p className="text-subtle">
-            I start by understanding your product goals and users, then
-            translate insights into structured layouts, typography systems, and
-            consistent visual components. Every design decision is made to
-            improve engagement and reduce friction.
+            I follow modern frontend best practices to ensure maintainable code,
+            smooth user experiences, and strong Core Web Vitals. Every build is
+            optimized for speed, accessibility, and long-term scalability.
           </p>
           <p className="text-subtle mt-2">
-            <strong>Best for:</strong> Startups, SaaS products, MVPs, and
-            growing businesses.
+            <strong>Best for:</strong> web apps, SaaS platforms, MVPs, and
+            marketing websites.
           </p>
         </div>
 
         <p className="mt-8 text-sm text-main">
           Related services:{" "}
-          <Link href="/services/ux-research" className="text-primary">
-            UX Research
+          <Link href="/services/ui-design" className="text-primary">
+            Ui-Design
           </Link>
           ,{" "}
           <Link href="/services/product-design" className="text-primary">

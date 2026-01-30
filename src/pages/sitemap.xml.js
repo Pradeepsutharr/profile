@@ -21,14 +21,14 @@ export async function getServerSideProps({ res }) {
 <url>
   <loc>https://pradeep-suthar.vercel.app/portfolio/${p.slug}</loc>
   <lastmod>${new Date(p.updated_at).toISOString()}</lastmod>
-</url>`
+</url>`,
     )
     .join("");
 
   res.setHeader("Content-Type", "application/xml");
   res.setHeader(
     "Cache-Control",
-    "public, s-maxage=3600, stale-while-revalidate=86400"
+    "public, s-maxage=3600, stale-while-revalidate=86400",
   );
   res.write(`<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -53,6 +53,34 @@ export async function getServerSideProps({ res }) {
 </url>
 <url>
 <loc>https://pradeep-suthar.vercel.app/resume</loc>
+<lastmod>2025-12-04T09:34:46.082Z</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.7</priority>
+</url>
+
+<url>
+<loc>https://pradeep-suthar.vercel.app/services/ui-design</loc>
+<lastmod>2025-12-04T09:34:46.081Z</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.7</priority>
+</url>
+
+<url>
+<loc>https://pradeep-suthar.vercel.app/services/ux-research</loc>
+<lastmod>2025-12-04T09:34:46.082Z</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.7</priority>
+</url>
+
+<url>
+<loc>https://pradeep-suthar.vercel.app/services/frontend-development</loc>
+<lastmod>2025-12-04T09:34:46.082Z</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.7</priority>
+</url>
+
+<url>
+<loc>https://pradeep-suthar.vercel.app/services/product-design</loc>
 <lastmod>2025-12-04T09:34:46.082Z</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.7</priority>
