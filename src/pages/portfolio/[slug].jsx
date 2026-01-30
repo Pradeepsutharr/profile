@@ -2,8 +2,9 @@ import React from "react";
 import { supabase } from "@/lib/supabaseClient";
 import dynamic from "next/dynamic";
 
-const ProjectDetailsComponent = dynamic(() =>
-  import("../../components/project-details")
+const ProjectDetailsComponent = dynamic(
+  () => import("../../components/project-details"),
+  { ssr: true },
 );
 
 function ProjectDetails({ project }) {
@@ -13,9 +14,9 @@ function ProjectDetails({ project }) {
 export default ProjectDetails;
 
 export async function getServerSideProps({ params }) {
-  console.log("SSR RUNNING with slug:", params.slug);
+  // console.log("SSR RUNNING with slug:", params.slug);
   const { slug } = params;
-  console.log("getServerSideProps hit for slug:", slug);
+  // console.log("getServerSideProps hit for slug:", slug);
 
   try {
     const { data, error } = await supabase
@@ -24,8 +25,8 @@ export async function getServerSideProps({ params }) {
       .eq("slug", slug)
       .single();
 
-    console.log("supabase data:", data);
-    console.log("supabase error:", error);
+    // console.log("supabase data:", data);
+    // console.log("supabase error:", error);
 
     if (error) {
       console.error("Supabase error fetching project by slug:", error);

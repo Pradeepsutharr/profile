@@ -2,14 +2,18 @@ import Image from "next/image";
 import React from "react";
 import Link from "next/link";
 import { Eye } from "lucide-react";
+import { useRouter } from "next/router";
 
 function ProjectCard({ image, title, category, slug }) {
+  const router = useRouter();
+
   return (
     <Link
       href={{
         pathname: "/portfolio/[slug]",
         query: { slug },
       }}
+      onMouseEnter={() => router.prefetch(`/portfolio/${slug}`)}
       className="project-card"
     >
       <div className="project-image relative rounded-lg overflow-hidden group">
