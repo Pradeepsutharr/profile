@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import Image from "next/image";
+import Link from "next/link";
 import ServicesSkeleton from "./service-skeleton";
 
 function Services() {
@@ -30,7 +31,11 @@ function Services() {
     <section>
       <div className="flex flex-wrap items-center justify-between m-[-.75rem]">
         {services?.map((service) => (
-          <div key={service.id} className="col-12 md:col-6 ">
+          <Link
+            href={`/services/${service.slug}`}
+            key={service.id}
+            className="col-12 md:col-6 "
+          >
             <div className="icon-box service-card flex flex-wrap items-center justify-between rounded-xl px-5 py-4 min-h-[164px]">
               <div className="col-12 md:col-3 lg:col-2 ">
                 <Image
@@ -49,7 +54,7 @@ function Services() {
                 </p>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
       <p className="text-subtle text-[15px] mt-10 leading-relaxed">

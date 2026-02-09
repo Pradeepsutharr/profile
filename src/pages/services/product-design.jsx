@@ -2,31 +2,39 @@ import SEO from "@/common/seo";
 import SEOConfig from "@/common/seo.config";
 import Link from "next/link";
 
-const services = [
+const deliverables = [
   {
-    id: 1,
-    title: "Product discovery and UX strategy",
+    title: "Product Discovery and UX Strategy",
+    desc: "Defining product goals, identifying user needs, and shaping a clear product direction.",
   },
   {
-    id: 2,
-    title: "Wireframing and user flows",
+    title: "Wireframing and User Flows",
+    desc: "Structuring information architecture and mapping user journeys for intuitive navigation.",
   },
   {
-    id: 3,
-    title: "UI design",
+    title: "UI Design",
+    desc: "Designing clean, scalable, and user-friendly interfaces aligned with product goals.",
   },
   {
-    id: 4,
-    title: "Design systems",
+    title: "Design Systems",
+    desc: "Creating reusable components and visual systems for long-term product consistency.",
   },
   {
-    id: 5,
-    title: "MVP design",
+    title: "MVP Design",
+    desc: "Designing lean, testable product versions that validate ideas quickly.",
   },
   {
-    id: 6,
-    title: "Handoff-ready assets for development",
+    title: "Handoff-Ready Assets",
+    desc: "Developer-ready design files with clear specifications and interaction states.",
   },
+];
+
+const processPoints = [
+  "Define business goals and success metrics",
+  "Understand user behavior and context",
+  "Map journeys and prioritize features",
+  "Design scalable interface systems",
+  "Validate concepts before development",
 ];
 
 export default function ProductDesign() {
@@ -34,74 +42,108 @@ export default function ProductDesign() {
     <>
       <SEO {...SEOConfig.productDesign} />
 
-      <section>
+      <section className="max-w-4xl">
+        {/* Header */}
         <span className="text-2xl md:text-3xl text-main font-semibold">
-          Product Design
+          Product Design Services
         </span>
 
-        <div className="bg-primary w-10 h-[5px] rounded-full my-5" />
+        <div className="bg-primary w-12 h-[5px] rounded-full my-5" />
 
         <h1 className="text-primary text-xl md:text-3xl font-semibold leading-relaxed">
-          Product Design for Startups and SaaS
+          Product Design for Startups and SaaS Platforms
         </h1>
 
-        <p className="text-subtle mt-2">
-          I help founders turn ideas into complete digital products. My product
-          design process covers everything from early concept validation to
-          polished UI and implementation-ready designs.
-        </p>
-        <p className="text-subtle mt-2">
-          I focus on building products that solve real problems, combining UX
-          strategy, interface design, and frontend thinking to deliver scalable
-          solutions.
+        <p className="text-subtle mt-4 leading-relaxed">
+          I help founders and product teams turn ideas into structured, usable,
+          and scalable digital products. My product design approach spans from
+          early concept validation to polished user interfaces and
+          implementation-ready design systems.
         </p>
 
-        <div className="mt-8">
+        <p className="text-subtle mt-3 leading-relaxed">
+          By combining UX strategy, interface design, and frontend awareness, I
+          focus on building products that solve real user problems while
+          aligning with business objectives.
+        </p>
+
+        {/* Deliverables */}
+        <div className="mt-10">
           <h2 className="text-main text-xl font-semibold mb-6">
             What I Deliver
           </h2>
 
-          <div className="flex items-start justify-center flex-wrap m-[-.75rem]">
-            {services?.map((item, index) => (
-              <div key={item.id} className="col-12 md:col-6">
-                <div className="flex items-center gap-3 icon-box service-card rounded-lg p-6">
-                  <div className="count text-primary text-xl font-medium">
-                    0{index + 1}
+          <div className="flex flex-wrap m-[-.75rem]">
+            {deliverables.map((item, index) => (
+              <div key={index} className="col-12 md:col-6">
+                <div className="service-card icon-box rounded-lg p-6 h-full">
+                  <div className="text-primary font-semibold mb-2">
+                    0{index + 1} {item.title}
                   </div>
-                  <p className="text-subtle">{item.title}</p>
+                  <p className="text-subtle">{item.desc}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="mt-8">
-          <h2 className="text-main text-xl font-semibold mb-2">
+        {/* Process */}
+        <div className="mt-10">
+          <h2 className="text-main text-xl font-semibold mb-3">
             My Product Design Process
           </h2>
 
           <p className="text-subtle">
-            I work closely with stakeholders to define product goals, map user
-            journeys, and design experiences that align with business
-            objectives. Whether you’re building an MVP or improving an existing
-            product, I ensure every feature has purpose.
+            I collaborate closely with stakeholders to define product vision,
+            map user journeys, and design experiences that deliver measurable
+            value. Each stage is structured to reduce risk and ensure that every
+            feature has a clear purpose.
           </p>
-          <p className="text-subtle mt-2">
-            <strong>Best for:</strong> startups, SaaS platforms, and early-stage
-            products.
+
+          <ul className="mt-4 list-disc ml-5 space-y-2 text-subtle">
+            {processPoints.map((item, i) => (
+              <li key={i}>{item}</li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Best Fit */}
+        <div className="mt-12 rounded-lg bg-soft">
+          <h2 className="text-main font-semibold mb-2">Best Fit For</h2>
+
+          <p className="text-subtle">
+            Early-stage startups, SaaS platforms, founders validating new ideas,
+            and teams looking to improve existing digital products.
           </p>
         </div>
 
-        <p className="mt-8 text-sm text-main">
+        {/* Collaboration */}
+        <div className="mt-10">
+          <h2 className="text-main text-xl font-semibold mb-2">
+            Product Design with Implementation in Mind
+          </h2>
+
+          <p className="text-subtle">
+            With hands-on frontend development experience in React and Next.js,
+            I design products that are technically feasible and ready for
+            efficient implementation, reducing design-to-development gaps.
+          </p>
+        </div>
+
+        {/* Related */}
+        <div className="mt-8 text-sm text-main">
           Related services:{" "}
-          <Link href="/services/ui-design" className="text-primary">
-            Ui-Design
+          <Link href="/services/ui-design" className="text-primary underline">
+            UI Design
           </Link>
           ,{" "}
-          <Link href="/services/frontend-development" className="text-primary">
-            Front-end Development
+          <Link
+            href="/services/frontend-development"
+            className="text-primary underline"
+          >
+            Frontend Development
           </Link>
-        </p>
+        </div>
       </section>
     </>
   );

@@ -79,7 +79,7 @@ export default function Services() {
         supabase
           .from("services")
           .update({ order: idx + 1 })
-          .eq("id", svc.id)
+          .eq("id", svc.id),
       );
 
       const results = await Promise.all(ops);
@@ -111,7 +111,7 @@ export default function Services() {
         setIconUploading(true);
         const path = `services/icon_${Date.now()}_${form.iconFile.name.replace(
           /\s/g,
-          "_"
+          "_",
         )}`;
         const up = await uploadFileToBucket({
           bucket: "portfolio",
@@ -126,7 +126,7 @@ export default function Services() {
       // determine order: max(order) + 1
       const maxOrder = services.reduce(
         (m, s) => (typeof s.order === "number" && s.order > m ? s.order : m),
-        0
+        0,
       );
       const assignedOrder =
         typeof form.order === "number" && form.order > 0
@@ -135,6 +135,7 @@ export default function Services() {
 
       const payload = {
         title: form.title.trim(),
+        slug: form.slug?.trim(),
         description: form.description || null,
         icon: iconUrl || null,
         order: assignedOrder,
@@ -171,14 +172,14 @@ export default function Services() {
           if (parts) {
             const [bucket, ...rest] = parts.split("/");
             await deleteFileFromBucket({ bucket, path: rest.join("/") }).catch(
-              (e) => console.warn("prev-icon-delete err", e)
+              (e) => console.warn("prev-icon-delete err", e),
             );
           }
         }
         setIconUploading(true);
         const path = `services/icon_${Date.now()}_${form.iconFile.name.replace(
           /\s/g,
-          "_"
+          "_",
         )}`;
         const up = await uploadFileToBucket({
           bucket: "portfolio",
@@ -199,12 +200,13 @@ export default function Services() {
 
       const payload = {
         title: form.title.trim(),
+        slug: form.slug?.trim(),
         description: form.description || null,
         icon: iconUrl || null,
         order:
           typeof form.order === "number" && !Number.isNaN(form.order)
             ? form.order
-            : editing.order ?? 0,
+            : (editing.order ?? 0),
       };
 
       const res = await supabase
@@ -218,7 +220,7 @@ export default function Services() {
       }
       if (!res.data || (Array.isArray(res.data) && res.data.length === 0)) {
         throw new Error(
-          "Update returned no rows. Check permissions / matching id."
+          "Update returned no rows. Check permissions / matching id.",
         );
       }
       closeModal();
@@ -242,7 +244,7 @@ export default function Services() {
         if (parts) {
           const [bucket, ...rest] = parts.split("/");
           await deleteFileFromBucket({ bucket, path: rest.join("/") }).catch(
-            (e) => console.warn("icon delete err", e)
+            (e) => console.warn("icon delete err", e),
           );
         }
       }
@@ -371,8 +373,8 @@ export default function Services() {
                 onDrop={(e) => onDrop(e, s, idx)}
                 className={`border border-stroke mb-3 flex items-center justify-between p-3 rounded-lg cursor-pointer bg-background hover:bg-[#2b2b2d]
                   ${isDragging ? "opacity-60" : ""} ${
-                  isDragOver ? "bg-zinc-800" : ""
-                }`}
+                    isDragOver ? "bg-zinc-800" : ""
+                  }`}
               >
                 <div className="flex items-center gap-3">
                   <div className="p-2 rounded bg-zinc-900 flex items-center justify-center">
@@ -464,6 +466,7 @@ function ServiceForm({
   submitting,
 }) {
   const [title, setTitle] = useState("");
+  const [slug, setSlug] = useState("");
   const [description, setDescription] = useState("");
   const [iconUrl, setIconUrl] = useState(""); // user can paste a url
   const [iconFile, setIconFile] = useState(null); // or upload a file
@@ -476,6 +479,7 @@ function ServiceForm({
   useEffect(() => {
     if (initial) {
       setTitle(initial.title || "");
+      setSlug(initial.slug || "");
       setDescription(initial.description || "");
       setIconUrl(initial.icon || "");
       setIconPreview(initial.icon || null);
@@ -483,10 +487,11 @@ function ServiceForm({
       setOrder(
         typeof initial.order === "number"
           ? initial.order
-          : Number(initial.order ?? 0)
+          : Number(initial.order ?? 0),
       );
     } else {
       setTitle("");
+      setSlug("");
       setDescription("");
       setIconUrl("");
       setIconFile(null);
@@ -540,6 +545,7 @@ function ServiceForm({
   async function submit() {
     const form = {
       title,
+      slug,
       description,
       iconUrl,
       iconFile,
@@ -557,13 +563,25 @@ function ServiceForm({
       <div className="bg-primary w-10 h-[5px] rounded-full my-5" />
 
       <div className="flex flex-col gap-y-4">
-        <div>
-          <label className="text-subtle block mb-1 text-sm">Title *</label>
-          <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full p-2 rounded bg-transparent border border-stroke text-main focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
-          />
+        <div className="flex items-center justify-between flex-wrap">
+          <div className="col-12 md:col-6">
+            <label className="text-subtle block mb-1 text-sm">Title *</label>
+            <input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full p-2 rounded bg-transparent border border-stroke text-main focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+            />
+          </div>
+
+          <div className="col-12 md:col-6">
+            <label className="text-subtle block mb-1 text-sm">Slug *</label>
+            <input
+              value={slug}
+              onChange={(e) => setSlug(e.target.value)}
+              placeholder="e.g. web-development"
+              className="w-full p-2 rounded bg-transparent border border-stroke text-main focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+            />
+          </div>
         </div>
 
         <div>
@@ -642,8 +660,8 @@ function ServiceForm({
           {submitting
             ? "Saving..."
             : mode === "create"
-            ? "Create Service"
-            : "Update Service"}
+              ? "Create Service"
+              : "Update Service"}
         </button>
 
         <button
