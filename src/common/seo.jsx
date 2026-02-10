@@ -235,13 +235,14 @@ import PropTypes from "prop-types";
  */
 
 const DEFAULTS = {
-  siteName: "Pradeep Suthar Portfolio",
+  siteName: "Pradeep Suthar",
   personName: "Pradeep Suthar",
   siteUrl: "https://pradeep-suthar.vercel.app",
   logo: "https://pradeep-suthar.vercel.app/seo-logo.svg",
   defaultOgImage: "https://pradeep-suthar.vercel.app/seo-logo.svg",
   locale: "en_IN",
-  defaultTitle: "Pradeep | Front-End Developer & Product Designer",
+  defaultTitle:
+    "Product Designer, UI UX Designer & React Developer | Pradeep Suthar",
   defaultDescription:
     "I design and build fast, accessible, and delightful user experiences using React, Next.js and modern design systems. Case studies and frontend projects.",
   defaultKeywords:
@@ -289,15 +290,27 @@ const SEO = ({
         image: DEFAULTS.logo,
         jobTitle: "Front-End Developer & Product Designer",
         sameAs,
+        knowsAbout: [
+          "Product Design",
+          "UI UX Design",
+          "React",
+          "Next.js",
+          "Frontend Development",
+        ],
       },
       {
         "@type": "WebSite",
         "@id": `${DEFAULTS.siteUrl}/#website`,
         url: DEFAULTS.siteUrl,
         name: DEFAULTS.siteName,
-        alternateName: "Pradeep | Front-End Developer & Product Designer",
+        alternateName: "Pradeep Suthar",
         publisher: {
           "@id": `${DEFAULTS.siteUrl}/#person`,
+        },
+        potentialAction: {
+          "@type": "SearchAction",
+          target: `${DEFAULTS.siteUrl}/?s={search_term_string}`,
+          "query-input": "required name=search_term_string",
         },
       },
     ],

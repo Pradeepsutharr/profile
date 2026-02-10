@@ -1,6 +1,6 @@
 // lib/seo.config.js
 export const SITE = {
-  siteName: "Pradeep Suthar Portfolio",
+  siteName: "Pradeep Suthar",
   siteUrl: "https://pradeep-suthar.vercel.app",
   // replace with real absolute URLs when you upload your logo/og image
   logo: "https://pradeep-suthar.vercel.app/seo_logo.svg",
@@ -11,7 +11,7 @@ export const SITE = {
 
 const SEOConfig = {
   home: {
-    pageTitle: "Product Designer & Front-End Developer",
+    pageTitle: "Product Designer & Front-End Developer | Pradeep Suthar",
     pageDescription:
       "Pradeep | A Product Designer and Front-End Developer crafting intuitive, elegant, and performance-driven digital experiences using UI/UX principles, React, Next.js, and modern design systems.",
     keywords:
@@ -40,13 +40,13 @@ const SEOConfig = {
   },
 
   resume: {
-    pageTitle: "Resume | Pradeep",
+    pageTitle: "Frontend Developer & Product Designer Resume | Pradeep Suthar",
     pageDescription:
       "Explore my resume: skills, experience, UI/UX expertise, React and Next.js projects, design systems, and frontend engineering background.",
     keywords:
       "Pradeep Resume, Frontend Developer Resume, Product Designer Resume, UI UX Resume, React Resume, Next.js Resume",
     ogTitle:
-      "Pradeep Resume | Proven Expertise in Product Design, UI/UX & Front-End Development",
+      "Pradeep Resume | Proven Expertise in Product Design, UI/UX Design, Product Design & Front-End Development",
     ogImage: SITE.defaultOgImage,
     ogUrl: `${SITE.siteUrl}/resume`,
     ogType: "article",
@@ -55,7 +55,8 @@ const SEOConfig = {
   },
 
   portfolio: {
-    pageTitle: "Portfolio | Front-End Projects & Product Design Work",
+    pageTitle:
+      "UI UX & Product Design Portfolio | Front-End Projects by Pradeep Suthar",
     pageDescription:
       "Browse Pradeep’s portfolio showcasing UI/UX design work, product design case studies, and front-end development projects built with React, Next.js, and modern design systems.",
     keywords:
@@ -70,7 +71,8 @@ const SEOConfig = {
   },
 
   contact: {
-    pageTitle: "Contact | Hire Product Designer & Front-End Developer",
+    pageTitle:
+      "Hire Product Designer & Front-End Developer | Contact Pradeep Suthar",
     pageDescription:
       "Contact Pradeep for UI/UX design, product design, and front-end development services. Available for freelance work, collaborations, and React/Next.js development projects.",
     keywords:
@@ -85,7 +87,7 @@ const SEOConfig = {
   },
 
   uiDesign: {
-    pageTitle: "UI Designer for Modern Web & SaaS Products | Pradeep",
+    pageTitle: "UI Design Services for Web & SaaS | UI Designer Pradeep Suthar",
     pageDescription:
       "Professional UI design services for startups and digital products. I create clean, responsive, and conversion-focused interfaces that improve usability and engagement.",
     keywords:
@@ -99,7 +101,7 @@ const SEOConfig = {
   },
 
   productDesign: {
-    pageTitle: "Product Designer for Startups & SaaS | Pradeep",
+    pageTitle: "Product Design Services for Startups & SaaS | Pradeep Suthar",
     pageDescription:
       "Product design services for startups and SaaS. From UX strategy to UI design and MVP creation, I help founders turn ideas into scalable digital products.",
     keywords:
@@ -113,7 +115,8 @@ const SEOConfig = {
   },
 
   uxResearch: {
-    pageTitle: "UX Research Services for User-Centered Products | Pradeep",
+    pageTitle:
+      "UX Research Services | User Interviews & Usability Testing | Pradeep Suthar",
     pageDescription:
       "UX research services including user interviews, usability testing, and journey mapping to help teams build products backed by real user insights.",
     keywords:
@@ -127,7 +130,7 @@ const SEOConfig = {
   },
 
   frontendDevelopment: {
-    pageTitle: "Frontend Developer (React & Next.js) | Pradeep",
+    pageTitle: "React & Next.js Frontend Developer | Pradeep Suthar",
     pageDescription:
       "Frontend development using React and Next.js. I build fast, SEO-friendly, and scalable web applications with modern architecture and performance optimization.",
     keywords:
