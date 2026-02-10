@@ -313,6 +313,41 @@ const SEO = ({
           "query-input": "required name=search_term_string",
         },
       },
+      {
+        "@type": "ProfessionalService",
+        "@id": `${DEFAULTS.siteUrl}/#professionalservice`,
+        name: "Pradeep Suthar – UI/UX & Frontend Development Services",
+        url: DEFAULTS.siteUrl,
+        image: DEFAULTS.logo,
+        description:
+          "UI/UX design, product design, and frontend development services using React and Next.js. Helping startups and businesses build usable, scalable digital products.",
+        provider: {
+          "@id": `${DEFAULTS.siteUrl}/#person`,
+        },
+        areaServed: {
+          "@type": "Country",
+          name: "India",
+        },
+        availableChannel: {
+          "@type": "ServiceChannel",
+          serviceLocation: {
+            "@type": "Place",
+            name: "Remote",
+          },
+        },
+        serviceType: [
+          "UI Design",
+          "UX Design",
+          "Product Design",
+          "Frontend Development",
+          "React Development",
+          "Next.js Development",
+        ],
+        sameAs: [
+          "https://www.linkedin.com/in/pradeep-suthar-a47432273/",
+          "https://github.com/sutharpradip",
+        ],
+      },
     ],
   };
 
