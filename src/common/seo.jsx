@@ -297,6 +297,13 @@ const SEO = ({
           "Next.js",
           "Frontend Development",
         ],
+        contactPoint: {
+          "@type": "ContactPoint",
+          telephone: "+91-7023927315",
+          contactType: "customer support",
+          areaServed: "IN",
+          availableLanguage: ["English"],
+        },
       },
       {
         "@type": "WebSite",
@@ -320,14 +327,28 @@ const SEO = ({
         url: DEFAULTS.siteUrl,
         image: DEFAULTS.logo,
         description:
-          "UI/UX design, product design, and frontend development services using React and Next.js. Helping startups and businesses build usable, scalable digital products.",
+          "UI/UX design, product design, and frontend development services using React and Next.js.",
+
         provider: {
           "@id": `${DEFAULTS.siteUrl}/#person`,
         },
+
+        telephone: "+91-XXXXXXXXXX",
+
+        priceRange: "₹₹",
+
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Ahmedabad",
+          addressRegion: "Gujarat",
+          addressCountry: "IN",
+        },
+
         areaServed: {
           "@type": "Country",
           name: "India",
         },
+
         availableChannel: {
           "@type": "ServiceChannel",
           serviceLocation: {
@@ -335,6 +356,7 @@ const SEO = ({
             name: "Remote",
           },
         },
+
         serviceType: [
           "UI Design",
           "UX Design",
@@ -343,6 +365,7 @@ const SEO = ({
           "React Development",
           "Next.js Development",
         ],
+
         sameAs: [
           "https://www.linkedin.com/in/pradeep-suthar-a47432273/",
           "https://github.com/sutharpradip",
