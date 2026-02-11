@@ -46,7 +46,7 @@ const SEOConfig = {
     keywords:
       "Pradeep Resume, Frontend Developer Resume, Product Designer Resume, UI UX Resume, React Resume, Next.js Resume",
     ogTitle:
-      "Pradeep Resume | Proven Expertise in Product Design, UI/UX Design, Product Design & Front-End Development",
+      "Proven Expertise in Product Design, UI/UX Design, Product Design & Front-End Development | Pradeep Suthar",
     ogImage: SITE.defaultOgImage,
     ogUrl: `${SITE.siteUrl}/resume`,
     ogType: "article",
@@ -62,7 +62,7 @@ const SEOConfig = {
     keywords:
       "UI UX Portfolio, Product Design Portfolio, Front-End Developer Projects, React Projects, Next.js Portfolio, Website Design Work, Interface Design Portfolio",
     ogTitle:
-      "Pradeep Portfolio | UI/UX Design, Product Design & Front-End Development Work",
+      "UI/UX Design, Product Design & Front-End Development Work | Pradeep Portfolio",
     ogImage: SITE.defaultOgImage,
     ogUrl: `${SITE.siteUrl}/portfolio`,
     ogType: "website",
@@ -78,7 +78,7 @@ const SEOConfig = {
     keywords:
       "Hire Product Designer, Hire Front-End Developer, Hire UI UX Designer, React Developer Hire, Next.js Developer Hire, Contact Pradeep, Freelance Designer India",
     ogTitle:
-      "Contact Pradeep | Work With a Skilled Product Designer & Front-End Developer",
+      "Work With a Skilled Product Designer & Front-End Developer | Contact Pradeep Suthar",
     ogImage: SITE.defaultOgImage,
     ogUrl: `${SITE.siteUrl}/contact`,
     ogType: "website",
