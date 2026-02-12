@@ -15,6 +15,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import SideBarSkeleton from "./sidebar-skeleton";
+import MobileSidebarSkeleton from "@/layout/mobile-sidebar-skeleton";
 
 const BUCKET = "portfolio";
 
@@ -58,7 +59,20 @@ export default function SideBar() {
     setLoading(false);
   }
 
-  if (loading) return <SideBarSkeleton />;
+  // if (loading) return <SideBarSkeleton />;
+  if(loading){
+    return(
+        <>
+        <div className="hidden lg:block">
+          <SideBarSkeleton />
+        </div>
+
+          <div className="block lg:hidden">
+            <MobileSidebarSkeleton/>
+          </div>
+        </>
+    )
+  }
   if (!user) return <div className="text-red-400">No active user found.</div>;
 
   const socials = user.socials || {};

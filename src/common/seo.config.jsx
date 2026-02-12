@@ -3,8 +3,8 @@ export const SITE = {
   siteName: "Pradeep Suthar",
   siteUrl: "https://pradeep-suthar.vercel.app",
   // replace with real absolute URLs when you upload your logo/og image
-  logo: "https://pradeep-suthar.vercel.app/seo_logo.svg",
-  defaultOgImage: "https://pradeep-suthar.vercel.app/seo_logo.svg",
+  logo: "https://pradeep-suthar.vercel.app/seo-logo.png",
+  defaultOgImage: "https://pradeep-suthar.vercel.app/seo-logo.png",
   // twitter: "@pradeep_dev",
   locale: "en_IN",
 };
@@ -17,7 +17,7 @@ const SEOConfig = {
     keywords:
       "Product Designer, Front-End Developer, UI UX Designer, React Developer, Next.js Developer, Web Designer India, Portfolio Designer, Interface Design Expert",
     ogTitle:
-      "Pradeep | Product Designer & Front-End Developer Crafting Exceptional Digital Experiences",
+      "Product Designer & Front-End Developer Crafting Exceptional Digital Experiences | Pradeep Suthar",
     ogImage: SITE.defaultOgImage,
     ogUrl: `${SITE.siteUrl}/`,
     ogType: "website",
@@ -62,7 +62,7 @@ const SEOConfig = {
     keywords:
       "UI UX Portfolio, Product Design Portfolio, Front-End Developer Projects, React Projects, Next.js Portfolio, Website Design Work, Interface Design Portfolio",
     ogTitle:
-      "UI/UX Design, Product Design & Front-End Development Work | Pradeep Portfolio",
+      "UI/UX Design, Product Design & Front-End Development Work | Frontend developer portfolio | Pradeep Portfolio",
     ogImage: SITE.defaultOgImage,
     ogUrl: `${SITE.siteUrl}/portfolio`,
     ogType: "website",
@@ -159,7 +159,7 @@ const SEOConfig = {
   // },
 
   default: {
-    pageTitle: "Pradeep",
+    pageTitle: "Product Designer & Front-End Developer | Pradeep Suthar",
     pageDescription:
       "Pradeep | A Product Designer and Front-End Developer crafting intuitive, elegant, and performance-driven digital experiences using UI/UX principles, React, Next.js, and modern design systems.",
     keywords:
