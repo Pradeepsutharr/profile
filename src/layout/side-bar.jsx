@@ -60,17 +60,17 @@ export default function SideBar() {
   }
 
   // if (loading) return <SideBarSkeleton />;
-  if(loading){
-    return(
-        <>
+  if (loading) {
+    return (
+      <>
         <div className="hidden lg:block">
           <SideBarSkeleton />
         </div>
 
-          <div className="block lg:hidden">
-            <MobileSidebarSkeleton/>
-          </div>
-        </>
+        <div className="block lg:hidden">
+          <MobileSidebarSkeleton />
+        </div>
+      </>
     )
   }
   if (!user) return <div className="text-red-400">No active user found.</div>;
@@ -80,8 +80,7 @@ export default function SideBar() {
   return (
     <div
       className={`lg:px-6 px-4 lg:py-10 py-4 flex flex-col items-center bg-[#1e1e1f] border border-stroke rounded-2xl lg:rounded-3xl relative lg:sticky lg:top-[60px] overflow-hidden
-        ${
-          open ? "max-h-[900px]" : "max-h-[113px]"
+        ${open ? "max-h-[900px]" : "max-h-[113px]"
         } lg:max-h-none transition-all duration-700 ease-in-out`}
       aria-expanded={open}
     >

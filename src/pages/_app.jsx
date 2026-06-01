@@ -44,7 +44,11 @@ export default function App({ Component, pageProps }) {
           </div>
         ) : (
           // PUBLIC ROUTES → same as before
-          <div className="layout">
+          <div className="layout relative min-h-screen">
+            {/* Ambient Background Glows */}
+            {/* <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-primary/5 blur-[120px] pointer-events-none z-0" /> */}
+            {/* <div className="absolute bottom-[10%] right-[-5%] w-[400px] h-[400px] rounded-full bg-primary/5 blur-[100px] pointer-events-none z-0" /> */}
+
             <div className="container">
               <div className="flex flex-wrap">
                 <aside className="side-bar col-12 lg:col-3">

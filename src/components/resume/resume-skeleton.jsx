@@ -59,22 +59,24 @@ export default function ResumeSkeleton() {
 
       {/* Skills */}
       <div className="mt-16">
-        <div className="flex items-center gap-5 ">
+        <div className="relative mb-6">
           <div className="w-64 h-8 bg-[#2b2b2c] rounded-md"></div>
+          <div className="w-12 h-1 bg-primary/20 rounded-full mt-3" />
         </div>
 
-        <div className="flex flex-wrap justify-between mt-5 gredient-jet p-4 rounded-2xl border border-stroke">
-          {/* 6 skill placeholders (two per row on large screens) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-[#212123]/20 border border-stroke/40 p-6 md:p-8 rounded-2xl">
+          {/* 6 skill placeholders */}
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="col-12 lg:col-6 mb-6">
-              <div>
-                <div className="w-40 h-5 bg-[#2b2b2c] rounded-md mb-2"></div>
-                <div className="w-full bg-[#383838] h-[9px] rounded-full">
-                  <div
-                    className="bg-primary h-[9px] rounded-full"
-                    style={{ width: `${20 + (i % 5) * 15}%` }}
-                  />
-                </div>
+            <div key={i} className="space-y-2">
+              <div className="flex justify-between items-center">
+                <div className="w-28 h-5 bg-[#2b2b2c] rounded-md" />
+                <div className="w-10 h-5 bg-[#2b2b2c] rounded-md" />
+              </div>
+              <div className="w-full bg-[#383838]/60 h-2.5 rounded-full overflow-hidden border border-stroke/10">
+                <div
+                  className="bg-[#2b2b2c]/85 h-full rounded-full"
+                  style={{ width: `${30 + (i % 4) * 20}%` }}
+                />
               </div>
             </div>
           ))}

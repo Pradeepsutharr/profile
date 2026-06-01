@@ -14,29 +14,41 @@ function ProjectCard({ image, title, category, slug }) {
         query: { slug },
       }}
       onMouseEnter={() => router.prefetch(`/portfolio/${slug}`)}
-      className="project-card"
+      className="group relative block"
     >
-      <div className="project-image relative rounded-lg overflow-hidden group">
-        <Image
-          src={image}
-          alt={title}
-          width={256}
-          height={171}
-          priority
-          className="object-cover w-full group-hover:scale-110 group-hover:brightness-50 duration-200"
-        />
+      {/* Visual background atmospheric wrapper */}
+      <div className="h-full rounded-2xl border border-stroke/50 bg-[#212123]/20 p-4 transition-all duration-300 hover:border-primary/30 hover:bg-[#252528]/40 hover:shadow-[0_8px_30px_rgb(0,0,0,0.4)] hover:shadow-primary/5 hover:-translate-y-1">
+        
+        {/* Project Image Box */}
+        <div className="relative aspect-[3/2] w-full rounded-xl overflow-hidden bg-[#2b2b2c] border border-stroke/20">
+          <Image
+            src={image}
+            alt={title}
+            fill
+            sizes="(max-width: 768px) 100vw, 33vw"
+            priority
+            className="object-cover transition-all duration-500 group-hover:scale-105 group-hover:brightness-[0.4]"
+          />
 
-        <div
-          className="opacity-0 group-hover:opacity-100 absolute top-[50%] left-[50%] p-3 bg-[#383838] rounded-lg duration-300"
-          style={{ translate: "-50% -50%" }}
-        >
-          <Eye color="#ffdb70" size={20} />
+          {/* Glass View Indicator */}
+          <div
+            className="opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 absolute top-[50%] left-[50%] p-3.5 bg-black/40 backdrop-blur-md border border-white/10 rounded-full transition-all duration-300"
+            style={{ transform: "translate(-50%, -50%)" }}
+          >
+            <Eye color="#ffdb70" size={20} />
+          </div>
+        </div>
+
+        {/* Text descriptions */}
+        <div className="mt-4 px-1">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-primary bg-primary/5 border border-primary/20 rounded-md px-2 py-0.5 inline-block mb-2">
+            {category}
+          </span>
+          <h3 className="text-main group-hover:text-primary font-bold text-base transition-colors duration-300 line-clamp-1">
+            {title}
+          </h3>
         </div>
       </div>
-      <h2 className="text-main text-base font-medium mt-3 capitalize line-clamp-1">
-        {title}
-      </h2>
-      <span className="text-subtle font-light capitalize">{category}</span>
     </Link>
   );
 }

@@ -44,18 +44,29 @@ function ProjectsComponent() {
   };
 
   return (
-    <section>
-      <h1 className="text-3xl text-main font-semibold">Portfolio</h1>
-      <div className="bg-primary w-10 h-[5px] rounded-full my-5"></div>
+    <section className="relative overflow-hidden">
+      {/* Background radial glow */}
+      {/* <div className="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-primary/5 blur-3xl pointer-events-none" /> */}
+
+      {/* Header */}
+      <div className="relative mb-8">
+        <h2 className="text-3xl text-main font-bold tracking-tight">Portfolio</h2>
+        <div className="relative w-12 h-1 bg-gradient-to-r from-primary to-primary/20 rounded-full mt-3">
+          <div className="absolute inset-0 bg-primary rounded-full animate-ping opacity-25" />
+        </div>
+      </div>
 
       {/* FILTER BUTTONS */}
-      <div className="filter-btns flex flex-nowrap items-center gap-2 mt-5 overflow-x-scroll lg:min-h-[48px] hide-scrollbar m-[-.75rem]">
+      <div className="filter-btns flex flex-wrap items-center gap-2 mt-6 mb-8">
         {categories.map((item) => (
           <button
             key={item}
             onClick={() => handleFilter(item)}
-            className={`capitalize font-normal px-4 py-1 rounded-md transition-all whitespace-nowrap
-              ${active === item ? "text-primary" : "text-subtle"}
+            className={`capitalize text-xs font-semibold px-4 py-2 rounded-full border transition-all duration-300 whitespace-nowrap tracking-wide
+              ${active === item
+                ? "bg-primary/10 border-primary/30 text-primary shadow-[0_4px_20px_rgba(255,219,112,0.1)]"
+                : "border-stroke/60 bg-[#212123]/20 text-subtle hover:border-stroke hover:text-main hover:bg-[#252528]/40"
+              }
             `}
           >
             {item}
@@ -64,19 +75,16 @@ function ProjectsComponent() {
       </div>
 
       {/* PROJECT CARDS */}
-      <div className="flex flex-wrap items-center justify-center mt-6 m-[-.75rem]">
-        {loading && <p>Loading...</p>}
-
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {!loading &&
           filtered?.map((item) => (
-            <div key={item?.id} className="col-12 md:col-6 lg:col-4">
-              <ProjectCard
-                image={item?.bg_image}
-                title={item?.title}
-                category={item?.category}
-                slug={item?.slug}
-              />
-            </div>
+            <ProjectCard
+              key={item?.id}
+              image={item?.bg_image}
+              title={item?.title}
+              category={item?.category}
+              slug={item?.slug}
+            />
           ))}
       </div>
     </section>

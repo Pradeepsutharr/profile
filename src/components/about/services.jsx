@@ -28,28 +28,40 @@ function Services() {
   if (loading) return <ServicesSkeleton />;
 
   return (
-    <section>
-      <div className="flex flex-wrap items-center justify-between m-[-.75rem]">
+    <section className="mt-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {services?.map((service) => (
           <Link
             href={`/services/${service.slug}`}
             key={service.id}
-            className="col-12 md:col-6 "
+            className="group relative block"
           >
-            <div className="icon-box service-card flex flex-wrap items-center justify-between rounded-xl px-5 py-4 min-h-[164px]">
-              <div className="col-12 md:col-3 lg:col-2 ">
-                <Image
-                  src={service.icon}
-                  alt={service.title}
-                  width={50}
-                  height={50}
-                />
+            {/* Hover card border & scale wrapper */}
+            <div className="h-full rounded-2xl border border-stroke bg-[#212123]/30 p-6 transition-all duration-300 hover:border-primary/30 hover:bg-[#252528]/50 hover:shadow-[0_8px_30px_rgb(0,0,0,0.5)] hover:shadow-primary/5 hover:-translate-y-1 flex flex-col sm:flex-row gap-5 items-start">
+              
+              {/* Icon Container with atmospheric glow */}
+              <div className="relative p-3 rounded-xl bg-[#2b2b2c] border border-stroke/80 group-hover:border-primary/20 group-hover:bg-[#313133] transition-colors duration-300 flex-shrink-0">
+                <div className="absolute inset-0 rounded-xl bg-primary/10 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative z-10 w-10 h-10 flex items-center justify-center">
+                  <Image
+                    src={service.icon}
+                    alt={service.title}
+                    width={40}
+                    height={40}
+                    className="object-contain"
+                  />
+                </div>
               </div>
-              <div className="col-12 md:col-9 lg:col-10">
-                <h3 className="text-primary font-semibold text-xl">
+
+              {/* Title & description */}
+              <div className="flex-grow">
+                <h3 className="text-main group-hover:text-primary font-semibold text-lg transition-colors duration-300 flex items-center gap-2">
                   {service.title}
+                  <span className="inline-block transform translate-x-0 group-hover:translate-x-1 transition-transform duration-300 text-sm">
+                    &rarr;
+                  </span>
                 </h3>
-                <p className="text-subtle mt-2 text-[14px]">
+                <p className="text-subtle/80 mt-2 text-sm font-light leading-relaxed">
                   {service.description}
                 </p>
               </div>
@@ -57,16 +69,24 @@ function Services() {
           </Link>
         ))}
       </div>
-      <p className="text-subtle text-[15px] mt-10 leading-relaxed">
-        I help brands and businesses create modern, responsive, and
-        user-centered digital products through a strong combination of UI/UX
-        design, front-end development, and product thinking. My expertise
-        includes React, Next.js, Tailwind, design systems, accessibility, and
-        high-performance interface development. If you're looking for a Product
-        Designer or Front-End Developer who can design and develop seamless
-        digital experiences, I can help bring your vision to life with precision
-        and creativity.
-      </p>
+
+      {/* Philosophy Callout Card */}
+      <div className="relative mt-12 p-6 md:p-8 rounded-2xl border border-stroke/50 bg-gradient-to-r from-[#212123]/40 via-[#252528]/50 to-[#212123]/40 overflow-hidden">
+        {/* Glow decoration */}
+        <div className="absolute -left-16 -top-16 w-48 h-48 rounded-full bg-primary/5 blur-3xl pointer-events-none" />
+        <div className="absolute -right-16 -bottom-16 w-48 h-48 rounded-full bg-primary/5 blur-3xl pointer-events-none" />
+
+        <p className="relative z-10 text-subtle/90 text-[15px] md:text-base font-light leading-relaxed italic">
+          "I help brands and businesses create modern, responsive, and user-centered digital products through a strong combination of UI/UX design, front-end development, and product thinking. My goal is to build high-performance interfaces that bridge design and engineering to bring your vision to life with precision and creativity."
+        </p>
+
+        <div className="relative z-10 flex items-center gap-3 mt-5">
+          <div className="w-8 h-[1.5px] bg-primary/40" />
+          <span className="text-xs uppercase tracking-widest text-primary font-semibold">
+            Product Philosophy
+          </span>
+        </div>
+      </div>
     </section>
   );
 }
