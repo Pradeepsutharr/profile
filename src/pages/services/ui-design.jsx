@@ -41,9 +41,9 @@ export default function UIDesign() {
     <>
       <SEO {...SEOConfig.uiDesign} />
 
-      <section className="relative overflow-hidden max-w-4xl">
+      <section className="relative overflow-hidden container">
         {/* Background radial glow */}
-        <div className="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-primary/5 blur-3xl pointer-events-none" />
+        {/* <div className="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-primary/5 blur-3xl pointer-events-none" /> */}
 
         {/* Header */}
         <div className="relative mb-8">
@@ -54,7 +54,7 @@ export default function UIDesign() {
         </div>
 
         {/* Hero Card */}
-        <div className="relative overflow-hidden rounded-2xl border border-stroke/40 bg-gradient-to-br from-[#212123]/30 via-[#212123]/10 to-transparent p-6 md:p-8 mb-8">
+        <div className="relative overflow-hidden rounded-2xl border border-stroke/40 bg-gradient-to-br from-surface/30 via-surface/10 to-transparent p-6 md:p-8 mb-8">
           <h1 className="text-primary text-xl md:text-2xl font-bold leading-relaxed tracking-tight">
             UI Design Services for Modern Web & SaaS Products
           </h1>
@@ -76,7 +76,7 @@ export default function UIDesign() {
             {deliverables.map((item, index) => (
               <div
                 key={index}
-                className="group h-full rounded-2xl border border-stroke bg-[#212123]/30 p-6 transition-all duration-300 hover:border-primary/30 hover:bg-[#252528]/50 hover:shadow-[0_8px_30px_rgb(0,0,0,0.5)] hover:shadow-primary/5 hover:-translate-y-1 flex flex-col gap-3"
+                className="group h-full rounded-2xl border border-stroke bg-surface/30 p-6 transition-all duration-300 hover:border-primary/30 hover:bg-input/50 hover:shadow-[0_8px_30px_rgb(0,0,0,0.5)] hover:shadow-primary/5 hover:-translate-y-1 flex flex-col gap-3"
               >
                 <div className="flex items-center gap-3">
                   <span className="text-xs font-bold uppercase tracking-wider bg-primary/10 text-primary border border-primary/20 rounded px-2.5 py-1">
@@ -95,7 +95,7 @@ export default function UIDesign() {
         </div>
 
         {/* APPROACH */}
-        <div className="mt-12 bg-[#212123]/25 border border-stroke/50 rounded-2xl p-6 md:p-8 relative overflow-hidden">
+        <div className="mt-12 bg-surface/25 border border-stroke/50 rounded-2xl p-6 md:p-8 relative overflow-hidden">
           <div className="absolute -left-16 -top-16 w-48 h-48 rounded-full bg-primary/5 blur-3xl pointer-events-none" />
           <h2 className="text-main text-xl font-bold tracking-tight mb-4">
             My UI Design Approach
@@ -125,7 +125,7 @@ export default function UIDesign() {
             {tools.map((tool, i) => (
               <span
                 key={i}
-                className="px-4 py-2.5 bg-[#212123]/30 border border-stroke text-sm text-primary rounded-lg hover:bg-primary/10 hover:border-primary/20 cursor-default transition-all duration-300"
+                className="px-4 py-2.5 bg-surface/30 border border-stroke text-sm text-primary rounded-lg hover:bg-primary/10 hover:border-primary/20 cursor-default transition-all duration-300"
               >
                 {tool}
               </span>
@@ -137,7 +137,7 @@ export default function UIDesign() {
         </div>
 
         {/* BEST FIT */}
-        <div className="mt-12 p-6 md:p-8 rounded-2xl border border-stroke/50 bg-[#212123]/30">
+        <div className="mt-12 p-6 md:p-8 rounded-2xl border border-stroke/50 bg-surface/30">
           <h2 className="text-main font-bold tracking-tight mb-4">
             Who This Service Is Best For
           </h2>

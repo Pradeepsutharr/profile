@@ -2,19 +2,17 @@
 import { useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import { useRouter } from "next/router";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, ShieldCheck } from "lucide-react";
+import Image from "next/image";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  // NEW: validation state
   const [errors, setErrors] = useState({});
   const router = useRouter();
 
-  // NEW: email validator
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const validateForm = () => {
@@ -38,10 +36,7 @@ export default function AdminLogin() {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
-
-    // validate before making API call
     if (!validateForm()) return;
-
     setLoading(true);
 
     try {
@@ -90,59 +85,83 @@ export default function AdminLogin() {
   };
 
   return (
-    <section className="py-12 lg:py-16 grid place-items-center h-[100vh]">
-      <form
-        onSubmit={handleSignIn}
-        className="gredient-jet p-8 rounded-xl border border-stroke flex flex-col gap-y-5 w-full max-w-[450px]"
-      >
-        {/* EMAIL FIELD */}
-        <div>
-          <input
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-            className={`py-3 text-main w-full px-3 rounded-lg bg-transparent border ${
-              errors.email ? "border-red-500" : "border-stroke"
-            } bg-[#323335] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary`}
-          />
-          {errors.email && (
-            <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-          )}
+    <div className="relative min-h-screen bg-[#0d0d10] text-main flex flex-col justify-center items-center px-4 overflow-hidden">
+      {/* Background Decorative Neon Glows */}
+      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] rounded-full bg-primary/10 blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-[350px] h-[350px] rounded-full bg-primary/10 blur-[100px] pointer-events-none" />
+
+      {/* Login Box */}
+      <div className="relative z-10 w-full max-w-[420px] bg-[#16161a]/60 backdrop-blur-lg border border-stroke/40 rounded-3xl p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+        
+        {/* Branding header inside login box */}
+        <div className="flex flex-col items-center mb-8">
+          <div className="relative w-14 h-14 mb-4">
+            <Image src="/seo-logo.svg" fill alt="brand logo" className="object-contain" />
+          </div>
+          <h2 className="text-xl font-extrabold tracking-tight text-main" style={{ fontFamily: "'Sora', sans-serif" }}>
+            Admin Portal
+          </h2>
+          <p className="text-xs text-subtle/50 mt-1 font-mono tracking-wider uppercase">AUTHENTICATION REQUIRED</p>
         </div>
 
-        {/* PASSWORD FIELD */}
-        <div className="relative">
-          <input
-            type={showPw ? "text" : "password"}
-            value={pw}
-            onChange={(e) => setPw(e.target.value)}
-            placeholder="Password"
-            className={`py-3 text-main w-full px-3 rounded-lg bg-transparent border ${
-              errors.pw ? "border-red-500" : "border-stroke"
-            } bg-[#323335] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary`}
-          />
+        <form onSubmit={handleSignIn} className="flex flex-col gap-y-5">
+          {/* EMAIL FIELD */}
+          <div>
+            <label className="text-[10px] font-extrabold uppercase tracking-widest text-subtle/50 block mb-1.5 ml-1">Email Address</label>
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="admin@domain.com"
+              className={`w-full py-3 px-4 rounded-xl text-sm bg-[#16161a]/50 text-main border ${
+                errors.email ? "border-rose-500/50" : "border-stroke/60"
+              } outline-none focus:border-primary/50 transition-all`}
+            />
+            {errors.email && (
+              <p className="text-rose-400 text-xs mt-1.5 ml-1">{errors.email}</p>
+            )}
+          </div>
 
+          {/* PASSWORD FIELD */}
+          <div>
+            <label className="text-[10px] font-extrabold uppercase tracking-widest text-subtle/50 block mb-1.5 ml-1">Password</label>
+            <div className="relative">
+              <input
+                type={showPw ? "text" : "password"}
+                value={pw}
+                onChange={(e) => setPw(e.target.value)}
+                placeholder="••••••••"
+                className={`w-full py-3 px-4 rounded-xl text-sm bg-[#16161a]/50 text-main border ${
+                  errors.pw ? "border-rose-500/50" : "border-stroke/60"
+                } outline-none focus:border-primary/50 transition-all pr-12`}
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowPw((prev) => !prev)}
+                className="text-subtle/60 hover:text-main absolute top-3 right-4 transition-colors"
+              >
+                {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            </div>
+            {errors.pw && (
+              <p className="text-rose-400 text-xs mt-1.5 ml-1">{errors.pw}</p>
+            )}
+          </div>
+
+          {/* Submit Button */}
           <button
-            type="button"
-            onClick={() => setShowPw((prev) => !prev)}
-            className="text-subtle absolute top-3 right-3"
+            type="submit"
+            disabled={loading}
+            className="w-full bg-primary text-black py-3 rounded-xl font-bold text-sm tracking-wide mt-4 shadow-lg hover:shadow-primary/20 hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
           >
-            {showPw ? <EyeOff size={18} /> : <Eye size={18} />}
+            <ShieldCheck size={16} />
+            <span>{loading ? "Authenticating..." : "Login to Console"}</span>
           </button>
+        </form>
+      </div>
 
-          {errors.pw && (
-            <p className="text-red-500 text-sm mt-1">{errors.pw}</p>
-          )}
-        </div>
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="block bg-primary py-3 rounded-full mt-8 disabled:opacity-60 disabled:cursor-not-allowed"
-        >
-          {loading ? "Signing..." : "Sign in"}
-        </button>
-      </form>
-    </section>
+      {/* Footer copyright */}
+      <span className="text-[9px] font-mono tracking-widest text-subtle/30 mt-8 uppercase">&copy; 2026 Admin Dashboard console. All Rights Reserved.</span>
+    </div>
   );
 }

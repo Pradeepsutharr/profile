@@ -65,7 +65,7 @@ function ProjectsComponent() {
             className={`capitalize text-xs font-semibold px-4 py-2 rounded-full border transition-all duration-300 whitespace-nowrap tracking-wide
               ${active === item
                 ? "bg-primary/10 border-primary/30 text-primary shadow-[0_4px_20px_rgba(255,219,112,0.1)]"
-                : "border-stroke/60 bg-[#212123]/20 text-subtle hover:border-stroke hover:text-main hover:bg-[#252528]/40"
+                : "border-stroke/60 bg-surface/20 text-subtle hover:border-stroke hover:text-main hover:bg-input/40"
               }
             `}
           >

@@ -61,7 +61,7 @@ function ProjectDetailsComponent({ projectData }) {
         />
         <section className="relative overflow-hidden">
           {/* Background radial glow */}
-          <div className="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-primary/5 blur-3xl pointer-events-none" />
+          {/* <div className="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-primary/5 blur-3xl pointer-events-none" /> */}
 
           {/* Header */}
           <div className="relative mb-8">
@@ -80,7 +80,7 @@ function ProjectDetailsComponent({ projectData }) {
           </p>
 
           {/* Hero Image Block */}
-          <div className="relative overflow-hidden rounded-2xl border border-stroke/50 bg-[#212123]/20 aspect-[16/9] w-full max-h-[50vh] shadow-xl">
+          <div className="relative overflow-hidden rounded-2xl border border-stroke/50 bg-surface/20 aspect-[16/9] w-full max-h-[50vh] shadow-xl">
             <Image
               src={projectDetails.bg_image}
               alt={projectDetails.title}
@@ -105,7 +105,7 @@ function ProjectDetailsComponent({ projectData }) {
           {/* Info Cards Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 my-8">
             {/* Category */}
-            <div className="flex items-center gap-4 bg-[#212123]/30 border border-stroke/50 p-4 rounded-xl group hover:border-primary/20 transition-all duration-300">
+            <div className="flex items-center gap-4 bg-surface/30 border border-stroke/50 p-4 rounded-xl group hover:border-primary/20 transition-all duration-300">
               <div className="icon-box max-w-[48px] max-h-[48px] min-w-[48px] min-h-[48px] text-primary flex items-center justify-center rounded-lg">
                 <Layers size={20} />
               </div>
@@ -118,7 +118,7 @@ function ProjectDetailsComponent({ projectData }) {
             </div>
 
             {/* Service */}
-            <div className="flex items-center gap-4 bg-[#212123]/30 border border-stroke/50 p-4 rounded-xl group hover:border-primary/20 transition-all duration-300">
+            <div className="flex items-center gap-4 bg-surface/30 border border-stroke/50 p-4 rounded-xl group hover:border-primary/20 transition-all duration-300">
               <div className="icon-box max-w-[48px] max-h-[48px] min-w-[48px] min-h-[48px] text-primary flex items-center justify-center rounded-lg">
                 <BriefcaseBusiness size={20} />
               </div>
@@ -131,7 +131,7 @@ function ProjectDetailsComponent({ projectData }) {
             </div>
 
             {/* Date */}
-            <div className="flex items-center gap-4 bg-[#212123]/30 border border-stroke/50 p-4 rounded-xl group hover:border-primary/20 transition-all duration-300">
+            <div className="flex items-center gap-4 bg-surface/30 border border-stroke/50 p-4 rounded-xl group hover:border-primary/20 transition-all duration-300">
               <div className="icon-box max-w-[48px] max-h-[48px] min-w-[48px] min-h-[48px] text-primary flex items-center justify-center rounded-lg">
                 <CalendarDays size={20} />
               </div>
@@ -155,7 +155,7 @@ function ProjectDetailsComponent({ projectData }) {
           </div>
 
           <p
-            className="text-subtle/90 font-light text-base leading-relaxed my-6 bg-[#212123]/10 border border-stroke/30 rounded-2xl p-6 md:p-8"
+            className="text-subtle/90 font-light text-base leading-relaxed my-6 bg-surface/10 border border-stroke/30 rounded-2xl p-6 md:p-8"
             dangerouslySetInnerHTML={{
               __html: projectDetails.description?.replace(/\\n/g, "<br />"),
             }}
@@ -234,7 +234,7 @@ function ProjectDetailsComponent({ projectData }) {
                     key={index}
                     className="project-slide swiper-slide-project"
                   >
-                    <div className="relative w-full h-full rounded-xl border border-stroke/40 overflow-hidden bg-[#2b2b2c] shadow-lg group">
+                    <div className="relative w-full h-full rounded-xl border border-stroke/40 overflow-hidden bg-elevated shadow-lg group">
                       <Image
                         src={img}
                         alt={`${projectDetails.title} preview ${index + 1}`}

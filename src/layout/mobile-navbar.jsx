@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import ThemeToggle from "@/components/theme-toggle";
 
 const nav_data = [
   {
@@ -21,42 +21,31 @@ const nav_data = [
   },
   {
     id: 4,
+    title: "blogs",
+    link: "/blogs",
+  },
+  {
+    id: 5,
     title: "contact",
     link: "/contact",
   },
 ];
 
-function MobileNavbar() {
+function MobileNavbar({ theme, onToggleTheme }) {
   const location = useRouter();
-  const [isActive, setIsActive] = useState(location.route);
+  const isActive =
+    location.route === "/portfolio" || location.route === "/portfolio/[slug]"
+      ? "/portfolio"
+      : location.route === "/blogs" || location.route === "/blogs/[slug]"
+        ? "/blogs"
+        : ["/", "/resume", "/contact"].includes(location.route)
+          ? location.route
+          : null;
 
-  useEffect(() => {
-    switch (location.route) {
-      case "/resume":
-        setIsActive("/resume");
-        break;
-
-      case "/portfolio":
-        setIsActive("/portfolio");
-        break;
-
-      case "/contact":
-        setIsActive("/contact");
-        break;
-
-      case "/":
-        setIsActive("/");
-        break;
-
-      default:
-        setIsActive(null);
-        break;
-    }
-  }, [location.route]);
 
   return (
     <nav className="mobile-navbar">
-      <ul className="flex items-center justify-evenly">
+      <ul className="flex items-center justify-evenly gap-2 px-3">
         {nav_data?.map((item) => (
           <li key={item.id}>
             <Link
@@ -69,6 +58,13 @@ function MobileNavbar() {
             </Link>
           </li>
         ))}
+        <li className="flex items-center">
+          <ThemeToggle
+            theme={theme}
+            onToggle={onToggleTheme}
+            className="px-2.5 py-1.5 text-[11px]"
+          />
+        </li>
       </ul>
     </nav>
   );

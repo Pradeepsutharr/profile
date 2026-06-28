@@ -37,10 +37,10 @@ function Services() {
             className="group relative block"
           >
             {/* Hover card border & scale wrapper */}
-            <div className="h-full rounded-2xl border border-stroke bg-[#212123]/30 p-6 transition-all duration-300 hover:border-primary/30 hover:bg-[#252528]/50 hover:shadow-[0_8px_30px_rgb(0,0,0,0.5)] hover:shadow-primary/5 hover:-translate-y-1 flex flex-col sm:flex-row gap-5 items-start">
-              
+            <div className="h-full rounded-2xl border border-stroke bg-surface/30 p-6 transition-all duration-300 hover:border-primary/30 hover:bg-input/50 hover:shadow-[0_8px_30px_rgb(0,0,0,0.5)] hover:shadow-primary/5 hover:-translate-y-1 flex flex-col sm:flex-row gap-5 items-start">
+
               {/* Icon Container with atmospheric glow */}
-              <div className="relative p-3 rounded-xl bg-[#2b2b2c] border border-stroke/80 group-hover:border-primary/20 group-hover:bg-[#313133] transition-colors duration-300 flex-shrink-0">
+              <div className="relative p-3 rounded-xl bg-elevated border border-stroke/80 group-hover:border-primary/20 group-hover:bg-elevated-soft transition-colors duration-300 flex-shrink-0">
                 <div className="absolute inset-0 rounded-xl bg-primary/10 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="relative z-10 w-10 h-10 flex items-center justify-center">
                   <Image
@@ -71,17 +71,17 @@ function Services() {
       </div>
 
       {/* Philosophy Callout Card */}
-      <div className="relative mt-12 p-6 md:p-8 rounded-2xl border border-stroke/50 bg-gradient-to-r from-[#212123]/40 via-[#252528]/50 to-[#212123]/40 overflow-hidden">
+      <div className="relative mt-12 p-6 md:p-8 rounded-2xl border border-stroke/50 bg-gradient-to-r from-surface/40 via-input/50 to-surface/40 overflow-hidden">
         {/* Glow decoration */}
         <div className="absolute -left-16 -top-16 w-48 h-48 rounded-full bg-primary/5 blur-3xl pointer-events-none" />
         <div className="absolute -right-16 -bottom-16 w-48 h-48 rounded-full bg-primary/5 blur-3xl pointer-events-none" />
 
         <p className="relative z-10 text-subtle/90 text-[15px] md:text-base font-light leading-relaxed italic">
-          "I help brands and businesses create modern, responsive, and user-centered digital products through a strong combination of UI/UX design, front-end development, and product thinking. My goal is to build high-performance interfaces that bridge design and engineering to bring your vision to life with precision and creativity."
+          &ldquo;I help brands and businesses create modern, responsive, and user-centered digital products through a strong combination of UI/UX design, front-end development, and product thinking. My goal is to build high-performance interfaces that bridge design and engineering to bring your vision to life with precision and creativity.&rdquo;
         </p>
 
         <div className="relative z-10 flex items-center gap-3 mt-5">
-          <div className="w-8 h-[1.5px] bg-primary/40" />
+          {/* <div className="w-8 h-[1.5px] bg-primary/40" /> */}
           <span className="text-xs uppercase tracking-widest text-primary font-semibold">
             Product Philosophy
           </span>

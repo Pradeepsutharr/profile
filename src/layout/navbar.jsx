@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import ThemeToggle from "@/components/theme-toggle";
 
 const nav_data = [
   {
@@ -21,46 +21,34 @@ const nav_data = [
   },
   {
     id: 4,
+    title: "blogs",
+    link: "/blogs",
+  },
+  {
+    id: 5,
     title: "contact",
     link: "/contact",
   },
 ];
 
-function Navbar() {
+function Navbar({ theme, onToggleTheme }) {
   const location = useRouter();
-  const [isActive, setIsActive] = useState(location.route);
+  const isActive =
+    location.route === "/portfolio" || location.route === "/portfolio/[slug]"
+      ? "/portfolio"
+      : location.route === "/blogs" || location.route === "/blogs/[slug]"
+        ? "/blogs"
+        : ["/", "/resume", "/contact"].includes(location.route)
+          ? location.route
+          : null;
 
-  useEffect(() => {
-    switch (location.route) {
-      case "/resume":
-        setIsActive("/resume");
-        break;
-
-      case "/portfolio":
-      case "/portfolio/[slug]":
-        setIsActive("/portfolio");
-        break;
-
-      case "/contact":
-        setIsActive("/contact");
-        break;
-
-      case "/":
-        setIsActive("/");
-        break;
-
-      default:
-        setIsActive(null);
-        break;
-    }
-  }, [location.route]);
 
   return (
     <nav
       role="navbar"
-      className="bg-[#2b2b2cbf] w-fit px-6 rounded-bl-3xl border border-stroke"
+      className="bg-elevated/75 w-fit px-6 rounded-bl-3xl border border-stroke backdrop-blur-xl"
     >
-      <ul className="flex items-center gap-12 px-4">
+      <ul className="flex items-center gap-8 px-4">
         {nav_data?.map((item) => (
           <li key={item.id} className="text-subtle">
             <Link
@@ -73,6 +61,9 @@ function Navbar() {
             </Link>
           </li>
         ))}
+        <li className="flex items-center">
+          <ThemeToggle theme={theme} onToggle={onToggleTheme} />
+        </li>
       </ul>
     </nav>
   );

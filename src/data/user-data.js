@@ -1,7 +1,7 @@
 export const user_data = {
-  name: "pradeep kumar",
+  name: "pradeep suthar",
   title: "Product Designer",
-  email: "pradeepsutharr7@gmail.com",
+  email: "[EMAIL_ADDRESS]",
   phone: "+91 7023927315",
   location: "ahmedabad,gujarat",
   profile: [

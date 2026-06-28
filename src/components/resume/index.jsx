@@ -74,7 +74,7 @@ function ResumePage() {
                       {item.company}
                     </h4>
 
-                    <span className="inline-block mt-2.5 px-2.5 py-1 text-xs font-light bg-[#2b2b2c]/80 text-subtle border border-stroke/40 rounded-md capitalize">
+                    <span className="inline-block mt-2.5 px-2.5 py-1 text-xs font-light bg-elevated/80 text-subtle border border-stroke/40 rounded-md capitalize">
                       {item.start_date.replaceAll("-", "/")} &mdash; {item?.end_date === null ? "present" : item.end_date}
                     </span>
                   </div>
@@ -107,7 +107,7 @@ function ResumePage() {
                       {item.institution}
                     </h4>
 
-                    <span className="inline-block mt-2.5 px-2.5 py-1 text-xs font-light bg-[#2b2b2c]/80 text-subtle border border-stroke/40 rounded-md capitalize">
+                    <span className="inline-block mt-2.5 px-2.5 py-1 text-xs font-light bg-elevated/80 text-subtle border border-stroke/40 rounded-md capitalize">
                       {item.start_date.replaceAll("-", "/")} &mdash; {item?.end_date === null ? "present" : item.end_date.replaceAll("-", "/")}
                     </span>
                   </div>
@@ -124,7 +124,7 @@ function ResumePage() {
           <div className="w-12 h-1 bg-gradient-to-r from-primary to-primary/20 rounded-full mt-3" />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-[#212123]/30 border border-stroke/50 p-6 md:p-8 rounded-2xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-surface/30 border border-stroke/50 p-6 md:p-8 rounded-2xl">
           {skills?.length > 0 &&
             skills.map((item) => (
               <div key={item.id} className="space-y-2 group">
@@ -136,7 +136,7 @@ function ResumePage() {
                     {item.score}%
                   </span>
                 </div>
-                <div className="w-full bg-[#383838]/60 h-2.5 rounded-full overflow-hidden border border-stroke/20">
+                <div className="w-full bg-stroke/60 h-2.5 rounded-full overflow-hidden border border-stroke/20">
                   <div
                     className="bg-gradient-to-r from-primary via-[#ffd700] to-primary/70 h-full rounded-full shadow-[0_0_10px_rgba(255,219,112,0.3)] transition-all duration-1000 ease-out"
                     style={{ width: `${item.score}%` }}

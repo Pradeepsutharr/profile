@@ -551,6 +551,10 @@ function UserForm({ mode, initial, onCancel, onCreate, onUpdate, submitting }) {
   const avatarRef = useRef(null);
   const createdBlobsRef = useRef([]);
 
+  // Theme primary colors
+  const [primaryColorLight, setPrimaryColorLight] = useState("#b07e22");
+  const [primaryColorDark, setPrimaryColorDark] = useState("#ffdb70");
+
   useEffect(() => {
     if (initial) {
       setName(initial.name || "");
@@ -583,6 +587,9 @@ function UserForm({ mode, initial, onCancel, onCreate, onUpdate, submitting }) {
       setAvatarFilePath(initial.avatar_path || null);
       setAvatarUrl(initial.avatar_url || null);
       setAvatarPreview(initial.avatar_url || null);
+
+      setPrimaryColorLight(initial.metadata?.primaryColorLight || "#b07e22");
+      setPrimaryColorDark(initial.metadata?.primaryColorDark || "#ffdb70");
     } else {
       setName("");
       setEmail("");
@@ -604,6 +611,8 @@ function UserForm({ mode, initial, onCancel, onCreate, onUpdate, submitting }) {
       setAvatarFilePath(null);
       setAvatarUrl(null);
       setAvatarPreview(null);
+      setPrimaryColorLight("#b07e22");
+      setPrimaryColorDark("#ffdb70");
     }
 
     // cleanup on unmount
@@ -709,6 +718,11 @@ function UserForm({ mode, initial, onCancel, onCreate, onUpdate, submitting }) {
       avatarFile,
       avatarFilePath,
       avatarUrl,
+      metadata: {
+        ...initial?.metadata,
+        primaryColorLight,
+        primaryColorDark,
+      }
     };
 
     if (mode === "create") {
@@ -982,6 +996,49 @@ function UserForm({ mode, initial, onCancel, onCreate, onUpdate, submitting }) {
           <p className="text-xs text-subtle mt-1">
             If both upload and URL provided, upload will be used.
           </p>
+        </div>
+
+        {/* Custom Brand Theme Colors */}
+        <div className="border-t border-stroke pt-6 mt-4">
+          <label className="text-primary text-xs font-bold uppercase tracking-wider block mb-3">Custom Theme Brand Colors</label>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="text-subtle block mb-1 text-xs">Light Mode Primary Color</label>
+              <div className="flex gap-2 items-center">
+                <input
+                  type="color"
+                  value={primaryColorLight}
+                  onChange={(e) => setPrimaryColorLight(e.target.value)}
+                  className="w-10 h-9 rounded border border-stroke bg-transparent cursor-pointer flex-shrink-0"
+                />
+                <input
+                  type="text"
+                  value={primaryColorLight}
+                  onChange={(e) => setPrimaryColorLight(e.target.value)}
+                  className="w-full p-2 rounded bg-transparent border border-stroke text-subtle text-sm outline-none focus:border-primary"
+                  placeholder="#b07e22"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="text-subtle block mb-1 text-xs">Dark Mode Primary Color</label>
+              <div className="flex gap-2 items-center">
+                <input
+                  type="color"
+                  value={primaryColorDark}
+                  onChange={(e) => setPrimaryColorDark(e.target.value)}
+                  className="w-10 h-9 rounded border border-stroke bg-transparent cursor-pointer flex-shrink-0"
+                />
+                <input
+                  type="text"
+                  value={primaryColorDark}
+                  onChange={(e) => setPrimaryColorDark(e.target.value)}
+                  className="w-full p-2 rounded bg-transparent border border-stroke text-subtle text-sm outline-none focus:border-primary"
+                  placeholder="#ffdb70"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

@@ -109,6 +109,7 @@ const STATIC_ROUTES = [
   "",
   "contact",
   "portfolio",
+  "blogs",
   "resume",
   "services/ui-design",
   "services/ux-research",
@@ -146,26 +147,55 @@ const generateProjectUrls = (projects = []) =>
   </url>`)
         .join("");
 
+/**
+ * Generates XML for dynamic blog pages
+ */
+const generateBlogUrls = (blogs = []) =>
+    blogs
+        .map((blog) => `
+  <url>
+    <loc>${BASE_URL}/blogs/${blog.slug}</loc>
+    <lastmod>${new Date(blog.updated_at).toISOString()}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`)
+        .join("");
+
 export async function getServerSideProps({ res }) {
   try {
     // Fetch latest projects from Supabase
-    const { data: projects, error } = await supabase
+    const { data: projects, error: projectsError } = await supabase
         .from("projects")
         .select("slug, updated_at");
 
-    if (error) {
-      throw error;
+    if (projectsError) {
+      throw projectsError;
+    }
+
+    // Fetch latest blogs from Supabase (fail-safe if table is not created yet)
+    let blogs = [];
+    try {
+      const { data, error: blogsError } = await supabase
+          .from("blogs")
+          .select("slug, updated_at");
+      if (!blogsError) {
+        blogs = data || [];
+      }
+    } catch (e) {
+      console.warn("Failed fetching blogs for sitemap, skipping. Error:", e);
     }
 
     const currentDate = new Date().toISOString();
 
     const staticUrls = generateStaticUrls(currentDate);
-    const dynamicUrls = generateProjectUrls(projects);
+    const dynamicProjectUrls = generateProjectUrls(projects);
+    const dynamicBlogUrls = generateBlogUrls(blogs);
 
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${staticUrls}
-${dynamicUrls}
+${dynamicProjectUrls}
+${dynamicBlogUrls}
 </urlset>`;
 
     // 🔥 Production-grade headers (NO CACHE → Instant updates)

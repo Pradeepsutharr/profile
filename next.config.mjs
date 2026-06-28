@@ -13,6 +13,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "fcecfevebdgozzlzladp.supabase.co",
       },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
     ],
     qualities: [10, 20, 30, 40, 50, 60, 65, 70, 75, 80, 85, 90, 95, 100],
   },

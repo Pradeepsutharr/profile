@@ -2,6 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-shell: 18 18 18;
+  --color-background: 30 30 31;
+  --color-surface: 32 32 34;
+  --color-panel: 36 36 38;
+  --color-elevated: 43 43 44;
+  --color-elevated-soft: 49 49 51;
+  --color-input: 37 37 39;
+  --color-input-focus: 42 42 44;
+  --color-field: 46 46 48;
+  --color-primary: 255 219 112;
+  --color-secondary: 247 247 247;
+  --color-main: 250 250 250;
+  --color-subtle: 214 214 214;
+  --color-muted: 151 151 152;
+  --color-muted-soft: 74 74 75;
+  --color-muted-strong: 90 90 92;
+  --color-stroke: 56 56 56;
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --color-shell: 246 240 232;
+  --color-background: 255 252 247;
+  --color-surface: 245 238 229;
+  --color-panel: 240 232 222;
+  --color-elevated: 235 226 215;
+  --color-elevated-soft: 227 218 206;
+  --color-input: 249 244 237;
+  --color-input-focus: 255 250 244;
+  --color-field: 216 203 189;
+  --color-primary: 176 126 34;
+  --color-secondary: 73 60 47;
+  --color-main: 36 29 22;
+  --color-subtle: 98 86 74;
+  --color-muted: 112 99 87;
+  --color-muted-soft: 157 142 128;
+  --color-muted-strong: 126 112 99;
+  --color-stroke: 215 202 187;
+  color-scheme: light;
+}
+
 @layer utilities {
   .col-1 {
     @apply w-1/12;
@@ -55,7 +97,7 @@
 
 @layer utilities {
   .skeleton {
-    @apply relative overflow-hidden rounded-md bg-[#202022];
+    @apply relative overflow-hidden rounded-md bg-surface;
   }
 
   .skeleton::after {
@@ -65,9 +107,9 @@
     transform: translateX(-100%);
     background: linear-gradient(
       90deg,
-      #2b2b2c29,
-      rgba(255, 255, 255, 0.027),
-      #2b2b2c29
+      rgb(var(--color-elevated) / 0.16),
+      rgb(var(--color-secondary) / 0.08),
+      rgb(var(--color-elevated) / 0.16)
     );
     animation: skeleton-loading 1.4s infinite;
   }
@@ -89,9 +131,12 @@ html {
 }
 
 body {
-  background-color: #121212;
+  background-color: rgb(var(--color-shell));
+  color: rgb(var(--color-main));
   position: relative;
-  /* margin: 48px 0 !important; */
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .mobile-navbar {
@@ -99,9 +144,10 @@ body {
   bottom: 0;
   left: 0;
   width: 100%;
-  background: #2b2b2cbf;
+  background: rgb(var(--color-elevated) / 0.75);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
-  border: 1px solid #383838;
+  border: 1px solid rgb(var(--color-stroke));
   border-radius: 18px 18px 0 0;
   box-shadow: 0 16px 30px hsla(0, 0%, 0%, 0.25);
   z-index: 5;
@@ -111,25 +157,25 @@ body {
   background:
     linear-gradient(
       to bottom right,
-      hsla(240, 1%, 18%, 0.251) 0%,
-      hsla(240, 2%, 11%, 0) 100%
+      rgb(var(--color-elevated) / 0.2) 0%,
+      rgb(var(--color-shell) / 0) 100%
     ),
-    hsl(240, 2%, 13%);
+    rgb(var(--color-background));
 }
 
 .avatar-box {
   background: linear-gradient(
     to bottom right,
-    hsl(240, 1%, 25%) 3%,
-    hsl(0, 0%, 19%) 97%
+    rgb(var(--color-elevated)) 3%,
+    rgb(var(--color-surface)) 97%
   );
 }
 
 .icon-box {
   background: linear-gradient(
     to bottom right,
-    hsl(0, 0%, 25%) 0%,
-    hsla(0, 0%, 25%, 0) 50%
+    rgb(var(--color-elevated)) 0%,
+    rgb(var(--color-elevated) / 0) 50%
   );
   z-index: 1;
   position: relative;
@@ -138,8 +184,8 @@ body {
 .toggle-btn {
   background: linear-gradient(
     to bottom right,
-    hsl(0, 0%, 25%) 0%,
-    hsla(0, 0%, 25%, 0) 50%
+    rgb(var(--color-elevated)) 0%,
+    rgb(var(--color-elevated) / 0) 50%
   );
   box-shadow: 0 16px 30px hsla(0, 0%, 0%, 0.25);
   border-radius: 0 15px;
@@ -152,10 +198,10 @@ body {
   background:
     linear-gradient(
       to bottom right,
-      hsla(240, 1%, 18%, 0.251) 0%,
-      hsla(240, 2%, 11%, 0) 100%
+      rgb(var(--color-elevated) / 0.2) 0%,
+      rgb(var(--color-shell) / 0) 100%
     ),
-    hsl(240, 2%, 13%);
+    rgb(var(--color-background));
   transition: 0.25s ease;
   z-index: -1;
 }
@@ -164,7 +210,7 @@ body {
   content: "";
   position: absolute;
   inset: 1px;
-  background: #202022;
+  background: rgb(var(--color-surface));
   border-radius: inherit;
   z-index: -1;
 }
@@ -172,8 +218,8 @@ body {
 .service-card {
   background: linear-gradient(
     to bottom right,
-    hsl(0, 0%, 25%) 0%,
-    hsla(0, 0%, 25%, 0) 50%
+    rgb(var(--color-elevated)) 0%,
+    rgb(var(--color-elevated) / 0) 50%
   );
 }
 
@@ -181,7 +227,7 @@ body {
   content: "";
   width: 1.5px;
   height: calc(100% + 40px);
-  background-color: #383838;
+  background-color: rgb(var(--color-stroke));
   position: absolute;
   top: -45px;
   left: -46.5px;
@@ -189,7 +235,7 @@ body {
 
 .timeline-item h3::before {
   content: "";
-  background-color: #ffdb70;
+  background-color: rgb(var(--color-primary));
   position: absolute;
   left: -57px;
   top: 32%;
@@ -197,7 +243,7 @@ body {
   height: 8px;
   border-radius: 50%;
   z-index: 2;
-  box-shadow: 0px 0px 0px 5px #383838;
+  box-shadow: 0px 0px 0px 5px rgb(var(--color-stroke));
 }
 
 .hide-scrollbar::-webkit-scrollbar {
@@ -208,12 +254,20 @@ body {
   width: 20px !important;
   height: 6px !important;
   border-radius: 999px !important;
-  background: #444 !important;
+  background: rgb(var(--color-muted-soft)) !important;
   opacity: 1 !important;
 }
 
 .swiper-pagination-bullet-active {
-  background: #f5c76a !important;
+  background: rgb(var(--color-primary)) !important;
+}
+
+.theme-toggle {
+  box-shadow: 0 10px 24px rgb(0 0 0 / 0.08);
+}
+
+.theme-toggle__icon {
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
 }
 
 .swiper-slide-project {
@@ -370,3 +424,180 @@ body {
 .contact-input:focus-within .anim-line {
   display: block;
 }
+
+/* Global Page Transition Progress Bar */
+@keyframes route-progress {
+  0% {
+    width: 0%;
+  }
+  20% {
+    width: 25%;
+  }
+  50% {
+    width: 60%;
+  }
+  80% {
+    width: 85%;
+  }
+  100% {
+    width: 98%;
+  }
+}
+
+.animate-route-progress {
+  animation: route-progress 4s cubic-bezier(0.1, 0.8, 0.1, 1) forwards;
+}
+
+/* Premium Admin Layout & List View Overrides */
+.min-h-screen main ul li.cursor-pointer,
+.min-h-screen main .grid-cols-1 > div.cursor-pointer,
+.min-h-screen main .flex-col > div.cursor-pointer,
+.min-h-screen main ul li[draggable="true"] {
+  background: rgba(22, 22, 26, 0.45) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 16px !important;
+  padding: 16px 20px !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+.min-h-screen main ul li.cursor-pointer:hover,
+.min-h-screen main .grid-cols-1 > div.cursor-pointer:hover,
+.min-h-screen main .flex-col > div.cursor-pointer:hover,
+.min-h-screen main ul li[draggable="true"]:hover {
+  background: rgba(22, 22, 26, 0.75) !important;
+  border-color: rgba(var(--color-primary), 0.35) !important;
+  transform: translateY(-2px);
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.5),
+    0 0 15px rgba(var(--color-primary), 0.08) !important;
+}
+
+/* Make lists headers look like premium sections */
+.min-h-screen main h2 {
+  font-family: 'Sora', sans-serif !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+}
+
+/* Action button style override */
+.min-h-screen main button.bg-primary {
+  border-radius: 12px !important;
+  padding: 10px 18px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  box-shadow: 0 4px 14px rgba(var(--color-primary), 0.15);
+  transition: all 0.3s ease !important;
+}
+
+.min-h-screen main button.bg-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(var(--color-primary), 0.25);
+  opacity: 0.95;
+}
+
+/* Reorder handles styling override */
+.min-h-screen main li.cursor-pointer div.bg-zinc-900,
+.min-h-screen main div.cursor-pointer div.bg-zinc-900 {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px !important;
+  padding: 8px !important;
+  transition: all 0.3s;
+}
+
+.min-h-screen main li.cursor-pointer:hover div.bg-zinc-900,
+.min-h-screen main div.cursor-pointer:hover div.bg-zinc-900 {
+  background: rgba(var(--color-primary), 0.1) !important;
+  border-color: rgba(var(--color-primary), 0.3);
+  color: rgb(var(--color-primary)) !important;
+}
+
+/* Admin modals / overlay forms design overrides */
+.min-h-screen div[role="dialog"] .bg-background,
+.min-h-screen div[role="dialog"] .bg-panel,
+.min-h-screen div[role="dialog"] .bg-card,
+.min-h-screen div[role="dialog"] .bg-zinc-900,
+.min-h-screen div[role="dialog"] .border-stroke.rounded-lg {
+  background: #121216 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75) !important;
+  padding: 28px !important;
+}
+
+/* Ensure backdrop stays a backdrop */
+.min-h-screen div[role="dialog"] .absolute.inset-0,
+.min-h-screen div[role="dialog"] .bg-black\/60 {
+  background: rgba(0, 0, 0, 0.75) !important;
+  backdrop-filter: blur(4px);
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Target ONLY text-based inputs inside modals, NOT ranges or check/radio elements */
+.min-h-screen div[role="dialog"] input[type="text"],
+.min-h-screen div[role="dialog"] input[type="number"],
+.min-h-screen div[role="dialog"] input[type="email"],
+.min-h-screen div[role="dialog"] input[type="password"],
+.min-h-screen div[role="dialog"] input:not([type]),
+.min-h-screen div[role="dialog"] textarea,
+.min-h-screen div[role="dialog"] select {
+  background: rgba(18, 18, 22, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 12px !important;
+  padding: 11px 16px !important;
+  font-size: 13.5px !important;
+  color: #f7f7f7 !important;
+  outline: none !important;
+  transition: all 0.3s ease !important;
+}
+
+.min-h-screen div[role="dialog"] input[type="text"]:focus,
+.min-h-screen div[role="dialog"] input[type="number"]:focus,
+.min-h-screen div[role="dialog"] input[type="email"]:focus,
+.min-h-screen div[role="dialog"] input[type="password"]:focus,
+.min-h-screen div[role="dialog"] input:not([type]):focus,
+.min-h-screen div[role="dialog"] textarea:focus,
+.min-h-screen div[role="dialog"] select:focus {
+  border-color: rgba(var(--color-primary), 0.4) !important;
+  background: rgba(18, 18, 22, 0.9) !important;
+  box-shadow: 0 0 10px rgba(var(--color-primary), 0.05) !important;
+}
+
+/* Specific size override for layouts */
+.min-h-screen div[role="dialog"] input.w-20 {
+  width: 80px !important;
+  flex: none !important;
+}
+.min-h-screen div[role="dialog"] input.w-40 {
+  width: 160px !important;
+  flex: none !important;
+}
+
+/* Modals Buttons Styling overrides */
+.min-h-screen div[role="dialog"] button.bg-primary {
+  border-radius: 12px !important;
+  padding: 10px 20px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 12px rgba(var(--color-primary), 0.25) !important;
+}
+
+.min-h-screen div[role="dialog"] button.border-stroke {
+  border-radius: 12px !important;
+  padding: 10px 20px !important;
+  font-size: 13px !important;
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #a0a0a9 !important;
+  transition: all 0.3s;
+}
+
+.min-h-screen div[role="dialog"] button.border-stroke:hover {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+}
+

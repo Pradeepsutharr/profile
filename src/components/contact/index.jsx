@@ -23,7 +23,7 @@ function FloatingInput({ label, error, children, required }) {
       <label
         className={cx(
           "block text-[10px] font-bold tracking-[0.18em] uppercase mb-2 transition-colors duration-200",
-          error ? "text-red-400" : "text-[#979798] group-focus-within:text-primary"
+          error ? "text-red-400" : "text-muted group-focus-within:text-primary"
         )}
       >
         {label}
@@ -42,12 +42,12 @@ function FloatingInput({ label, error, children, required }) {
 
 const inputClass = (hasError) =>
   cx(
-    "w-full px-4 py-3.5 rounded-xl text-[14px] text-main placeholder:text-[#4a4a4b]",
-    "bg-[#252527] border transition-all duration-200 outline-none",
-    "focus:bg-[#2a2a2c] focus:ring-2 focus:ring-primary/20",
+    "w-full px-4 py-3.5 rounded-xl text-[14px] text-main placeholder:text-muted-soft",
+    "bg-input border transition-all duration-200 outline-none",
+    "focus:bg-input-focus focus:ring-2 focus:ring-primary/20",
     hasError
       ? "border-red-500/60 focus:border-red-400"
-      : "border-[#2e2e30] focus:border-primary/50"
+      : "border-field focus:border-primary/50"
   );
 
 /* ── Animated line ── */
@@ -211,7 +211,7 @@ export default function ContactPage() {
           <span className="text-3xl text-primary font-bold">Get in touch</span>
         </div>
         <h1 className="text-4xl md:text-5xl text-main font-semibold capitalize leading-[1.1] mt-7">
-          Let's build something {" "}
+          Let&apos;s build something{" "}
           <span className="text-primary">remarkable.</span>
         </h1>
 
@@ -226,7 +226,7 @@ export default function ContactPage() {
           <p className="text-subtle/70 text-[14px] leading-relaxed mb-8 max-w-lg">
             Have a project or just want to say hi? I typically reply within{" "}
             <span className="text-primary font-semibold">12–24 hours</span>.
-            Share a brief and I'll get back with next steps.
+            Share a brief and I&apos;ll get back with next steps.
           </p>
 
           <form onSubmit={handleSubmit} noValidate>
@@ -277,7 +277,7 @@ export default function ContactPage() {
                   }}
                 >
                   {topics.map((t) => (
-                    <option key={t} value={t} className="bg-[#1e1e1f] text-main">{t}</option>
+                    <option key={t} value={t} className="bg-background text-main">{t}</option>
                   ))}
                 </select>
               </FloatingInput>
@@ -298,7 +298,7 @@ export default function ContactPage() {
                   />
                   <span className={cx(
                     "absolute bottom-3 right-3.5 text-[10px] tabular-nums transition-colors",
-                    charCount > 800 ? "text-primary" : "text-[#4a4a4b]"
+                    charCount > 800 ? "text-primary" : "text-muted-soft"
                   )}>
                     {charCount}
                   </span>
@@ -321,7 +321,7 @@ export default function ContactPage() {
                   <span className="text-[11px] text-subtle/50">{(file.size / 1024 / 1024).toFixed(2)} MB</span>
                   <button
                     type="button" onClick={() => setFile(null)}
-                    className="ml-1 text-[#5a5a5c] hover:text-red-400 transition-colors"
+                    className="ml-1 text-muted-strong hover:text-red-400 transition-colors"
                     aria-label="Remove attachment"
                   >
                     <X size={13} />
@@ -330,11 +330,11 @@ export default function ContactPage() {
               ) : (
                 <label
                   htmlFor="attachment"
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-[#2e2e30] text-subtle hover:border-primary/30 hover:text-primary cursor-pointer transition-all duration-200 text-[13px] font-medium"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-field text-subtle hover:border-primary/30 hover:text-primary cursor-pointer transition-all duration-200 text-[13px] font-medium"
                 >
                   <Paperclip size={13} />
                   Attach file
-                  <span className="text-[#4a4a4b] text-[11px]">(max {MAX_FILE_MB} MB)</span>
+                  <span className="text-muted-soft text-[11px]">(max {MAX_FILE_MB} MB)</span>
                 </label>
               )}
             </div>
@@ -384,7 +384,7 @@ export default function ContactPage() {
                   <CheckCircle size={16} className="text-primary shrink-0" />
                   <div>
                     <div className="text-[13px] text-main font-semibold">Message sent!</div>
-                    <div className="text-[11px] text-subtle/70">I'll reply within 12–24 hours.</div>
+                    <div className="text-[11px] text-subtle/70">I&apos;ll reply within 12–24 hours.</div>
                   </div>
                 </div>
               )}
@@ -416,13 +416,13 @@ export default function ContactPage() {
           ].map(({ Icon, label, value, href }) => (
             <div
               key={label}
-              className="group flex items-start gap-4 px-4 py-4 rounded-xl border border-[#2a2a2c] bg-[#212123]/40 hover:border-primary/20 hover:bg-[#252527]/60 transition-all duration-300"
+              className="group flex items-start gap-4 px-4 py-4 rounded-xl border border-field bg-surface/40 hover:border-primary/20 hover:bg-input/60 transition-all duration-300"
             >
               <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/15 transition-colors">
                 <Icon size={15} className="text-primary" />
               </div>
               <div className="min-w-0">
-                <p className="text-[10px] font-bold tracking-[0.15em] uppercase text-[#5a5a5c] mb-0.5">{label}</p>
+                <p className="text-[10px] font-bold tracking-[0.15em] uppercase text-muted-strong mb-0.5">{label}</p>
                 {href ? (
                   <a href={href} className="text-[13px] text-subtle hover:text-primary transition-colors truncate block">{value}</a>
                 ) : (
@@ -433,7 +433,7 @@ export default function ContactPage() {
           ))}
 
           {/* availability badge */}
-          <div className="mt-5 px-4 py-3.5 rounded-xl border border-[#2a2a2c] bg-[#212123]/40">
+          <div className="mt-5 px-4 py-3.5 rounded-xl border border-field bg-surface/40">
             <div className="flex items-center gap-2 mb-1">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-60" />

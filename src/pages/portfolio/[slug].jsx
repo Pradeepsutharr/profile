@@ -13,10 +13,35 @@ function ProjectDetails({ project }) {
 
 export default ProjectDetails;
 
-export async function getServerSideProps({ params }) {
-  // console.log("SSR RUNNING with slug:", params.slug);
+export async function getStaticPaths() {
+  try {
+    const { data: projects, error } = await supabase
+      .from("projects")
+      .select("slug");
+
+    if (error) {
+      console.error("Supabase error fetching slugs for static paths:", error);
+      return { paths: [], fallback: "blocking" };
+    }
+
+    const paths = projects
+      ?.filter((p) => p.slug)
+      .map((p) => ({
+        params: { slug: p.slug },
+      })) || [];
+
+    return {
+      paths,
+      fallback: "blocking",
+    };
+  } catch (err) {
+    console.error("Unexpected error in getStaticPaths:", err);
+    return { paths: [], fallback: "blocking" };
+  }
+}
+
+export async function getStaticProps({ params }) {
   const { slug } = params;
-  // console.log("getServerSideProps hit for slug:", slug);
 
   try {
     const { data, error } = await supabase
@@ -25,25 +50,24 @@ export async function getServerSideProps({ params }) {
       .eq("slug", slug)
       .single();
 
-    // console.log("supabase data:", data);
-    // console.log("supabase error:", error);
-
     if (error) {
       console.error("Supabase error fetching project by slug:", error);
-      return { notFound: true };
+      return { notFound: true, revalidate: 60 };
     }
 
     if (!data) {
-      return { notFound: true };
+      return { notFound: true, revalidate: 60 };
     }
 
     return {
       props: {
         project: data,
       },
+      revalidate: 60, // Revalidate every 60 seconds (ISR)
     };
   } catch (err) {
-    console.error("Unexpected error in getServerSideProps:", err);
-    return { notFound: true };
+    console.error("Unexpected error in getStaticProps:", err);
+    return { notFound: true, revalidate: 60 };
   }
 }
+

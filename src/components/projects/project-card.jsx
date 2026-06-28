@@ -17,10 +17,10 @@ function ProjectCard({ image, title, category, slug }) {
       className="group relative block"
     >
       {/* Visual background atmospheric wrapper */}
-      <div className="h-full rounded-2xl border border-stroke/50 bg-[#212123]/20 p-4 transition-all duration-300 hover:border-primary/30 hover:bg-[#252528]/40 hover:shadow-[0_8px_30px_rgb(0,0,0,0.4)] hover:shadow-primary/5 hover:-translate-y-1">
+      <div className="h-full rounded-2xl border border-stroke/50 bg-surface/20 p-4 transition-all duration-300 hover:border-primary/30 hover:bg-input/40 hover:shadow-[0_8px_30px_rgb(0,0,0,0.4)] hover:shadow-primary/5 hover:-translate-y-1">
         
         {/* Project Image Box */}
-        <div className="relative aspect-[3/2] w-full rounded-xl overflow-hidden bg-[#2b2b2c] border border-stroke/20">
+        <div className="relative aspect-[3/2] w-full rounded-xl overflow-hidden bg-elevated border border-stroke/20">
           <Image
             src={image}
             alt={title}
@@ -35,7 +35,7 @@ function ProjectCard({ image, title, category, slug }) {
             className="opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 absolute top-[50%] left-[50%] p-3.5 bg-black/40 backdrop-blur-md border border-white/10 rounded-full transition-all duration-300"
             style={{ transform: "translate(-50%, -50%)" }}
           >
-            <Eye color="#ffdb70" size={20} />
+            <Eye className="text-primary" size={20} />
           </div>
         </div>
 

@@ -70,6 +70,20 @@ const SEOConfig = {
     canonical: `${SITE.siteUrl}/portfolio`,
   },
 
+  blogs: {
+    pageTitle: "Blogs | Design & Engineering Insights | Pradeep Suthar",
+    pageDescription:
+      "Insights, tutorials, and guides about frontend development, product design, React, Next.js, and UX design from Pradeep Suthar.",
+    keywords:
+      "Frontend Blog, UI UX Design Blog, React Development, Next.js Articles, Web Design Guides, Software Engineering Blog",
+    ogTitle: "Insights on Design & Frontend Engineering - Blogs | Pradeep Suthar",
+    ogImage: SITE.defaultOgImage,
+    ogUrl: `${SITE.siteUrl}/blogs`,
+    ogType: "website",
+    locale: SITE.locale,
+    canonical: `${SITE.siteUrl}/blogs`,
+  },
+
   contact: {
     pageTitle:
       "Hire Product Designer & Front-End Developer | Contact Pradeep Suthar",
