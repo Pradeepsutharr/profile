@@ -16,12 +16,13 @@ import Link from "next/link";
 import Image from "next/image";
 import SideBarSkeleton from "./sidebar-skeleton";
 import MobileSidebarSkeleton from "@/layout/mobile-sidebar-skeleton";
+import ThemeToggle from "@/components/theme-toggle";
 
 const BUCKET = "portfolio";
 
-export default function SideBar() {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+export default function SideBar({ theme, onToggleTheme, initialUser }) {
+  const [user, setUser] = useState(initialUser || null);
+  const [loading, setLoading] = useState(!initialUser);
   const [open, setOpen] = useState(false);
   const [tiltStyle, setTiltStyle] = useState({});
 
@@ -32,7 +33,7 @@ export default function SideBar() {
     const y = e.clientY - box.top;
     const centerX = box.width / 2;
     const centerY = box.height / 2;
-    
+
     // Rotate maximum 15 degrees
     const rotateX = -((y - centerY) / centerY) * 15;
     const rotateY = ((x - centerX) / centerX) * 15;
@@ -82,12 +83,17 @@ export default function SideBar() {
   };
 
   useEffect(() => {
-    const timeoutId = window.setTimeout(() => {
-      loadActiveUser();
-    }, 0);
+    if (initialUser) {
+      setUser(initialUser);
+      setLoading(false);
+    } else {
+      const timeoutId = window.setTimeout(() => {
+        loadActiveUser();
+      }, 0);
 
-    return () => window.clearTimeout(timeoutId);
-  }, []);
+      return () => window.clearTimeout(timeoutId);
+    }
+  }, [initialUser]);
 
   // if (loading) return <SideBarSkeleton />;
   if (loading) {
@@ -112,13 +118,13 @@ export default function SideBar() {
       className={`lg:px-6 px-4 lg:py-10 py-4 flex flex-col items-center bg-background border border-stroke rounded-2xl lg:rounded-3xl relative lg:sticky lg:top-[60px] overflow-hidden
         ${open ? "max-h-[900px]" : "max-h-[113px]"
         } lg:max-h-none transition-all duration-700 ease-in-out`}
-      aria-expanded={open}
     >
       {/* Toggle: visible only on small screens */}
       <button
         onClick={() => setOpen((prev) => !prev)}
         className="absolute block lg:hidden right-0 top-0 p-2 toggle-btn"
         aria-label={open ? "Collapse sidebar" : "Expand sidebar"}
+        aria-expanded={open}
       >
         {/* Show Ellipsis when collapsed, X when open */}
         {open ? (
@@ -127,6 +133,14 @@ export default function SideBar() {
           <Ellipsis className="text-primary" size={18} />
         )}
       </button>
+      {/* 
+      <div className="absolute right-0 top-16">
+        <ThemeToggle
+          theme={theme}
+          onToggle={onToggleTheme}
+          className="text-[11px]"
+        />
+      </div> */}
 
       <div className="flex lg:flex-col items-center gap-6 lg:gap-0 w-full transition-all duration-700">
         <div
@@ -143,8 +157,9 @@ export default function SideBar() {
             src={user?.avatar_url || "/my-avatar.png"}
             alt={user?.name || "avatar"}
             priority
-            width={200}
-            height={196}
+            width={150}
+            height={150}
+            className="rounded-3xl"
             style={{ transform: "translateZ(15px)", transformStyle: "preserve-3d" }}
           />
         </div>
@@ -227,6 +242,7 @@ export default function SideBar() {
             <Link
               href={socials.github}
               target="_blank"
+              aria-label="GitHub Profile"
               className="icon-box max-w-[35px] max-h-[35px] min-w-[35px] min-h-[35px] flex items-center justify-center rounded-md text-subtle hover:text-primary"
             >
               <Github size={18} />
@@ -237,6 +253,7 @@ export default function SideBar() {
             <Link
               href={socials.linkedin}
               target="_blank"
+              aria-label="LinkedIn Profile"
               className="icon-box max-w-[35px] max-h-[35px] min-w-[35px] min-h-[35px] flex items-center justify-center rounded-md text-subtle hover:text-primary"
             >
               <Linkedin size={18} />
@@ -247,6 +264,7 @@ export default function SideBar() {
             <Link
               href={socials.instagram}
               target="_blank"
+              aria-label="Instagram Profile"
               className="icon-box max-w-[35px] max-h-[35px] min-w-[35px] min-h-[35px] flex items-center justify-center rounded-md text-subtle hover:text-primary"
             >
               <Instagram size={18} />
@@ -257,6 +275,7 @@ export default function SideBar() {
             <Link
               href={socials.twitter}
               target="_blank"
+              aria-label="Twitter Profile"
               className="icon-box max-w-[35px] max-h-[35px] min-w-[35px] min-h-[35px] flex items-center justify-center rounded-md text-subtle hover:text-primary"
             >
               <Twitter size={18} />

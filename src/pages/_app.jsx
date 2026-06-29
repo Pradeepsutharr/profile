@@ -2,7 +2,7 @@ import MobileNavbar from "@/layout/mobile-navbar";
 import Navbar from "@/layout/navbar";
 import SideBar from "@/layout/side-bar";
 import "@/styles/globals.css";
-import { Poppins } from "next/font/google";
+import { Poppins, DM_Sans, Sora } from "next/font/google";
 import { useRouter } from "next/router";
 import Script from "next/script";
 import { useEffect, useState } from "react";
@@ -10,9 +10,24 @@ import { supabase } from "@/lib/supabaseClient";
 
 const THEME_STORAGE_KEY = "portfolio-theme";
 
-const font = Poppins({
+const poppins = Poppins({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700"],
+  variable: "--font-poppins",
+  display: "swap",
+});
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "700"],
+  variable: "--font-dm-sans",
+  display: "swap",
+});
+
+const sora = Sora({
+  subsets: ["latin"],
+  weight: ["400", "600", "700", "800"],
+  variable: "--font-sora",
   display: "swap",
 });
 
@@ -122,7 +137,7 @@ export default function App({ Component, pageProps }) {
       `}
       </Script>
 
-      <div className={`${font.className}`}>
+      <div className={`${poppins.variable} ${dmSans.variable} ${sora.variable} ${poppins.className}`}>
         {/* Glowing Top Route Progress Bar */}
         {isTransitioning && (
           <div className="fixed top-0 left-0 right-0 h-1 bg-primary/20 z-[99999] overflow-hidden">
@@ -144,10 +159,14 @@ export default function App({ Component, pageProps }) {
             <div className="container">
               <div className="flex flex-wrap">
                 <aside className="side-bar col-12 lg:col-3">
-                  <SideBar />
+                  <SideBar
+                    theme={theme}
+                    onToggleTheme={handleThemeToggle}
+                    initialUser={pageProps.activeUser}
+                  />
                 </aside>
 
-                <div className="main-content col-12 lg:col-9">
+                <main className="main-content col-12 lg:col-9">
                   <div className="bg-background border border-stroke rounded-2xl lg:rounded-3xl overflow-hidden lg:relative lg:px-6 lg:py-10 px-4 py-4 mb-20">
                     <div className="navbar hidden lg:flex absolute right-0 top-0">
                       <Navbar
@@ -165,7 +184,7 @@ export default function App({ Component, pageProps }) {
 
                     <Component {...pageProps} />
                   </div>
-                </div>
+                </main>
               </div>
             </div>
           </div>

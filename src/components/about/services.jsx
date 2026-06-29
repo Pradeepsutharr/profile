@@ -28,7 +28,7 @@ function Services() {
   if (loading) return <ServicesSkeleton />;
 
   return (
-    <section className="mt-8">
+    <section className="">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {services?.map((service) => (
           <Link

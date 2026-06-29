@@ -1,7 +1,7 @@
 import About from "@/components/about";
-import Head from "next/head";
 import SEO from "@/common/seo";
 import SEOConfig from "@/common/seo.config";
+import { fetchActiveUser } from "@/lib/supabaseClient";
 
 export default function Home() {
   return (
@@ -10,4 +10,14 @@ export default function Home() {
       <About />
     </>
   );
+}
+
+export async function getStaticProps() {
+  const activeUser = await fetchActiveUser();
+  return {
+    props: {
+      activeUser,
+    },
+    revalidate: 60,
+  };
 }

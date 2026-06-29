@@ -1,0 +1,44 @@
+# Pradeep Suthar - Product Designer & Frontend Developer
+
+> Summary of Pradeep Suthar's portfolio, professional background, core capabilities, project showcase, and articles. Designed for AI Search Engines, LLM crawlers, and recruitment agents.
+
+## Professional Summary
+Pradeep Suthar is a hybrid Product Designer, UI/UX Researcher, and Frontend Developer based in Ahmedabad, Gujarat, India. He has 3+ years of experience bridging design and code by building conversion-oriented SaaS layouts, interactive UI mockups in Figma, and high-performance frontend codebases using React and Next.js.
+
+## Contact & Links
+- **Email:** pradeepsutharr7@gmail.com
+- **Phone:** +91 7023927315
+- **Location:** Ahmedabad, Gujarat, India
+- **Portfolio Website:** https://pradeep-suthar.vercel.app/
+- **LinkedIn:** https://www.linkedin.com/in/pradeep-suthar-a47432273/
+- **GitHub:** https://github.com/sutharpradip
+- **Instagram:** https://www.instagram.com/suthar_pradeeep?igsh=ZjJsMHFsbWdqNmRw
+
+## Services & Expertise
+- **UI Design:** Modern, conversion-focused, responsive design layouts emphasizing accessibility and system consistency.
+- **UX Research:** Usability testing, user flows, journey maps, and idea validation.
+- **Product Design:** End-to-end MVP layouts and interactive dashboard architectures for startups.
+- **Frontend Development:** Fast, lightweight, SEO-optimized web apps built in React, Next.js, and Tailwind CSS.
+
+## Main Navigation
+- [About / Home](https://pradeep-suthar.vercel.app/) - Biography, metrics, core philosophy, and capabilities.
+- [Resume](https://pradeep-suthar.vercel.app/resume) - Work experience, education history, and skill inventory.
+- [Portfolio](https://pradeep-suthar.vercel.app/portfolio) - Catalog of shipped design systems, UI/UX, and web apps.
+- [Blogs](https://pradeep-suthar.vercel.app/blogs) - Expert insights on Next.js, product design, and conversion principles.
+- [Contact](https://pradeep-suthar.vercel.app/contact) - Contact form and direct communication channels.
+
+## Key Projects
+- [UnWrrap](https://pradeep-suthar.vercel.app/portfolio/unwrrap) - AI-powered gifting marketplace. Focus: Group payments, UX flow, figma mocks.
+- [Smart CV](https://pradeep-suthar.vercel.app/portfolio/smart-cv) - Dynamic resume builder app. Focus: Layout clarity, UX flow.
+- [Property Management](https://pradeep-suthar.vercel.app/portfolio/property-management) - Dashboard system for real-estate operations. Focus: Multi-role dashboards, workflow simplification.
+- [Interior (Online Store)](https://pradeep-suthar.vercel.app/portfolio/interior) - High-performance React e-commerce application. Focus: Search queries, tailwind utility, responsive rendering.
+- [Fruitish](https://pradeep-suthar.vercel.app/portfolio/fruitish) - WhatsApp organic order landing page. Focus: Conversion rates, mobile layout.
+
+## Featured Articles
+- [Mastering Next.js Performance: Optimizing Core Web Vitals](https://pradeep-suthar.vercel.app/blogs/mastering-nextjs-performance-optimizing-core-web-vitals) - Core web vitals guide, next/image layout, code splitting, ISR cache hooks.
+- [Designing Scalable SaaS Products: A Product Designer's Blueprint](https://pradeep-suthar.vercel.app/blogs/designing-scalable-saas-products-a-product-designers-blueprint) - SaaS information architecture, cognitive loads, figma design tokens.
+- [10 UI/UX Design Principles That Double Conversion Rates](https://pradeep-suthar.vercel.app/blogs/10-uiux-design-principles-that-double-conversion-rates) - Typographic visual hierarchy, micro-interactions, responsive mobile grids.
+- [Why Product Designers Who Code Build Better Products](https://pradeep-suthar.vercel.app/blogs/bridging-the-gap-why-product-designers-who-code-build-better-products) - Design handoff optimizations, Tailwind CSS configs, design tokens.
+
+---
+For full text, blogs content, project definitions, and comprehensive background, read the [Full LLM Resource Directory](https://pradeep-suthar.vercel.app/llms-full.txt).

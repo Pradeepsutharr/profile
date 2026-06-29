@@ -45,7 +45,6 @@ function Navbar({ theme, onToggleTheme }) {
 
   return (
     <nav
-      role="navbar"
       className="bg-elevated/75 w-fit px-6 rounded-bl-3xl border border-stroke backdrop-blur-xl"
     >
       <ul className="flex items-center gap-8 px-4">

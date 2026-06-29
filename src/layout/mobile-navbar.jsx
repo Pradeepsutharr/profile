@@ -44,27 +44,26 @@ function MobileNavbar({ theme, onToggleTheme }) {
 
 
   return (
-    <nav className="mobile-navbar">
+    <nav className="mobile-navbar relative !z-20">
       <ul className="flex items-center justify-evenly gap-2 px-3">
         {nav_data?.map((item) => (
           <li key={item.id}>
             <Link
               href={item.link}
-              className={`text-main py-5 px-2 block capitalize ${
-                isActive === item.link ? "text-primary" : "text-subtle"
-              }`}
+              className={`text-main py-5 px-2 block capitalize ${isActive === item.link ? "text-primary" : "text-subtle"
+                }`}
             >
               {item.title}
             </Link>
           </li>
         ))}
-        <li className="flex items-center">
+        {/* <li className="flex items-center">
           <ThemeToggle
             theme={theme}
             onToggle={onToggleTheme}
             className="px-2.5 py-1.5 text-[11px]"
           />
-        </li>
+        </li> */}
       </ul>
     </nav>
   );

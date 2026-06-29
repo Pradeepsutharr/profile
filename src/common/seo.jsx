@@ -408,12 +408,6 @@ const SEO = ({
       <meta property="og:image" content={image} />
 
       {/* Assets */}
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossOrigin="true"
-      />
       <link rel="manifest" href="/site.webmanifest" />
       <link
         rel="apple-touch-icon"

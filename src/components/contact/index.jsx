@@ -17,10 +17,11 @@ const topics = [
 /* ── tiny util ── */
 const cx = (...classes) => classes.filter(Boolean).join(" ");
 
-function FloatingInput({ label, error, children, required }) {
+function FloatingInput({ label, error, children, required, id }) {
   return (
     <div className="relative group">
       <label
+        htmlFor={id}
         className={cx(
           "block text-[10px] font-bold tracking-[0.18em] uppercase mb-2 transition-colors duration-200",
           error ? "text-red-400" : "text-muted group-focus-within:text-primary"
@@ -233,8 +234,9 @@ export default function ContactPage() {
 
             {/* Row 1 */}
             <div className="grid sm:grid-cols-2 gap-4 mb-4">
-              <FloatingInput label="Full name" error={errors.name} required>
+              <FloatingInput label="Full name" error={errors.name} required id="contact-name">
                 <input
+                  id="contact-name"
                   value={form.name} onChange={set("name")} type="text"
                   placeholder="Alex Johnson"
                   onFocus={() => setFocused("name")} onBlur={() => setFocused(null)}
@@ -243,8 +245,9 @@ export default function ContactPage() {
                 />
               </FloatingInput>
 
-              <FloatingInput label="Email address" error={errors.email} required>
+              <FloatingInput label="Email address" error={errors.email} required id="contact-email">
                 <input
+                  id="contact-email"
                   value={form.email} onChange={set("email")} type="email"
                   placeholder="alex@example.com"
                   onFocus={() => setFocused("email")} onBlur={() => setFocused(null)}
@@ -256,8 +259,9 @@ export default function ContactPage() {
 
             {/* Row 2 */}
             <div className="grid sm:grid-cols-2 gap-4 mb-4">
-              <FloatingInput label="Phone" error={errors.phone}>
+              <FloatingInput label="Phone" error={errors.phone} id="contact-phone">
                 <input
+                  id="contact-phone"
                   value={form.phone || ""} onChange={set("phone")} type="tel"
                   placeholder="+91 98765 43210"
                   onFocus={() => setFocused("phone")} onBlur={() => setFocused(null)}
@@ -266,8 +270,9 @@ export default function ContactPage() {
                 />
               </FloatingInput>
 
-              <FloatingInput label="Topic">
+              <FloatingInput label="Topic" id="contact-topic">
                 <select
+                  id="contact-topic"
                   value={form.topic} onChange={set("topic")}
                   className={cx(inputClass(false), "cursor-pointer appearance-none")}
                   style={{
@@ -285,9 +290,10 @@ export default function ContactPage() {
 
             {/* Message */}
             <div className="mb-5">
-              <FloatingInput label="Message" error={errors.message} required>
+              <FloatingInput label="Message" error={errors.message} required id="contact-message">
                 <div className="relative">
                   <textarea
+                    id="contact-message"
                     value={form.message}
                     onChange={(e) => { set("message")(e); setCharCount(e.target.value.length); }}
                     rows={5}
@@ -318,7 +324,7 @@ export default function ContactPage() {
                 <div className="flex items-center gap-3 px-4 py-2.5 rounded-xl border border-primary/20 bg-primary/5 w-fit">
                   <Paperclip size={13} className="text-primary shrink-0" />
                   <span className="text-[13px] text-main truncate max-w-[200px]">{file.name}</span>
-                  <span className="text-[11px] text-subtle/50">{(file.size / 1024 / 1024).toFixed(2)} MB</span>
+                  <span className="text-[11px] text-muted">{(file.size / 1024 / 1024).toFixed(2)} MB</span>
                   <button
                     type="button" onClick={() => setFile(null)}
                     className="ml-1 text-muted-strong hover:text-red-400 transition-colors"
@@ -341,7 +347,7 @@ export default function ContactPage() {
 
             {/* honeypot */}
             <input type="text" name="website" value={form.website} onChange={set("website")}
-              style={{ display: "none" }} autoComplete="off" tabIndex={-1} />
+              style={{ display: "none" }} autoComplete="off" tabIndex={-1} aria-hidden="true" />
 
             {errors.form && (
               <div className="mb-4 px-4 py-3 rounded-xl bg-red-500/8 border border-red-500/20 text-[13px] text-red-400 animate-[fadeIn_0.2s_ease]">

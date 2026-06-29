@@ -2,49 +2,61 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { supabase } from "@/lib/supabaseClient";
+import { supabase, fetchActiveUser } from "@/lib/supabaseClient";
 import SEO from "@/common/seo";
 import SEOConfig from "@/common/seo.config";
 import { CalendarDays, ArrowRight } from "lucide-react";
 
-function BlogsPage() {
+function BlogsPage({ initialBlogs }) {
   const router = useRouter();
-  const [blogs, setBlogs] = useState([]);
-  const [filtered, setFiltered] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [blogs, setBlogs] = useState(initialBlogs || []);
+  const [filtered, setFiltered] = useState(initialBlogs || []);
+  const [loading, setLoading] = useState(!initialBlogs);
   const [activeCategory, setActiveCategory] = useState("all");
-  const [categories, setCategories] = useState(["all"]);
+
+  const buildCategories = (data) => {
+    const cats = ["all"];
+    data?.forEach((b) => {
+      if (b.category && !cats.includes(b.category.toLowerCase())) {
+        cats.push(b.category.toLowerCase());
+      }
+    });
+    return cats;
+  };
+
+  const [categories, setCategories] = useState(() => {
+    return initialBlogs ? buildCategories(initialBlogs) : ["all"];
+  });
 
   useEffect(() => {
-    (async () => {
-      setLoading(true);
-      try {
-        const { data, error } = await supabase
-          .from("blogs")
-          .select("*")
-          .order("created_at", { ascending: false });
-
-        if (error) {
-          console.error("Error fetching blogs:", error);
-        } else {
-          setBlogs(data || []);
-          setFiltered(data || []);
-
-          // Extract unique categories
-          const cats = ["all"];
-          data?.forEach((b) => {
-            if (b.category && !cats.includes(b.category.toLowerCase())) {
-              cats.push(b.category.toLowerCase());
-            }
-          });
-          setCategories(cats);
-        }
-      } catch (err) {
-        console.error(err);
-      }
+    if (initialBlogs) {
+      setBlogs(initialBlogs);
+      setFiltered(initialBlogs);
+      setCategories(buildCategories(initialBlogs));
       setLoading(false);
-    })();
-  }, []);
+    } else {
+      (async () => {
+        setLoading(true);
+        try {
+          const { data, error } = await supabase
+            .from("blogs")
+            .select("*")
+            .order("created_at", { ascending: false });
+
+          if (error) {
+            console.error("Error fetching blogs:", error);
+          } else {
+            setBlogs(data || []);
+            setFiltered(data || []);
+            setCategories(buildCategories(data));
+          }
+        } catch (err) {
+          console.error(err);
+        }
+        setLoading(false);
+      })();
+    }
+  }, [initialBlogs]);
 
   const handleFilter = (category) => {
     setActiveCategory(category);
@@ -68,7 +80,7 @@ function BlogsPage() {
 
         {/* Header */}
         <div className="relative mb-8">
-          <h2 className="text-3xl text-main font-bold tracking-tight">Blogs</h2>
+          <h1 className="text-3xl text-main font-bold tracking-tight">Blogs</h1>
           <div className="relative w-12 h-1 bg-gradient-to-r from-primary to-primary/20 rounded-full mt-3">
             <div className="absolute inset-0 bg-primary rounded-full animate-ping opacity-25" />
           </div>
@@ -190,6 +202,21 @@ function BlogsPage() {
       </section>
     </>
   );
+}
+
+export async function getStaticProps() {
+  const [activeUser, bRes] = await Promise.all([
+    fetchActiveUser(),
+    supabase.from("blogs").select("*").order("created_at", { ascending: false }),
+  ]);
+
+  return {
+    props: {
+      activeUser,
+      initialBlogs: bRes.data || [],
+    },
+    revalidate: 60,
+  };
 }
 
 export default BlogsPage;

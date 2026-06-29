@@ -65,7 +65,7 @@ function ProjectDetailsComponent({ projectData }) {
 
           {/* Header */}
           <div className="relative mb-8">
-            <h2 className="text-3xl text-main font-bold tracking-tight">Portfolio</h2>
+            <div className="text-3xl text-main font-bold tracking-tight">Portfolio</div>
             <div className="relative w-12 h-1 bg-gradient-to-r from-primary to-primary/20 rounded-full mt-3">
               <div className="absolute inset-0 bg-primary rounded-full animate-ping opacity-25" />
             </div>
@@ -192,12 +192,14 @@ function ProjectDetailsComponent({ projectData }) {
               <div className="flex gap-3">
                 <button
                   name="prev-btn"
+                  aria-label="Previous Snapshot"
                   className="custom-prev icon-box p-2.5 rounded-lg border border-stroke/50 text-primary hover:border-primary/30 hover:scale-105 active:scale-95 transition-all duration-300"
                 >
                   <ChevronLeft size={20} />
                 </button>
                 <button
                   name="next-btn"
+                  aria-label="Next Snapshot"
                   className="custom-next icon-box p-2.5 rounded-lg border border-stroke/50 text-primary hover:border-primary/30 hover:scale-105 active:scale-95 transition-all duration-300"
                 >
                   <ChevronRight size={20} />

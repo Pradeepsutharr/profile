@@ -3,29 +3,35 @@ import { supabase } from "@/lib/supabaseClient";
 import ProjectCard from "./project-card";
 import ProjectsSkeleton from "./projects-skeleton";
 
-function ProjectsComponent() {
-  const [projects, setProjects] = useState([]);
-  const [filtered, setFiltered] = useState([]);
-  const [loading, setLoading] = useState(true);
+function ProjectsComponent({ initialProjects }) {
+  const [projects, setProjects] = useState(initialProjects || []);
+  const [filtered, setFiltered] = useState(initialProjects || []);
+  const [loading, setLoading] = useState(!initialProjects);
   const [active, setActive] = useState("all");
 
   const categories = ["all", "web design", "ui-ux design", "web development"];
 
   useEffect(() => {
-    (async () => {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from("projects")
-        .select("*")
-        .order("order", { ascending: true, nulls: "last" })
-        .order("created_at", { ascending: false });
-      if (error) console.error("projects error", error);
-
-      setProjects(data || []);
-      setFiltered(data || []);
+    if (initialProjects) {
+      setProjects(initialProjects);
+      setFiltered(initialProjects);
       setLoading(false);
-    })();
-  }, []);
+    } else {
+      (async () => {
+        setLoading(true);
+        const { data, error } = await supabase
+          .from("projects")
+          .select("*")
+          .order("order", { ascending: true, nulls: "last" })
+          .order("created_at", { ascending: false });
+        if (error) console.error("projects error", error);
+
+        setProjects(data || []);
+        setFiltered(data || []);
+        setLoading(false);
+      })();
+    }
+  }, [initialProjects]);
 
   if (loading) return <ProjectsSkeleton />;
 
@@ -50,7 +56,7 @@ function ProjectsComponent() {
 
       {/* Header */}
       <div className="relative mb-8">
-        <h2 className="text-3xl text-main font-bold tracking-tight">Portfolio</h2>
+        <h1 className="text-3xl text-main font-bold tracking-tight">Portfolio</h1>
         <div className="relative w-12 h-1 bg-gradient-to-r from-primary to-primary/20 rounded-full mt-3">
           <div className="absolute inset-0 bg-primary rounded-full animate-ping opacity-25" />
         </div>

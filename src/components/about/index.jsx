@@ -6,8 +6,7 @@ import Services from "./services";
 function useMounted() {
   const [m, setM] = useState(false);
   useEffect(() => {
-    const t = requestAnimationFrame(() => setM(true));
-    return () => cancelAnimationFrame(t);
+    setM(true);
   }, []);
   return m;
 }
@@ -22,8 +21,8 @@ function SectionLabel({ eyebrow, title }) {
           {eyebrow}
         </span>
       </div>
-      <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-main leading-tight"
-        style={{ fontFamily: "'Sora', sans-serif" }}>
+      <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-main leading-tight"
+        style={{ fontFamily: "var(--font-sora) sans-serif" }}>
         {title}
       </h2>
     </div>
@@ -84,13 +83,13 @@ export default function About() {
               {/* ── Left Side: Identity Info ── */}
               <div className="flex-grow flex flex-col justify-between p-6 sm:p-8 md:p-10 min-w-0 md:max-w-[65%]">
                 <div>
-                  <span className="text-[10px] font-bold tracking-[0.16em] uppercase text-subtle/40 mb-4 block">
+                  <span className="text-[10px] font-bold tracking-[0.16em] uppercase text-muted mb-4 block">
                     The Designer &amp; Developer
                   </span>
 
                   <h1
-                    className="text-2xl sm:text-3xl md:text-[2.2rem] font-extrabold text-main leading-tight tracking-tight mt-2 capitalize"
-                    style={{ fontFamily: "'Sora', sans-serif", lineHeight: "1.15" }}
+                    className="text-2xl sm:text-3xl md:text-[2.2rem] font-bold text-main leading-tight tracking-tight mt-2 capitalize"
+                    style={{ fontFamily: "var(--font-sora), sans-serif", lineHeight: "1.15" }}
                   >
                     Crafting SaaS &amp; Web Interfaces as a <span className="text-primary bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">Product Designer</span> &amp; Frontend Developer
                   </h1>
@@ -314,20 +313,20 @@ export default function About() {
 
             {/* Stat 1 */}
             <div className="p-5 rounded-2xl border border-stroke bg-panel/30 backdrop-blur-md hover:border-primary/20 transition-all duration-300 flex flex-col justify-center">
-              <span className="text-3xl font-extrabold text-main leading-none" style={{ fontFamily: "'Sora', sans-serif" }}>5+</span>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-subtle/50 mt-1.5">Years Experience</span>
+              <span className="text-3xl font-extrabold text-main leading-none" style={{ fontFamily: "var(--font-sora), sans-serif" }}>5+</span>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-muted mt-1.5">Years Experience</span>
             </div>
 
             {/* Stat 2 */}
             <div className="p-5 rounded-2xl border border-stroke bg-panel/30 backdrop-blur-md hover:border-primary/20 transition-all duration-300 flex flex-col justify-center">
-              <span className="text-3xl font-extrabold text-main leading-none" style={{ fontFamily: "'Sora', sans-serif" }}>40+</span>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-subtle/50 mt-1.5">Projects Shipped</span>
+              <span className="text-3xl font-extrabold text-main leading-none" style={{ fontFamily: "var(--font-sora), sans-serif" }}>40+</span>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-muted mt-1.5">Projects Shipped</span>
             </div>
 
             {/* Stat 3 */}
             <div className="p-5 rounded-2xl border border-stroke bg-panel/30 backdrop-blur-md hover:border-primary/20 transition-all duration-300 flex flex-col justify-center">
-              <span className="text-3xl font-extrabold text-main leading-none" style={{ fontFamily: "'Sora', sans-serif" }}>98%</span>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-subtle/50 mt-1.5">Client Satisfaction</span>
+              <span className="text-3xl font-extrabold text-main leading-none" style={{ fontFamily: "var(--font-sora), sans-serif" }}>98%</span>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-muted mt-1.5">Client Satisfaction</span>
             </div>
 
             {/* Availability CTA Card */}
@@ -340,7 +339,7 @@ export default function About() {
                 <span className="text-[11px] font-bold uppercase tracking-widest text-primary">Available for Work</span>
               </div>
               <a
-                href="#contact"
+                href="/contact"
                 className="bg-primary/10 border border-primary/25 text-primary hover:bg-primary hover:text-black py-1.5 px-3 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all duration-300"
               >
                 Hire Me &rarr;
@@ -356,7 +355,7 @@ export default function About() {
             {user_data?.summary?.map((item, i) => (
               <div
                 key={item.id}
-                className="relative p-6 rounded-2xl border border-stroke bg-panel/20 backdrop-blur-sm hover:border-primary/15 transition-all duration-300 flex flex-col justify-between"
+                className="relative p-6 rounded-2xl border border-stroke bg-panel/20 backdrop-blur-sm hover:border-primary/15 transition-all duration-300 flex flex-col"
               >
                 <span className="absolute top-5 right-6 text-2xl font-black text-subtle/5 font-mono select-none">
                   0{i + 1}
@@ -395,17 +394,17 @@ export default function About() {
 
         {/* ── 06  Services Section Dashboard ─────────────────────── */}
         <div className={`rev d5 ${mounted ? "in" : ""} z-10 relative`}>
-          <div className="rounded-2xl border border-stroke overflow-hidden bg-panel/30 backdrop-blur-md">
+          <div className="md:rounded-2xl md:border md:border-stroke overflow-hidden md:bg-panel/30 backdrop-blur-md">
 
             {/* Header Dashboard strip */}
-            <div className="services-strip flex items-center gap-3 px-6 py-4 border-b border-stroke/60 bg-surface/5">
+            <div className="services-strip flex items-center gap-3 md:px-6 py-4 border-b border-stroke/60 bg-surface/5">
               <span className="w-2 h-2 rounded-full bg-primary flex-shrink-0 animate-pulse" />
-              <span className="text-[10px] font-bold tracking-[0.14em] uppercase text-subtle/50">
+              <span className="text-[10px] font-bold tracking-[0.14em] uppercase text-muted">
                 Services &amp; Specialization Area
               </span>
             </div>
 
-            <div className="p-6">
+            <div className="py-4 md:p-6">
               <Services />
             </div>
           </div>

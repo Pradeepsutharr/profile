@@ -4,37 +4,44 @@ import { supabase } from "@/lib/supabaseClient";
 import { BookOpen } from "lucide-react";
 import ResumeSkeleton from "./resume-skeleton";
 
-function ResumePage() {
-  const [skills, setSkills] = useState([]);
-  const [education, setEducation] = useState([]);
-  const [experience, setExperience] = useState([]);
-  const [loading, setLoading] = useState(true);
+function ResumePage({ initialSkills, initialEducation, initialExperience }) {
+  const [skills, setSkills] = useState(initialSkills || []);
+  const [education, setEducation] = useState(initialEducation || []);
+  const [experience, setExperience] = useState(initialExperience || []);
+  const [loading, setLoading] = useState(!initialSkills || !initialEducation || !initialExperience);
 
   useEffect(() => {
-    (async () => {
-      setLoading(true);
-      const [sRes, eRes, exRes] = await Promise.all([
-        supabase.from("skills").select("*").order("order", { ascending: true }),
-        supabase
-          .from("education")
-          .select("*")
-          .order("order", { ascending: true }),
-        supabase
-          .from("experience")
-          .select("*")
-          .order("order", { ascending: true }),
-      ]);
-
-      if (sRes.error) console.error("skills error", sRes.error);
-      if (eRes.error) console.error("education error", eRes.error);
-      if (exRes.error) console.error("experience error", exRes.error);
-
-      setSkills(sRes.data || []);
-      setEducation(eRes.data || []);
-      setExperience(exRes.data || []);
+    if (initialSkills && initialEducation && initialExperience) {
+      setSkills(initialSkills);
+      setEducation(initialEducation);
+      setExperience(initialExperience);
       setLoading(false);
-    })();
-  }, []);
+    } else {
+      (async () => {
+        setLoading(true);
+        const [sRes, eRes, exRes] = await Promise.all([
+          supabase.from("skills").select("*").order("order", { ascending: true }),
+          supabase
+            .from("education")
+            .select("*")
+            .order("order", { ascending: true }),
+          supabase
+            .from("experience")
+            .select("*")
+            .order("order", { ascending: true }),
+        ]);
+
+        if (sRes.error) console.error("skills error", sRes.error);
+        if (eRes.error) console.error("education error", eRes.error);
+        if (exRes.error) console.error("experience error", exRes.error);
+
+        setSkills(sRes.data || []);
+        setEducation(eRes.data || []);
+        setExperience(exRes.data || []);
+        setLoading(false);
+      })();
+    }
+  }, [initialSkills, initialEducation, initialExperience]);
 
   if (loading) return <ResumeSkeleton />;
 
@@ -45,7 +52,7 @@ function ResumePage() {
 
       {/* Header */}
       <div className="relative mb-8">
-        <h2 className="text-3xl text-main font-bold tracking-tight">Resume</h2>
+        <h1 className="text-3xl text-main font-bold tracking-tight">Resume</h1>
         <div className="relative w-12 h-1 bg-gradient-to-r from-primary to-primary/20 rounded-full mt-3">
           <div className="absolute inset-0 bg-primary rounded-full animate-ping opacity-25" />
         </div>
