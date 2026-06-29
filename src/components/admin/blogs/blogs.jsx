@@ -198,6 +198,252 @@ function BlogsManager() {
   );
 }
 
+/* Helper functions to convert raw text / markdown to HTML tags */
+const parseInlineMarkdown = (text) => {
+  let result = text;
+
+  // Bold: **text**
+  result = result.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+
+  // Italic: *text* or _text_
+  result = result.replace(/\*(.*?)\*/g, "<em>$1</em>");
+  result = result.replace(/_(.*?)_/g, "<em>$1</em>");
+
+  // Inline code: `code`
+  result = result.replace(/`(.*?)`/g, "<code>$1</code>");
+
+  // Links: [anchor](url)
+  result = result.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+
+  return result;
+};
+
+const convertRawToHTML = (text) => {
+  if (!text) return "";
+
+  // If it already contains HTML paragraph/heading tags, return it directly
+  if (/<p>|<h2>|<h3>|<ul>|<ol>|<div>|<pre>|<strong>|<em>/.test(text)) {
+    return text;
+  }
+
+  const lines = text.split("\n");
+  let html = [];
+  let inList = false;
+  let listType = null; // 'ul' or 'ol'
+  let inCodeBlock = false;
+  let codeContent = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i];
+
+    // Handle code blocks
+    if (line.trim().startsWith("```")) {
+      if (inCodeBlock) {
+        inCodeBlock = false;
+        html.push(`<pre><code>${codeContent.join("\n")}</code></pre>`);
+        codeContent = [];
+      } else {
+        inCodeBlock = true;
+      }
+      continue;
+    }
+
+    if (inCodeBlock) {
+      codeContent.push(line);
+      continue;
+    }
+
+    // Handle lists
+    const isBulletList = line.trim().startsWith("- ") || line.trim().startsWith("* ");
+    const isNumList = /^\d+\.\s+/.test(line.trim());
+
+    if (isBulletList || isNumList) {
+      const currentListType = isBulletList ? "ul" : "ol";
+      const cleanLine = isBulletList
+        ? line.trim().replace(/^[-*]\s+/, "")
+        : line.trim().replace(/^\d+\.\s+/, "");
+
+      if (!inList) {
+        inList = true;
+        listType = currentListType;
+        html.push(`<${listType}>`);
+      } else if (listType !== currentListType) {
+        html.push(`</${listType}>`);
+        listType = currentListType;
+        html.push(`<${listType}>`);
+      }
+
+      html.push(`  <li>${parseInlineMarkdown(cleanLine)}</li>`);
+      continue;
+    } else {
+      if (inList) {
+        html.push(`</${listType}>`);
+        inList = false;
+        listType = null;
+      }
+    }
+
+    // Empty lines
+    if (line.trim() === "") {
+      continue;
+    }
+
+    // Headings
+    if (line.trim().startsWith("### ")) {
+      html.push(`<h3>${parseInlineMarkdown(line.trim().substring(4))}</h3>`);
+    } else if (line.trim().startsWith("## ")) {
+      html.push(`<h2>${parseInlineMarkdown(line.trim().substring(3))}</h2>`);
+    } else if (line.trim().startsWith("# ")) {
+      html.push(`<h1>${parseInlineMarkdown(line.trim().substring(2))}</h1>`);
+    } else {
+      // Normal paragraphs
+      // Group contiguous lines
+      let paragraphLines = [line];
+      while (
+        i + 1 < lines.length &&
+        lines[i + 1].trim() !== "" &&
+        !lines[i + 1].trim().startsWith("#") &&
+        !lines[i + 1].trim().startsWith("- ") &&
+        !lines[i + 1].trim().startsWith("* ") &&
+        !/^\d+\.\s+/.test(lines[i + 1].trim()) &&
+        !lines[i + 1].trim().startsWith("```")
+      ) {
+        i++;
+        paragraphLines.push(lines[i]);
+      }
+      const pText = paragraphLines.join(" ").trim();
+      html.push(`<p>${parseInlineMarkdown(pText)}</p>`);
+    }
+  }
+
+  // Close list if open
+  if (inList) {
+    html.push(`</${listType}>`);
+  }
+
+  return html.join("\n");
+};
+
+const cleanHTML = (htmlString) => {
+  if (!htmlString) return "";
+
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(htmlString, "text/html");
+
+  const sanitizeNode = (node) => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      return node.cloneNode(true);
+    }
+
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      const tagName = node.tagName.toLowerCase();
+
+      const ignoredTags = ["meta", "title", "style", "script", "noscript", "link"];
+      if (ignoredTags.includes(tagName)) {
+        return null;
+      }
+
+      if (tagName === "span") {
+        const style = node.getAttribute("style") || "";
+        const isBold = style.includes("font-weight:700") || style.includes("font-weight: 700") || style.includes("font-weight:bold");
+        const isItalic = style.includes("font-style:italic") || style.includes("font-style: italic");
+
+        let container = document.createDocumentFragment();
+        for (let child of node.childNodes) {
+          const sanitizedChild = sanitizeNode(child);
+          if (sanitizedChild) {
+            container.appendChild(sanitizedChild);
+          }
+        }
+
+        if (isBold && isItalic) {
+          const strong = document.createElement("strong");
+          const em = document.createElement("em");
+          em.appendChild(container);
+          strong.appendChild(em);
+          return strong;
+        } else if (isBold) {
+          const strong = document.createElement("strong");
+          strong.appendChild(container);
+          return strong;
+        } else if (isItalic) {
+          const em = document.createElement("em");
+          em.appendChild(container);
+          return em;
+        } else {
+          return container;
+        }
+      }
+
+      const cleanEl = document.createElement(tagName);
+
+      if (tagName === "a") {
+        const href = node.getAttribute("href");
+        if (href) cleanEl.setAttribute("href", href);
+        cleanEl.setAttribute("target", "_blank");
+        cleanEl.setAttribute("rel", "noopener noreferrer");
+      }
+      if (tagName === "img") {
+        const src = node.getAttribute("src");
+        const alt = node.getAttribute("alt");
+        if (src) cleanEl.setAttribute("src", src);
+        if (alt) cleanEl.setAttribute("alt", alt);
+      }
+
+      for (let child of node.childNodes) {
+        const sanitizedChild = sanitizeNode(child);
+        if (sanitizedChild) {
+          cleanEl.appendChild(sanitizedChild);
+        }
+      }
+
+      const selfClosingTags = ["img", "br", "hr"];
+      if (!selfClosingTags.includes(tagName) && cleanEl.childNodes.length === 0 && cleanEl.textContent.trim() === "") {
+        return null;
+      }
+
+      return cleanEl;
+    }
+
+    return null;
+  };
+
+  const container = document.createElement("div");
+  const body = doc.body;
+  if (body) {
+    for (let child of body.childNodes) {
+      const sanitized = sanitizeNode(child);
+      if (sanitized) {
+        container.appendChild(sanitized);
+      }
+    }
+  }
+
+  return container.innerHTML;
+};
+
+const prettifyHTML = (htmlString) => {
+  if (!htmlString) return "";
+  
+  let formatted = htmlString;
+  
+  // 1. Remove duplicate/unnecessary spacing or existing newlines first
+  formatted = formatted.replace(/\n+/g, " ");
+  formatted = formatted.replace(/\s+/g, " ");
+  
+  // 2. Insert double newlines after closing block tags for human readability
+  const blockTags = ["p", "h1", "h2", "h3", "h4", "h5", "ul", "ol", "pre", "blockquote"];
+  blockTags.forEach(tag => {
+    const regex = new RegExp(`</${tag}>`, "gi");
+    formatted = formatted.replace(regex, `</${tag}>\n\n`);
+  });
+  
+  // Also insert double newlines after self-closing horizontal rules
+  formatted = formatted.replace(/<hr\s*\/?>/gi, "<hr />\n\n");
+  
+  return formatted.trim();
+};
+
 /* Blog Form component with custom rich HTML text editor */
 const DEFAULT_CATEGORIES = [
   "Frontend Development",
@@ -211,7 +457,7 @@ const DEFAULT_CATEGORIES = [
 function BlogForm({ initial, onCancel, onSave, submitting }) {
   const [title, setTitle] = useState(initial?.title || "");
   const [slug, setSlug] = useState(initial?.slug || "");
-  
+
   const isDefaultCategory = initial?.category ? DEFAULT_CATEGORIES.includes(initial.category) : true;
   const [selectedCategoryType, setSelectedCategoryType] = useState(
     !initial?.category
@@ -248,6 +494,99 @@ function BlogForm({ initial, onCancel, onSave, submitting }) {
     }
   }, [title]);
 
+
+  const [isSourceView, setIsSourceView] = useState(false);
+  const editorRef = useRef(null);
+
+  // Sync content state to contentEditable innerHTML on mount and value change
+  useEffect(() => {
+    if (editorRef.current && !isSourceView) {
+      if (editorRef.current.innerHTML !== content) {
+        editorRef.current.innerHTML = content || "<p><br></p>";
+      }
+    }
+  }, [content, isSourceView]);
+
+  const handleEditorInput = () => {
+    if (editorRef.current) {
+      setContent(editorRef.current.innerHTML);
+    }
+  };
+
+  const handleEditorPaste = (e) => {
+    const clipboardData = e.clipboardData || window.clipboardData;
+    const htmlData = clipboardData.getData("text/html");
+
+    // If clipboard has rich HTML formatting (e.g. from Google Docs / MS Word), sanitize it to strip inline CSS/styles
+    if (htmlData) {
+      e.preventDefault();
+      const cleanHTMLData = cleanHTML(htmlData);
+
+      const selection = window.getSelection();
+      if (!selection.rangeCount) return;
+      selection.deleteFromDocument();
+
+      const range = selection.getRangeAt(0);
+      const tempDiv = document.createElement("div");
+      tempDiv.innerHTML = cleanHTMLData;
+
+      const fragment = document.createDocumentFragment();
+      let node;
+      while ((node = tempDiv.firstChild)) {
+        fragment.appendChild(node);
+      }
+
+      range.insertNode(fragment);
+
+      if (editorRef.current) {
+        setContent(editorRef.current.innerHTML);
+      }
+      return;
+    }
+
+    const textData = clipboardData.getData("text");
+    if (textData) {
+      e.preventDefault();
+
+      let formattedText;
+      if (!textData.includes("\n")) {
+        formattedText = parseInlineMarkdown(textData);
+      } else {
+        formattedText = convertRawToHTML(textData);
+      }
+
+      const selection = window.getSelection();
+      if (!selection.rangeCount) return;
+      selection.deleteFromDocument();
+
+      const range = selection.getRangeAt(0);
+      const tempDiv = document.createElement("div");
+      tempDiv.innerHTML = formattedText;
+
+      const fragment = document.createDocumentFragment();
+      let node;
+      while ((node = tempDiv.firstChild)) {
+        fragment.appendChild(node);
+      }
+
+      range.insertNode(fragment);
+
+      if (editorRef.current) {
+        setContent(editorRef.current.innerHTML);
+      }
+    }
+  };
+
+  const executeCommand = (command, arg = null) => {
+    if (isSourceView) {
+      insertHTMLTag(command);
+    } else {
+      document.execCommand(command, false, arg);
+      if (editorRef.current) {
+        setContent(editorRef.current.innerHTML);
+      }
+    }
+  };
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
@@ -290,6 +629,15 @@ function BlogForm({ initial, onCancel, onSave, submitting }) {
         break;
       case "h3":
         replacement = `<h3>${selectedText || "Heading 3"}</h3>`;
+        break;
+      case "h4":
+        replacement = `<h4>${selectedText || "Heading 4"}</h4>`;
+        break;
+      case "h5":
+        replacement = `<h5>${selectedText || "Heading 5"}</h5>`;
+        break;
+      case "p":
+        replacement = `<p>${selectedText || "Paragraph text"}</p>`;
         break;
       case "bold":
         replacement = `<strong>${selectedText || "Bold Text"}</strong>`;
@@ -338,6 +686,48 @@ function BlogForm({ initial, onCancel, onSave, submitting }) {
     }, 50);
   };
 
+  const handlePaste = (e) => {
+    const clipboardData = e.clipboardData || window.clipboardData;
+    const pastedText = clipboardData.getData("text");
+
+    if (pastedText) {
+      // If it already looks like HTML, let it paste normally
+      if (/<p>|<h2>|<h3>|<ul>|<ol>|<div>|<pre>|<strong>|<em>/.test(pastedText)) {
+        return;
+      }
+
+      e.preventDefault();
+
+      let formattedText;
+      // If it is a single-line paste, only format inline styles (bold, italic, links)
+      if (!pastedText.includes("\n")) {
+        formattedText = parseInlineMarkdown(pastedText);
+      } else {
+        formattedText = convertRawToHTML(pastedText);
+      }
+
+      const textarea = textareaRef.current;
+      if (textarea) {
+        const startPos = textarea.selectionStart;
+        const endPos = textarea.selectionEnd;
+        const newValue =
+          textarea.value.substring(0, startPos) +
+          formattedText +
+          textarea.value.substring(endPos);
+
+        setContent(newValue);
+
+        setTimeout(() => {
+          textarea.focus();
+          textarea.setSelectionRange(
+            startPos + formattedText.length,
+            startPos + formattedText.length
+          );
+        }, 50);
+      }
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!title) return alert("Title is required");
@@ -359,12 +749,18 @@ function BlogForm({ initial, onCancel, onSave, submitting }) {
       ? (customCategory.trim() || "General")
       : selectedCategoryType;
 
+    // Auto-convert plain text or markdown content to HTML format if it doesn't already contain HTML tags
+    let finalContent = content;
+    if (!/<p>|<h2>|<h3>|<ul>|<ol>|<div>|<pre>|<strong>|<em>/.test(finalContent)) {
+      finalContent = convertRawToHTML(finalContent);
+    }
+
     onSave({
       title,
       slug: finalSlug,
       category: finalCategory,
       description,
-      content,
+      content: finalContent,
       bg_image: bgImage,
       meta_description: metaDescription,
       keywords,
@@ -528,13 +924,15 @@ function BlogForm({ initial, onCancel, onSave, submitting }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* HTML Editor Panel */}
         <div className="flex flex-col">
-          <label className="block text-subtle text-sm font-semibold mb-2">Content HTML *</label>
+          <label className="block text-subtle text-sm font-semibold mb-2">
+            {isSourceView ? "Content HTML *" : "Content Editor *"}
+          </label>
 
-          {/* HTML editor toolbar */}
+          {/* Editor toolbar */}
           <div className="flex flex-wrap items-center gap-1 p-2 bg-surface/50 border border-stroke border-b-0 rounded-t-xl">
             <button
               type="button"
-              onClick={() => insertHTMLTag("h2")}
+              onClick={() => executeCommand("formatBlock", "H2")}
               className="p-2 text-subtle hover:text-primary hover:bg-input rounded-md transition-colors"
               title="Heading 2"
             >
@@ -542,16 +940,40 @@ function BlogForm({ initial, onCancel, onSave, submitting }) {
             </button>
             <button
               type="button"
-              onClick={() => insertHTMLTag("h3")}
+              onClick={() => executeCommand("formatBlock", "H3")}
               className="p-2 text-subtle hover:text-primary hover:bg-input rounded-md transition-colors"
               title="Heading 3"
             >
               <Heading3 size={16} />
             </button>
+            <button
+              type="button"
+              onClick={() => executeCommand("formatBlock", "H4")}
+              className="p-1.5 px-2 text-subtle hover:text-primary hover:bg-input rounded-md transition-colors text-xs font-bold font-mono"
+              title="Heading 4"
+            >
+              H4
+            </button>
+            <button
+              type="button"
+              onClick={() => executeCommand("formatBlock", "H5")}
+              className="p-1.5 px-2 text-subtle hover:text-primary hover:bg-input rounded-md transition-colors text-xs font-bold font-mono"
+              title="Heading 5"
+            >
+              H5
+            </button>
+            <button
+              type="button"
+              onClick={() => executeCommand("formatBlock", "P")}
+              className="p-1.5 px-2.5 text-subtle hover:text-primary hover:bg-input rounded-md transition-colors text-xs font-bold font-mono"
+              title="Paragraph"
+            >
+              P
+            </button>
             <div className="w-px h-6 bg-stroke/60 mx-1" />
             <button
               type="button"
-              onClick={() => insertHTMLTag("bold")}
+              onClick={() => executeCommand("bold")}
               className="p-2 text-subtle hover:text-primary hover:bg-input rounded-md transition-colors"
               title="Bold"
             >
@@ -559,7 +981,7 @@ function BlogForm({ initial, onCancel, onSave, submitting }) {
             </button>
             <button
               type="button"
-              onClick={() => insertHTMLTag("italic")}
+              onClick={() => executeCommand("italic")}
               className="p-2 text-subtle hover:text-primary hover:bg-input rounded-md transition-colors"
               title="Italic"
             >
@@ -568,7 +990,7 @@ function BlogForm({ initial, onCancel, onSave, submitting }) {
             <div className="w-px h-6 bg-stroke/60 mx-1" />
             <button
               type="button"
-              onClick={() => insertHTMLTag("list")}
+              onClick={() => executeCommand("insertUnorderedList")}
               className="p-2 text-subtle hover:text-primary hover:bg-input rounded-md transition-colors"
               title="Bullet List"
             >
@@ -576,7 +998,7 @@ function BlogForm({ initial, onCancel, onSave, submitting }) {
             </button>
             <button
               type="button"
-              onClick={() => insertHTMLTag("code")}
+              onClick={() => executeCommand("formatBlock", "PRE")}
               className="p-2 text-subtle hover:text-primary hover:bg-input rounded-md transition-colors"
               title="Code Block"
             >
@@ -585,7 +1007,10 @@ function BlogForm({ initial, onCancel, onSave, submitting }) {
             <div className="w-px h-6 bg-stroke/60 mx-1" />
             <button
               type="button"
-              onClick={() => insertHTMLTag("link")}
+              onClick={() => {
+                const url = prompt("Enter URL:", "https://");
+                if (url) executeCommand("createLink", url);
+              }}
               className="p-2 text-subtle hover:text-primary hover:bg-input rounded-md transition-colors"
               title="Insert Link"
             >
@@ -593,23 +1018,83 @@ function BlogForm({ initial, onCancel, onSave, submitting }) {
             </button>
             <button
               type="button"
-              onClick={() => insertHTMLTag("image")}
+              onClick={() => {
+                const url = prompt("Enter Image URL (or upload image above to get URL):", "https://");
+                if (url) executeCommand("insertImage", url);
+              }}
               className="p-2 text-subtle hover:text-primary hover:bg-input rounded-md transition-colors"
               title="Insert Image tag"
             >
               <ImageIcon size={16} />
             </button>
+            <div className="w-px h-6 bg-stroke/60 mx-1" />
+            <button
+              type="button"
+              onClick={() => {
+                const formatted = convertRawToHTML(content);
+                setContent(formatted);
+              }}
+              className="p-1.5 px-3 bg-primary/10 border border-primary/20 text-primary hover:bg-primary hover:text-black rounded-lg transition-all duration-300 text-xs font-bold"
+              title="Auto-convert plain text or markdown content into clean HTML formatting tags"
+            >
+              Auto-Format HTML
+            </button>
+            <div className="w-px h-6 bg-stroke/60 mx-1 ml-auto" />
+            <button
+              type="button"
+              onClick={() => {
+                if (!isSourceView) {
+                  const pretty = prettifyHTML(content);
+                  setContent(pretty);
+                }
+                setIsSourceView(!isSourceView);
+              }}
+              className={`p-1.5 px-3 rounded-lg transition-all duration-300 text-xs font-bold ${isSourceView
+                  ? "bg-primary text-black"
+                  : "bg-primary/10 border border-primary/20 text-primary hover:bg-primary hover:text-black"
+                }`}
+              title="Toggle between HTML Source View and Rich Text WYSIWYG View"
+            >
+              {isSourceView ? "Rich Text Editor" : "HTML Source View"}
+            </button>
           </div>
 
-          <textarea
-            ref={textareaRef}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            rows={12}
-            className="w-full bg-input border border-stroke rounded-b-xl px-4 py-3 text-main font-mono text-sm outline-none focus:border-primary transition-colors duration-200"
-            placeholder="Write HTML directly or use toolbar helpers..."
-            required
-          />
+          {isSourceView ? (
+            <textarea
+              ref={textareaRef}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              onPaste={handlePaste}
+              rows={12}
+              className="w-full bg-input border border-stroke rounded-b-xl px-4 py-3 text-main font-mono text-sm outline-none focus:border-primary transition-colors duration-200"
+              placeholder="Write HTML directly or use toolbar helpers..."
+              required
+            />
+          ) : (
+            <div
+              ref={editorRef}
+              contentEditable
+              onInput={handleEditorInput}
+              onPaste={handleEditorPaste}
+              className="w-full min-h-[300px] max-h-[440px] overflow-y-auto bg-input border border-stroke rounded-b-xl px-4 py-3 text-main font-normal text-sm outline-none focus:border-primary transition-colors duration-200
+                blog-content
+                [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-main [&_h2]:mt-6 [&_h2]:mb-3 [&_h2]:border-b [&_h2]:border-stroke/30 [&_h2]:pb-1
+                [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-main [&_h3]:mt-5 [&_h3]:mb-2
+                [&_h4]:text-base [&_h4]:font-bold [&_h4]:text-main [&_h4]:mt-4 [&_h4]:mb-2
+                [&_h5]:text-sm [&_h5]:font-bold [&_h5]:text-main [&_h5]:mt-3 [&_h5]:mb-1
+                [&_p]:mb-4 [&_p]:leading-relaxed
+                [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-4
+                [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-4
+                [&_li]:mb-1
+                [&_strong]:text-main [&_strong]:font-semibold
+                [&_pre]:bg-surface/50 [&_pre]:border [&_pre]:border-stroke/50 [&_pre]:p-4 [&_pre]:rounded-xl [&_pre]:my-5 [&_pre]:font-mono [&_pre]:text-xs [&_pre]:overflow-x-auto
+                [&_code]:bg-surface/40 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:font-mono [&_code]:text-xs [&_code]:text-primary/95
+                [&_a]:text-primary [&_a]:underline
+                [&_img]:rounded-xl [&_img]:my-5 [&_img]:max-w-full [&_img]:border [&_img]:border-stroke/30
+              "
+              placeholder="Start typing your blog post content here..."
+            />
+          )}
         </div>
 
         {/* Live Preview Panel */}
@@ -621,6 +1106,8 @@ function BlogForm({ initial, onCancel, onSave, submitting }) {
                 className="blog-content w-full text-subtle text-sm leading-relaxed
                   [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-main [&_h2]:mt-6 [&_h2]:mb-3 [&_h2]:border-b [&_h2]:border-stroke/30 [&_h2]:pb-1
                   [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-main [&_h3]:mt-5 [&_h3]:mb-2
+                  [&_h4]:text-base [&_h4]:font-bold [&_h4]:text-main [&_h4]:mt-4 [&_h4]:mb-2
+                  [&_h5]:text-sm [&_h5]:font-bold [&_h5]:text-main [&_h5]:mt-3 [&_h5]:mb-1
                   [&_p]:mb-4 [&_p]:leading-relaxed
                   [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-4
                   [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-4

@@ -82,7 +82,7 @@ function BlogDetails({ blog }) {
 
         {/* Blog Title */}
         <h1
-          className="text-main text-3xl md:text-5xl font-extrabold tracking-tight mb-8 leading-tight capitalize"
+          className="text-main text-3xl md:text-4xl font-bold tracking-tight mb-8 leading-tight capitalize"
         >
           {blog.title}
         </h1>
@@ -90,8 +90,8 @@ function BlogDetails({ blog }) {
         {/* Blog HTML Content */}
         <div
           className="blog-content w-full text-subtle/90 font-light text-base leading-relaxed my-6 bg-surface/10 border border-stroke/30 rounded-2xl p-6 md:p-10
-            [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-main [&_h2]:mt-10 [&_h2]:mb-4 [&_h2]:border-b [&_h2]:border-stroke/30 [&_h2]:pb-2
-            [&_h3]:text-xl [&_h3]:font-bold [&_h3]:text-main [&_h3]:mt-8 [&_h3]:mb-3
+            [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-main [&_h2]:mb-4 [&_h2]:border-b [&_h2]:border-stroke/30 [&_h2]:pb-2
+            [&_h3]:text-xl [&_h3]:font-bold [&_h3]:text-main [&_h3]:mt-4 [&_h3]:mb-3
             [&_p]:mb-6 [&_p]:leading-relaxed
             [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-6 [&_ul]:space-y-2
             [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-6 [&_ol]:space-y-2
