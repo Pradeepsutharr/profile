@@ -115,7 +115,7 @@ export default function SideBar({ theme, onToggleTheme, initialUser }) {
 
   return (
     <div
-      className={`lg:px-6 px-4 lg:py-10 py-4 flex flex-col items-center bg-background border border-stroke rounded-2xl lg:rounded-3xl relative lg:sticky lg:top-[60px] overflow-hidden
+      className={`lg:px-6 px-4 lg:py-10 py-4 flex flex-col items-center glass-panel rounded-3xl relative lg:sticky lg:top-[60px] overflow-hidden
         ${open ? "max-h-[900px]" : "max-h-[113px]"
         } lg:max-h-none transition-all duration-700 ease-in-out`}
     >

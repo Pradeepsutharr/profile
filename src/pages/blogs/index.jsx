@@ -97,7 +97,7 @@ function BlogsPage({ initialBlogs }) {
                   ${
                     activeCategory === cat
                       ? "bg-primary/10 border-primary/30 text-primary shadow-[0_4px_20px_rgba(255,219,112,0.1)]"
-                      : "border-stroke/60 bg-surface/20 text-subtle hover:border-stroke hover:text-main hover:bg-input/40"
+                      : "glass-card text-subtle hover:text-main hover:bg-primary/5 hover:border-primary/20"
                   }
                 `}
               >
@@ -113,7 +113,7 @@ function BlogsPage({ initialBlogs }) {
             {[1, 2, 3, 4].map((n) => (
               <div
                 key={n}
-                className="rounded-2xl border border-stroke/50 bg-surface/20 p-4 animate-pulse"
+                className="rounded-2xl glass-card p-4 animate-pulse"
               >
                 <div className="aspect-[16/10] w-full rounded-xl bg-elevated" />
                 <div className="mt-4 px-1 space-y-2">
@@ -142,7 +142,7 @@ function BlogsPage({ initialBlogs }) {
                 onMouseEnter={() => router.prefetch(`/blogs/${b.slug}`)}
                 className="group relative block"
               >
-                <div className="h-full flex flex-col rounded-2xl border border-stroke/50 bg-surface/20 p-4 transition-all duration-300 hover:border-primary/30 hover:bg-input/40 hover:shadow-[0_8px_30px_rgb(0,0,0,0.4)] hover:shadow-primary/5 hover:-translate-y-1">
+                <div className="h-full flex flex-col rounded-2xl glass-card glass-card-hoverable p-4">
                   
                   {/* Blog Image */}
                   {b.bg_image ? (

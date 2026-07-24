@@ -422,7 +422,7 @@ export default function ContactPage() {
           ].map(({ Icon, label, value, href }) => (
             <div
               key={label}
-              className="group flex items-start gap-4 px-4 py-4 rounded-xl border border-field bg-surface/40 hover:border-primary/20 hover:bg-input/60 transition-all duration-300"
+              className="group flex items-start gap-4 px-4 py-4 rounded-xl glass-card glass-card-hoverable"
             >
               <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/15 transition-colors">
                 <Icon size={15} className="text-primary" />
@@ -439,7 +439,7 @@ export default function ContactPage() {
           ))}
 
           {/* availability badge */}
-          <div className="mt-5 px-4 py-3.5 rounded-xl border border-field bg-surface/40">
+          <div className="mt-5 px-4 py-3.5 rounded-xl glass-card">
             <div className="flex items-center gap-2 mb-1">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-60" />

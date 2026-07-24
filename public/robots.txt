@@ -32,5 +32,5 @@ Allow: /
 
 # Sitemaps & LLM indexes
 Sitemap: https://pradeep-suthar.vercel.app/sitemap.xml
-Link: https://pradeep-suthar.vercel.app/llms.txt; rel="llms"
-Link: https://pradeep-suthar.vercel.app/llms-full.txt; rel="llms-full"
+Link: https://pradeep-suthar.vercel.app/llms.txt
+Link: https://pradeep-suthar.vercel.app/llms-full.txt

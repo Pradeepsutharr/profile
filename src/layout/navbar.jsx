@@ -45,23 +45,22 @@ function Navbar({ theme, onToggleTheme }) {
 
   return (
     <nav
-      className="bg-elevated/75 w-fit px-6 rounded-bl-3xl border border-stroke backdrop-blur-xl"
+      className="glass-card w-fit px-4 py-1.5 rounded-full border shadow-lg m-4 select-none"
     >
-      <ul className="flex items-center gap-8 px-4">
+      <ul className="flex items-center gap-3">
         {nav_data?.map((item) => (
           <li key={item.id} className="text-subtle">
             <Link
               href={item.link}
-              className={`py-5 inline-block capitalize font-medium hover:text-primary ${
-                isActive === item.link ? "text-primary" : "text-subtle"
-              }`}
+              className={`py-1.5 px-3.5 rounded-full text-[13px] inline-block capitalize font-medium transition-all duration-300 hover:text-primary hover:bg-primary/5 ${isActive === item.link ? "text-primary bg-primary/10 border border-primary/20" : "text-subtle border border-transparent"
+                }`}
             >
               {item.title}
             </Link>
           </li>
         ))}
-        <li className="flex items-center">
-          <ThemeToggle theme={theme} onToggle={onToggleTheme} />
+        <li className="flex items-center ml-1 border-l border-stroke/50 pl-3">
+          <ThemeToggle theme={theme} onToggle={onToggleTheme} className="scale-90" />
         </li>
       </ul>
     </nav>

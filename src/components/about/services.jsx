@@ -37,7 +37,7 @@ function Services() {
             className="group relative block"
           >
             {/* Hover card border & scale wrapper */}
-            <div className="h-full rounded-2xl border border-stroke bg-surface/30 p-6 transition-all duration-300 hover:border-primary/30 hover:bg-input/50 hover:shadow-[0_8px_30px_rgb(0,0,0,0.5)] hover:shadow-primary/5 hover:-translate-y-1 flex flex-col sm:flex-row gap-5 items-start">
+            <div className="h-full rounded-2xl glass-card glass-card-hoverable p-6 flex flex-col sm:flex-row gap-5 items-start">
 
               {/* Icon Container with atmospheric glow */}
               <div className="relative p-3 rounded-xl bg-elevated border border-stroke/80 group-hover:border-primary/20 group-hover:bg-elevated-soft transition-colors duration-300 flex-shrink-0">
@@ -71,7 +71,7 @@ function Services() {
       </div>
 
       {/* Philosophy Callout Card */}
-      <div className="relative mt-12 p-6 md:p-8 rounded-2xl border border-stroke/50 bg-gradient-to-r from-surface/40 via-input/50 to-surface/40 overflow-hidden">
+      <div className="relative mt-12 p-6 md:p-8 rounded-2xl glass-card overflow-hidden">
         {/* Glow decoration */}
         <div className="absolute -left-16 -top-16 w-48 h-48 rounded-full bg-primary/5 blur-3xl pointer-events-none" />
         <div className="absolute -right-16 -bottom-16 w-48 h-48 rounded-full bg-primary/5 blur-3xl pointer-events-none" />

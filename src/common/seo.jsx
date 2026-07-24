@@ -249,6 +249,45 @@ const DEFAULTS = {
     "Front-End Developer, Product Designer, UI UX Designer, React, Next.js, Design Systems, Portfolio",
 };
 
+const buildBreadcrumbSchema = (canonicalUrl) => {
+  try {
+    const url = new URL(canonicalUrl, DEFAULTS.siteUrl);
+    const segments = url.pathname.split("/").filter(Boolean);
+    const itemListElement = [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: DEFAULTS.siteUrl,
+      },
+    ];
+
+    let currentPath = "";
+    segments.forEach((segment, index) => {
+      currentPath += `/${segment}`;
+      const formattedName = segment
+        .split("-")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+
+      itemListElement.push({
+        "@type": "ListItem",
+        position: index + 2,
+        name: formattedName,
+        item: `${DEFAULTS.siteUrl}${currentPath}`,
+      });
+    });
+
+    return {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement,
+    };
+  } catch (e) {
+    return null;
+  }
+};
+
 const SEO = ({
   pageTitle,
   pageDescription,
@@ -328,27 +367,21 @@ const SEO = ({
         image: DEFAULTS.logo,
         description:
           "UI/UX design, product design, and frontend development services using React and Next.js.",
-
         provider: {
           "@id": `${DEFAULTS.siteUrl}/#person`,
         },
-
-        telephone: "+91-XXXXXXXXXX",
-
+        telephone: "+91-7023927315",
         priceRange: "₹₹",
-
         address: {
           "@type": "PostalAddress",
           addressLocality: "Ahmedabad",
           addressRegion: "Gujarat",
           addressCountry: "IN",
         },
-
         areaServed: {
           "@type": "Country",
           name: "India",
         },
-
         availableChannel: {
           "@type": "ServiceChannel",
           serviceLocation: {
@@ -356,7 +389,6 @@ const SEO = ({
             name: "Remote",
           },
         },
-
         serviceType: [
           "UI Design",
           "UX Design",
@@ -365,7 +397,6 @@ const SEO = ({
           "React Development",
           "Next.js Development",
         ],
-
         sameAs: [
           "https://www.linkedin.com/in/pradeep-suthar-a47432273/",
           "https://github.com/sutharpradip",
@@ -373,6 +404,86 @@ const SEO = ({
       },
     ],
   };
+
+  const breadcrumbSchema = buildBreadcrumbSchema(canonical);
+
+  // Dynamic Page-Specific Schemas (SEO best practice)
+  let pageSchema = null;
+  try {
+    const url = new URL(canonical, DEFAULTS.siteUrl);
+    const path = url.pathname;
+
+    if (path.startsWith("/blogs/") && path.length > 7) {
+      // Blog Posting Schema for individual blog posts
+      pageSchema = {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "@id": `${canonical}#entry`,
+        mainEntityOfPage: {
+          "@type": "WebPage",
+          "@id": canonical,
+        },
+        headline: ogTitle || title,
+        description: description,
+        image: image,
+        datePublished: new Date().toISOString(), // Standard compliant fallback
+        author: {
+          "@type": "Person",
+          name: "Pradeep Suthar",
+          url: DEFAULTS.siteUrl,
+        },
+        publisher: {
+          "@type": "Person",
+          name: "Pradeep Suthar",
+          url: DEFAULTS.siteUrl,
+          logo: {
+            "@type": "ImageObject",
+            url: DEFAULTS.logo,
+          },
+        },
+      };
+    } else if (path.startsWith("/portfolio/") && path.length > 11) {
+      // Creative Work Schema for portfolio items
+      pageSchema = {
+        "@context": "https://schema.org",
+        "@type": "CreativeWork",
+        "@id": `${canonical}#project`,
+        mainEntityOfPage: {
+          "@type": "WebPage",
+          "@id": canonical,
+        },
+        headline: ogTitle || title,
+        description: description,
+        image: image,
+        author: {
+          "@type": "Person",
+          name: "Pradeep Suthar",
+          url: DEFAULTS.siteUrl,
+        },
+      };
+    } else if (path.startsWith("/services/") && path.length > 10) {
+      // Service Schema for service pages
+      pageSchema = {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": `${canonical}#service`,
+        name: title,
+        description: description,
+        serviceType: title,
+        provider: {
+          "@type": "Person",
+          name: "Pradeep Suthar",
+          url: DEFAULTS.siteUrl,
+        },
+        areaServed: {
+          "@type": "Country",
+          name: "India",
+        },
+      };
+    }
+  } catch (err) {
+    // Ignore origin parse errors
+  }
 
   return (
     <Head>
@@ -421,6 +532,26 @@ const SEO = ({
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(websiteSchema),
+          }}
+        />
+      )}
+
+      {/* Dynamic Breadcrumbs Structured Data */}
+      {breadcrumbSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(breadcrumbSchema),
+          }}
+        />
+      )}
+
+      {/* Dynamic Page Specific Schema (Blog / Project / Service) */}
+      {pageSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(pageSchema),
           }}
         />
       )}

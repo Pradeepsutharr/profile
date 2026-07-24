@@ -52,7 +52,7 @@ function ResumePage({ initialSkills, initialEducation, initialExperience }) {
 
       {/* Header */}
       <div className="relative mb-8">
-        <h1 className="text-3xl text-main font-bold tracking-tight">Resume</h1>
+        <h1 className="text-3xl text-main font-bold ">Resume</h1>
         <div className="relative w-12 h-1 bg-gradient-to-r from-primary to-primary/20 rounded-full mt-3">
           <div className="absolute inset-0 bg-primary rounded-full animate-ping opacity-25" />
         </div>
@@ -131,7 +131,7 @@ function ResumePage({ initialSkills, initialEducation, initialExperience }) {
           <div className="w-12 h-1 bg-gradient-to-r from-primary to-primary/20 rounded-full mt-3" />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-surface/30 border border-stroke/50 p-6 md:p-8 rounded-2xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 glass-card p-6 md:p-8 rounded-2xl">
           {skills?.length > 0 &&
             skills.map((item) => (
               <div key={item.id} className="space-y-2 group">

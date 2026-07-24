@@ -50,7 +50,7 @@ function BlogDetails({ blog }) {
 
         {/* Cover Image Block */}
         {blog.bg_image && (
-          <div className="relative overflow-hidden rounded-2xl border border-stroke/50 bg-surface/20 aspect-[21/9] w-full max-h-[45vh] shadow-xl mb-8">
+          <div className="relative overflow-hidden rounded-2xl glass-card aspect-[21/9] w-full max-h-[45vh] mb-8">
             <Image
               src={blog.bg_image}
               alt={blog.title}
@@ -89,7 +89,7 @@ function BlogDetails({ blog }) {
 
         {/* Blog HTML Content */}
         <div
-          className="blog-content w-full text-subtle/90 font-light text-base leading-relaxed my-6 bg-surface/10 border border-stroke/30 rounded-2xl p-6 md:p-10
+          className="blog-content w-full text-subtle/90 font-light text-base leading-relaxed my-6 glass-card rounded-2xl p-6 md:p-10
             [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-main [&_h2]:mb-4 [&_h2]:border-b [&_h2]:border-stroke/30 [&_h2]:pb-2
             [&_h3]:text-xl [&_h3]:font-bold [&_h3]:text-main [&_h3]:mt-4 [&_h3]:mb-3
             [&_p]:mb-6 [&_p]:leading-relaxed

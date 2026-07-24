@@ -152,11 +152,12 @@ export default function App({ Component, pageProps }) {
         ) : (
           // PUBLIC ROUTES → same as before
           <div className="layout relative min-h-screen">
-            {/* Ambient Background Glows */}
-            {/* <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-primary/5 blur-[120px] pointer-events-none z-0" /> */}
-            {/* <div className="absolute bottom-[10%] right-[-5%] w-[400px] h-[400px] rounded-full bg-primary/5 blur-[100px] pointer-events-none z-0" /> */}
+            {/* Drifting Liquid Glowing Orbs */}
+            <div className="absolute top-[10%] left-[5%] w-[35vw] h-[35vw] rounded-full bg-indigo-400/20 dark:bg-indigo-500/10 blur-[130px] pointer-events-none z-0 liquid-blob-1" />
+            <div className="absolute bottom-[15%] right-[10%] w-[30vw] h-[30vw] rounded-full bg-teal-500/15 dark:bg-teal-500/8 blur-[120px] pointer-events-none z-0 liquid-blob-2" />
+            <div className="absolute top-[45%] left-[40%] w-[25vw] h-[25vw] rounded-full bg-pink-500/15 dark:bg-pink-500/8 blur-[140px] pointer-events-none z-0 liquid-blob-3" />
 
-            <div className="container">
+            <div className="container relative z-10">
               <div className="flex flex-wrap">
                 <aside className="side-bar col-12 lg:col-3">
                   <SideBar
@@ -166,23 +167,26 @@ export default function App({ Component, pageProps }) {
                   />
                 </aside>
 
-                <main className="main-content col-12 lg:col-9">
-                  <div className="bg-background border border-stroke rounded-2xl lg:rounded-3xl overflow-hidden lg:relative lg:px-6 lg:py-10 px-4 py-4 mb-20">
-                    <div className="navbar hidden lg:flex absolute right-0 top-0">
+                <main className="main-content col-12 lg:col-9 flex flex-col">
+                  {/* Frosted Liquid Glass Window */}
+                  <div className="glass-panel rounded-3xl overflow-hidden lg:relative lg:px-8 lg:py-12 px-5 py-6 mb-20 relative flex-grow ">
+                    <div className="navbar hidden lg:flex absolute right-0 top-0 z-20">
                       <Navbar
                         theme={theme}
                         onToggleTheme={handleThemeToggle}
                       />
                     </div>
 
-                    <div className="block lg:hidden">
+                    <div className="block lg:hidden relative z-20">
                       <MobileNavbar
                         theme={theme}
                         onToggleTheme={handleThemeToggle}
                       />
                     </div>
 
-                    <Component {...pageProps} />
+                    <div className="relative z-10">
+                      <Component {...pageProps} />
+                    </div>
                   </div>
                 </main>
               </div>

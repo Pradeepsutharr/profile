@@ -17,7 +17,7 @@ function ProjectCard({ image, title, category, slug }) {
       className="group relative block"
     >
       {/* Visual background atmospheric wrapper */}
-      <div className="h-full rounded-2xl border border-stroke/50 bg-surface/20 p-4 transition-all duration-300 hover:border-primary/30 hover:bg-input/40 hover:shadow-[0_8px_30px_rgb(0,0,0,0.4)] hover:shadow-primary/5 hover:-translate-y-1">
+      <div className="h-full rounded-2xl glass-card glass-card-hoverable p-4">
         
         {/* Project Image Box */}
         <div className="relative aspect-[3/2] w-full rounded-xl overflow-hidden bg-elevated border border-stroke/20">
