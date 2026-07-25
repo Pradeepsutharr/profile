@@ -31,6 +31,6 @@ User-agent: Applebot-Extended
 Allow: /
 
 # Sitemaps & LLM indexes
-Sitemap: https://pradeep-suthar.vercel.app/sitemap.xml
-Link: https://pradeep-suthar.vercel.app/llms.txt
-Link: https://pradeep-suthar.vercel.app/llms-full.txt
+https://pradeep-suthar.vercel.app/sitemap.xml
+https://pradeep-suthar.vercel.app/llms.txt
+https://pradeep-suthar.vercel.app/llms-full.txt
