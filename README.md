@@ -14,6 +14,12 @@ A JavaScript-only Next.js App Router portfolio with Tailwind CSS, DM Sans, Postg
 
 Sign in at `/login`. The admin panel lives at `/admin` and includes projects, posts, services, skills, experience, education, inquiries, inbox controls, profile settings, and every dark/light palette field.
 
+### Local login troubleshooting
+
+If login returns “Database is not configured” or a generic server error, the new app was started without its own environment file. It does not use the old website's Supabase session cookie. Create `.env.local` from `.env.example`, then set `DATABASE_URL` to your migrated `pradeep_portfolio_app_router` database, use `DATABASE_SSL=false` for a local non-SSL PostgreSQL connection, and provide a unique `JWT_SECRET` of at least 32 characters. Restart `npm run dev` after changing environment variables.
+
+Never paste browser cookies, JWTs, or passwords into source files or tickets; clear and rotate any token that has been shared.
+
 ## Import an existing portfolio backend
 
 The one-time importer maps the old PostgreSQL portfolio tables to this application's schema and stores an immutable server-only copy of every imported content row in `legacy_source_records`. It preserves the old admin account, public content, contacts, and inbox records when private import is explicitly enabled.

@@ -1,6 +1,7 @@
 import "server-only";
 
 import { Pool } from "pg";
+import { ApiError } from "./errors";
 
 let pool;
 
@@ -9,7 +10,12 @@ export function databaseReady() {
 }
 
 export function getPool() {
-  if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is not configured");
+  if (!process.env.DATABASE_URL) {
+    throw new ApiError(
+      503,
+      "Database is not configured. Create .env.local from .env.example, set DATABASE_URL, then restart npm run dev."
+    );
+  }
   if (!pool) {
     pool = new Pool({
       connectionString: process.env.DATABASE_URL,
