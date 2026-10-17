@@ -10,6 +10,8 @@ A JavaScript-only Next.js App Router portfolio with Tailwind CSS, DM Sans, Postg
 4. Run `npm run db:migrate`, then `npm run db:seed`.
 5. Start the app with `npm run dev` and open `http://localhost:3000`.
 
+`npm run dev` starts both the frontend and backend together: this is a full-stack Next.js App Router application, so its `/api/*` route handlers run in the same server process as the website. No second backend command is needed.
+
 Sign in at `/login`. The admin panel lives at `/admin` and includes projects, posts, services, skills, experience, education, inquiries, inbox controls, profile settings, and every dark/light palette field.
 
 ## Import an existing portfolio backend

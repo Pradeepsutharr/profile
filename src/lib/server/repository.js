@@ -13,7 +13,17 @@ function config(resource) {
 function cleanValue(key, value) {
   if (["sort_order", "score"].includes(key)) return Number(value || 0);
   if (["published", "is_read", "is_starred"].includes(key)) return Boolean(value);
-  if (["tags", "tech_stack", "bullets", "gallery", "metrics"].includes(key)) return Array.isArray(value) ? value : value ? JSON.parse(value) : [];
+  if (["tags", "tech_stack", "bullets", "gallery", "metrics"].includes(key)) {
+    if (Array.isArray(value)) return value;
+    if (!value) return [];
+    try {
+      const parsed = JSON.parse(value);
+      if (!Array.isArray(parsed)) throw new Error("not an array");
+      return parsed;
+    } catch {
+      throw new ApiError(400, `${key.replaceAll("_", " ")} must be a valid JSON array.`);
+    }
+  }
   if (typeof value === "string") return value.trim();
   return value ?? null;
 }
@@ -102,7 +112,13 @@ export async function getSettings() {
 }
 
 export async function saveSettings(payload) {
-  const colors = { ...defaultColors, ...(payload.colors || {}) };
+  if (!payload?.colors || typeof payload.colors !== "object" || Array.isArray(payload.colors)) throw new ApiError(400, "Color settings must be sent as an object.");
+  for (const [key, value] of Object.entries(payload.colors)) {
+    if (Object.hasOwn(defaultColors, key) && !/^#[0-9a-fA-F]{6}$/.test(value)) {
+      throw new ApiError(400, `${key.replace(/[A-Z]/g, (letter) => ` ${letter.toLowerCase()}`)} must be a six-digit hex color, such as #FFDB70.`);
+    }
+  }
+  const colors = { ...defaultColors, ...payload.colors };
   const { rows } = await query("INSERT INTO site_settings (id, colors) VALUES ('primary', $1) ON CONFLICT (id) DO UPDATE SET colors = EXCLUDED.colors, updated_at = now() RETURNING *", [colors]);
   return { colors: rows[0].colors };
 }

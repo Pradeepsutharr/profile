@@ -9,8 +9,9 @@ export class ApiError extends Error {
 }
 
 export function errorResponse(error) {
-  const status = error instanceof ApiError ? error.status : 500;
-  const message = error instanceof ApiError ? error.message : "Something went wrong";
+  const databaseConflict = error?.code === "23505";
+  const status = error instanceof ApiError ? error.status : databaseConflict ? 409 : 500;
+  const message = error instanceof ApiError ? error.message : databaseConflict ? "A record with that unique value already exists. Please use a different slug or title." : "The server could not complete this request. Please try again.";
   if (status >= 500) console.error(error);
   return NextResponse.json({ error: message, details: error.details }, { status });
 }
