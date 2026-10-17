@@ -1,5 +1,6 @@
 import "server-only";
 
+import sanitizeHtml from "sanitize-html";
 import { adminResources, defaultColors, publicResources } from "@/lib/site-config";
 import { ApiError } from "./errors";
 import { query } from "./db";
@@ -11,6 +12,14 @@ function config(resource) {
 }
 
 function cleanValue(key, value) {
+  if (key === "content") {
+    return sanitizeHtml(String(value || ""), {
+      allowedTags: ["p", "br", "strong", "em", "u", "s", "h2", "h3", "h4", "blockquote", "pre", "code", "ol", "ul", "li", "a"],
+      allowedAttributes: { a: ["href", "target", "rel"] },
+      allowedSchemes: ["http", "https", "mailto"],
+      transformTags: { a: sanitizeHtml.simpleTransform("a", { rel: "noopener noreferrer", target: "_blank" }) },
+    }).trim();
+  }
   if (["sort_order", "score"].includes(key)) return Number(value || 0);
   if (["published", "is_read", "is_starred"].includes(key)) return Boolean(value);
   if (["tags", "tech_stack", "bullets", "gallery", "metrics"].includes(key)) {
