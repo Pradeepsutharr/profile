@@ -26,7 +26,7 @@
   --light-shell: #ecf0f8; --light-background: #ffffff; --light-surface: #f4f6fa; --light-panel: #eef0f6;
   --light-text: #241d16; --light-muted: #6e6256; --light-border: #d2d8e0; --light-primary: #b07e22;
   --gradient-start: #ffdb70; --gradient-end: #d18b37;
-  --background: var(--light-background); --foreground: var(--light-text); --card: var(--light-surface); --card-foreground: var(--light-text);
+  --shell: var(--light-shell); --background: var(--light-background); --foreground: var(--light-text); --card: var(--light-surface); --card-foreground: var(--light-text);
   --secondary: var(--light-panel); --secondary-foreground: var(--light-text); --muted: var(--light-panel); --muted-foreground: var(--light-muted);
   --primary: var(--light-primary); --primary-foreground: #ffffff; --border: var(--light-border); --input: var(--light-border); --ring: var(--light-primary); --glow: var(--gradient-start);
   --gradient-accent: linear-gradient(120deg, var(--gradient-start), var(--gradient-end));
@@ -37,7 +37,7 @@
 }
 
 [data-theme="dark"] {
-  --background: var(--dark-background); --foreground: var(--dark-text); --card: var(--dark-surface); --card-foreground: var(--dark-text);
+  --shell: var(--dark-shell); --background: var(--dark-background); --foreground: var(--dark-text); --card: var(--dark-surface); --card-foreground: var(--dark-text);
   --secondary: var(--dark-panel); --secondary-foreground: var(--dark-text); --muted: var(--dark-panel); --muted-foreground: var(--dark-muted);
   --primary: var(--dark-primary); --primary-foreground: var(--dark-shell); --border: var(--dark-border); --input: var(--dark-border); --ring: var(--dark-primary); --glow: var(--gradient-start);
   --glass-hi: color-mix(in srgb, #ffffff 9%, transparent); --glass-lo: color-mix(in srgb, #ffffff 2.5%, transparent);
@@ -49,7 +49,7 @@
 @layer base {
   * { border-color: var(--border); }
   html { scroll-behavior: smooth; }
-  body { min-width: 320px; background: var(--background); color: var(--foreground); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; transition: background-color .4s, color .4s; }
+  body { min-width: 320px; background: var(--shell); color: var(--foreground); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; transition: background-color .4s, color .4s; }
   ::selection { background: var(--primary); color: var(--primary-foreground); }
 }
 
