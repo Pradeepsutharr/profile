@@ -2,25 +2,28 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ArrowUpRight, BookOpen, BriefcaseBusiness, GraduationCap, Inbox, Layers3, MessageSquareText, Palette, Sparkles, Wrench } from "lucide-react";
+import { ArrowUpRight, BookOpen, BriefcaseBusiness, GraduationCap, Inbox, Layers3, MessageSquareText, Sparkles, Wrench } from "lucide-react";
 
-const sections = [
-  ["projects", "Projects", "Case studies in your portfolio", BriefcaseBusiness], ["posts", "Posts", "Published journal entries", BookOpen],
-  ["services", "Services", "Capabilities offered to clients", Sparkles], ["skills", "Skills", "Tools and areas of expertise", Wrench],
-  ["experience", "Experience", "Professional roles and impact", Layers3], ["education", "Education", "Academic history", GraduationCap],
-  ["contacts", "Inquiries", "Messages from the contact form", MessageSquareText], ["emails", "Inbox", "Synced email conversations", Inbox],
+const links = [
+  ["projects", "Projects", "Create and publish case studies", BriefcaseBusiness],
+  ["posts", "Posts", "Write and publish journal entries", BookOpen],
+  ["services", "Services", "Keep capabilities current", Sparkles],
+  ["skills", "Skills", "Show your areas of expertise", Wrench],
+  ["experience", "Experience", "Maintain your professional history", Layers3],
+  ["education", "Education", "Keep your academic record current", GraduationCap],
+  ["contacts", "Inquiries", "Read messages from your contact form", MessageSquareText],
+  ["emails", "Inbox", "Review synced email conversations", Inbox],
 ];
 
-async function loadCount(resource) {
+async function count(resource) {
   const response = await fetch(`/api/admin/resources/${resource}`);
   const body = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(body.error || "Could not load overview.");
+  if (!response.ok) throw new Error(body.error || "Could not load overview counts.");
   return body.data.length;
 }
 
 export function AdminOverviewDashboard() {
   const [counts, setCounts] = useState({}); const [error, setError] = useState("");
-  useEffect(() => { Promise.all(sections.map(async ([resource]) => [resource, await loadCount(resource)])).then((entries) => setCounts(Object.fromEntries(entries))).catch((issue) => setError(issue.message)); }, []);
-  const total = Object.values(counts).reduce((sum, count) => sum + count, 0);
-  return <section><header className="mb-8 border-b pb-6"><span className="text-xs font-semibold uppercase tracking-[.16em] text-primary">Admin panel</span><div className="mt-2 flex flex-wrap items-baseline gap-x-4 gap-y-2"><h1 className="font-display text-3xl font-semibold tracking-[-.04em]">Portfolio control room</h1><span className="rounded-full border bg-secondary/50 px-2.5 py-1 text-xs font-semibold text-muted-foreground">{Object.keys(counts).length ? `${total} records` : "Loading records"}</span></div><p className="mt-2 max-w-2xl text-sm text-muted-foreground">A concise view of the live content behind your portfolio. Open any area to manage it without leaving the control panel.</p>{error && <p className="mt-4 rounded-xl border border-red-500/30 bg-red-500/10 px-3.5 py-3 text-sm text-red-500">{error}</p>}</header><div className="overflow-hidden rounded-2xl border bg-card"><div className="hidden grid-cols-[minmax(0,1fr)_110px_34px] gap-4 border-b bg-secondary/20 px-5 py-3 text-[11px] font-semibold uppercase tracking-[.14em] text-muted-foreground] md:grid"><span>Content area</span><span>Records</span><span /></div><div className="divide-y">{sections.map(([resource, title, description, Icon]) => <Link key={resource} href={`/admin/${resource}`} className="group grid grid-cols-[minmax(0,1fr)_34px] items-center gap-4 px-5 py-4 transition hover:bg-secondary/25 md:grid-cols-[minmax(0,1fr)_110px_34px]"><span className="flex min-w-0 items-center gap-3"><span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border bg-secondary/35 text-primary"><Icon className="h-4 w-4" /></span><span className="min-w-0"><span className="font-display block font-semibold">{title}</span><span className="mt-0.5 block truncate text-sm text-muted-foreground">{description}</span></span></span><span className="hidden font-display text-lg font-semibold md:block">{counts[resource] ?? <span className="inline-block h-4 w-7 animate-pulse rounded bg-secondary" />}</span><ArrowUpRight className="h-4 w-4 text-muted-foreground transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" /></Link>)}</div></div><Link href="/admin/appearance" className="mt-5 flex items-center justify-between rounded-2xl border bg-secondary/15 px-5 py-4 transition hover:border-primary/40"><span className="flex items-center gap-3"><Palette className="h-4 w-4 text-primary" /><span><span className="font-semibold">Appearance preview</span><span className="ml-2 text-sm text-muted-foreground">Review light and dark colors on the actual homepage.</span></span></span><ArrowUpRight className="h-4 w-4 text-primary" /></Link></section>;
+  useEffect(() => { Promise.all(links.map(async ([resource]) => [resource, await count(resource)])).then((entries) => setCounts(Object.fromEntries(entries))).catch((issue) => setError(issue.message)); }, []);
+  return <section><div className="mb-8"><span className="text-xs font-semibold uppercase tracking-[.16em] text-primary">Admin panel</span><h1 className="font-display mt-1 text-3xl font-semibold tracking-[-.035em]">Good to see you.</h1><p className="mt-2 max-w-2xl text-sm text-muted-foreground">Manage your portfolio content, appearance, and customer conversations from one place.</p>{error && <p className="mt-4 rounded-xl border border-red-500/30 bg-red-500/10 px-3.5 py-3 text-sm text-red-500">{error}</p>}</div><div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{links.map(([resource, title, description, Icon]) => <Link href={`/admin/${resource}`} className="liquid group relative flex min-h-52 flex-col overflow-hidden rounded-2xl p-5 transition hover:-translate-y-1 hover:border-primary/40" key={resource}><span className="absolute right-4 top-4 rounded-full border bg-background/60 px-2.5 py-1 text-xs font-semibold text-muted-foreground backdrop-blur">{counts[resource] === undefined ? <span className="inline-block h-3 w-5 animate-pulse rounded bg-secondary" /> : `${counts[resource]} ${counts[resource] === 1 ? "item" : "items"}`}</span><Icon className="h-6 w-6 text-primary" /><h2 className="font-display mt-6 text-xl font-semibold">{title}</h2><p className="mt-2 flex-1 max-w-[22ch] text-sm leading-relaxed text-muted-foreground">{description}</p><span className="mt-5 inline-flex items-center gap-2 text-sm font-medium">Open <ArrowUpRight className="h-4 w-4 transition group-hover:rotate-45 group-hover:text-primary" /></span></Link>)}</div></section>;
 }
