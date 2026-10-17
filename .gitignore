@@ -4,3 +4,6 @@ node_modules/
 .env.local
 coverage/
 uploads/
+!public/uploads/
+!public/uploads/legacy/
+!public/uploads/legacy/**

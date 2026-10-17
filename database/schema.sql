@@ -63,6 +63,16 @@ CREATE TABLE IF NOT EXISTS emails (
   is_read boolean NOT NULL DEFAULT false, is_starred boolean NOT NULL DEFAULT false, created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now()
 );
 
+-- Keeps an immutable copy of every legacy content record during the one-time
+-- migration. It is server-only and is never returned by public APIs.
+CREATE TABLE IF NOT EXISTS legacy_source_records (
+  source_table text NOT NULL,
+  source_id text NOT NULL,
+  payload jsonb NOT NULL,
+  imported_at timestamptz NOT NULL DEFAULT now(),
+  PRIMARY KEY (source_table, source_id)
+);
+
 CREATE INDEX IF NOT EXISTS projects_public_idx ON projects (published, sort_order, created_at DESC);
 CREATE INDEX IF NOT EXISTS posts_public_idx ON blog_posts (published, published_at DESC);
 CREATE INDEX IF NOT EXISTS services_public_idx ON services (published, sort_order);
