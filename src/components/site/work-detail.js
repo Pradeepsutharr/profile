@@ -219,7 +219,7 @@ export function WorkDetail({ project, nextProject }) {
         <div className="flex max-h-[min(78dvh,720px)] flex-col">
           <div className="shrink-0 px-5 pb-4 pt-5 md:px-7 md:pb-5 md:pt-6">
             <Link
-              href="/work"
+              href="/portfolio"
               className="inline-flex items-center gap-2 text-sm text-muted-foreground transition hover:text-foreground"
             >
               <ArrowLeft className="h-4 w-4" />
@@ -341,7 +341,7 @@ export function WorkDetail({ project, nextProject }) {
       <ProjectGallerySlider project={project} images={gallery} />
       {nextProject && (
         <Link
-          href={`/work/${nextProject.slug}`}
+          href={`/portfolio/${nextProject.slug}`}
           className="liquid group mt-12 flex items-center gap-5 overflow-hidden rounded-3xl p-3"
         >
           <ProjectImage

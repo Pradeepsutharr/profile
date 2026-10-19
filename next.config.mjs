@@ -17,6 +17,14 @@ const nextConfig = {
   },
   poweredByHeader: false,
   compress: true,
+  async redirects() {
+    return [
+      { source: "/blog", destination: "/blogs", permanent: true },
+      { source: "/blog/:slug", destination: "/blogs/:slug", permanent: true },
+      { source: "/work", destination: "/portfolio", permanent: true },
+      { source: "/work/:slug", destination: "/portfolio/:slug", permanent: true },
+    ];
+  },
   async headers() {
     return [
       {

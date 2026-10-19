@@ -23,8 +23,8 @@ import { useEffect, useMemo, useState } from "react";
 const nav = [
   { href: "/", label: "About" },
   { href: "/resume", label: "Resume" },
-  { href: "/work", label: "Portfolio" },
-  { href: "/blog", label: "Blogs" },
+  { href: "/portfolio", label: "Portfolio" },
+  { href: "/blogs", label: "Blogs" },
   { href: "/contact", label: "Contact" },
 ];
 

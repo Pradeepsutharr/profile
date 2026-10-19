@@ -142,7 +142,7 @@ function Hero({ profile, home }) {
           className="mt-7 flex flex-wrap gap-3"
         >
           <Link
-            href="/work"
+            href="/portfolio"
             className="bg-gradient-accent shadow-glow group inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:-translate-y-0.5"
           >
             View my work{" "}

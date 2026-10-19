@@ -1,7 +1,7 @@
-import { BlogContent } from "@/components/site/blog-content";
 import { CtaBanner } from "@/components/site/cta-banner";
 import { JsonLd } from "@/components/site/json-ld";
 import { SiteShell } from "@/components/site/site-shell";
+import { WorkContent } from "@/components/site/work-content";
 import { getCollection, getSiteContext } from "@/lib/server/site-data";
 import {
   breadcrumbJsonLd,
@@ -13,38 +13,38 @@ export const dynamic = "force-dynamic";
 
 export async function generateMetadata() {
   const { profile } = await getSiteContext();
-  return metadataFromConfig("blog", { profile });
+  return metadataFromConfig("work", { profile });
 }
 
-export default async function BlogPage() {
-  const [{ profile, settings }, posts] = await Promise.all([
+export default async function WorkPage() {
+  const [{ profile, settings }, projects] = await Promise.all([
     getSiteContext(),
-    getCollection("posts"),
+    getCollection("projects"),
   ]);
   return (
     <SiteShell profile={profile} settings={settings}>
       <JsonLd
         data={[
           collectionPageJsonLd({
-            name: "Blog",
-            description: `Articles by ${profile.name}`,
-            path: "/blog",
+            name: "Portfolio",
+            description: `Projects by ${profile.name}`,
+            path: "/portfolio",
             profile,
-            items: posts.map((post) => ({
-              title: post.title,
-              path: `/blog/${post.slug}`,
+            items: projects.map((project) => ({
+              title: project.title,
+              path: `/portfolio/${project.slug}`,
             })),
           }),
           breadcrumbJsonLd([
             { name: "Home", path: "/" },
-            { name: "Blog", path: "/blog" },
+            { name: "Portfolio", path: "/portfolio" },
           ]),
         ]}
       />
-      <BlogContent posts={posts} />
+      <WorkContent projects={projects} />
       <CtaBanner
-        title="Building something and need a design partner?"
-        description="I help teams turn fuzzy ideas into clear, shippable product interfaces."
+        title="Want results like these for your product?"
+        description="Share your brief and I’ll map a clear design-to-build plan."
       />
     </SiteShell>
   );

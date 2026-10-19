@@ -358,7 +358,7 @@ export function articleJsonLd(post, profile) {
       name: profile?.name || fallbackProfile.name,
       url: getSiteUrl(),
     },
-    mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
+    mainEntityOfPage: absoluteUrl(`/blogs/${post.slug}`),
     keywords: post.keywords || undefined,
     speakable: {
       "@type": "SpeakableSpecification",
@@ -379,7 +379,7 @@ export function projectJsonLd(project, profile) {
         project.title,
     ),
     image: pickImage(project.image_url, profile?.og_image_url),
-    url: absoluteUrl(`/work/${project.slug}`),
+    url: absoluteUrl(`/portfolio/${project.slug}`),
     creator: {
       "@type": "Person",
       "@id": `${getSiteUrl()}/#person`,

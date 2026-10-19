@@ -47,7 +47,7 @@ const SEOConfig = {
     keywords:
       "UI UX portfolio, product design case studies, SaaS design portfolio, React Next.js projects, interface design portfolio, hire UX designer",
     ogTitle: "UI/UX & Product Design Case Studies | Pradeep Suthar",
-    path: "/work",
+    path: "/portfolio",
     ogType: "website",
   },
 
@@ -59,7 +59,7 @@ const SEOConfig = {
     keywords:
       "product design blog, UX design articles, React Next.js blog, design systems, frontend performance, Core Web Vitals",
     ogTitle: "Product Design & Frontend Blog | Pradeep Suthar",
-    path: "/blog",
+    path: "/blogs",
     ogType: "website",
   },
 

@@ -14,12 +14,12 @@ mkdirSync(outDir, { recursive: true });
 const routes = [
   "/",
   "/resume",
-  "/work",
-  "/blog",
+  "/portfolio",
+  "/blogs",
   "/services",
   "/contact",
-  "/work/intend-it",
-  "/blog/figma-to-react-best-practices-developer-handoff",
+  "/portfolio/intend-it",
+  "/blogs/figma-to-react-best-practices-developer-handoff",
   "/services/product-design",
 ];
 

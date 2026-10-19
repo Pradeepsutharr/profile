@@ -25,7 +25,7 @@ export async function generateMetadata({ params }) {
     title: post.seo_title,
     description: post.seo_description || post.excerpt,
     keywords: post.keywords,
-    path: `/blog/${post.slug}`,
+    path: `/blogs/${post.slug}`,
     image: post.image_url,
     publishedTime: post.published_at || undefined,
     modifiedTime: post.updated_at || post.published_at || undefined,
@@ -90,8 +90,8 @@ export default async function PostPage({ params }) {
           articleJsonLd(post, profile),
           breadcrumbJsonLd([
             { name: "Home", path: "/" },
-            { name: "Blog", path: "/blog" },
-            { name: post.title, path: `/blog/${post.slug}` },
+            { name: "Blogs", path: "/blogs" },
+            { name: post.title, path: `/blogs/${post.slug}` },
           ]),
         ]}
       />

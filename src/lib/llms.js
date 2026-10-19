@@ -61,7 +61,7 @@ export async function buildLlmsTxt() {
     .slice(0, 8)
     .map(
       (project) =>
-        `- [${project.title}](${absoluteUrl(`/work/${project.slug}`)}) - ${plainText(project.excerpt || project.description, 140)}`,
+        `- [${project.title}](${absoluteUrl(`/portfolio/${project.slug}`)}) - ${plainText(project.excerpt || project.description, 140)}`,
     )
     .join("\n");
 
@@ -69,7 +69,7 @@ export async function buildLlmsTxt() {
     .slice(0, 8)
     .map(
       (post) =>
-        `- [${post.title}](${absoluteUrl(`/blog/${post.slug}`)}) - ${plainText(post.excerpt || post.title, 140)}`,
+        `- [${post.title}](${absoluteUrl(`/blogs/${post.slug}`)}) - ${plainText(post.excerpt || post.title, 140)}`,
     )
     .join("\n");
 
@@ -105,8 +105,8 @@ ${serviceLines || "- Product design, UX research, design systems, and frontend d
 ## Main Navigation
 - [About / Home](${absoluteUrl("/")}) - Biography, metrics, core philosophy, and capabilities.
 - [Resume](${absoluteUrl("/resume")}) - Work experience, education history, and skill inventory.
-- [Portfolio](${absoluteUrl("/work")}) - Catalog of shipped design systems, UI/UX, and web apps.
-- [Blog](${absoluteUrl("/blog")}) - Insights on product design, UX, and frontend craft.
+- [Portfolio](${absoluteUrl("/portfolio")}) - Catalog of shipped design systems, UI/UX, and web apps.
+- [Blogs](${absoluteUrl("/blogs")}) - Insights on product design, UX, and frontend craft.
 - [Services](${absoluteUrl("/services")}) - Capabilities and engagement options.
 - [Contact](${absoluteUrl("/contact")}) - Contact form and direct communication channels.
 
@@ -180,7 +180,7 @@ ${service.tags?.length ? `- **Tags:** ${service.tags.join(", ")}` : ""}`,
         .map((metric) => ` - ${metric.label}: ${metric.value}`)
         .join("\n");
       return `### ${project.title}
-- **URL:** ${absoluteUrl(`/work/${project.slug}`)}
+- **URL:** ${absoluteUrl(`/portfolio/${project.slug}`)}
 - **Category:** ${project.category || " - "}
 - **Year:** ${project.year || " - "}
 - **Role:** ${project.role || " - "}
@@ -201,7 +201,7 @@ ${metrics ? `**Metrics:**\n${metrics}` : ""}`;
   const postsBlock = posts
     .map(
       (post) => `### ${post.title}
-- **URL:** ${absoluteUrl(`/blog/${post.slug}`)}
+- **URL:** ${absoluteUrl(`/blogs/${post.slug}`)}
 - **Category:** ${post.category || " - "}
 - **Published:** ${post.published_at || " - "}
 ${post.keywords ? `- **Keywords:** ${post.keywords}` : ""}
@@ -293,8 +293,8 @@ ${faqBlock || "No FAQs configured."}
 
 - Home: ${absoluteUrl("/")}
 - Resume: ${absoluteUrl("/resume")}
-- Portfolio: ${absoluteUrl("/work")}
-- Blog: ${absoluteUrl("/blog")}
+- Portfolio: ${absoluteUrl("/portfolio")}
+- Blogs: ${absoluteUrl("/blogs")}
 - Services: ${absoluteUrl("/services")}
 - Contact: ${absoluteUrl("/contact")}
 - Concise LLM index: ${absoluteUrl("/llms.txt")}

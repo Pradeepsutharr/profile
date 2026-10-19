@@ -1,7 +1,7 @@
+import { BlogContent } from "@/components/site/blog-content";
 import { CtaBanner } from "@/components/site/cta-banner";
 import { JsonLd } from "@/components/site/json-ld";
 import { SiteShell } from "@/components/site/site-shell";
-import { WorkContent } from "@/components/site/work-content";
 import { getCollection, getSiteContext } from "@/lib/server/site-data";
 import {
   breadcrumbJsonLd,
@@ -13,38 +13,38 @@ export const dynamic = "force-dynamic";
 
 export async function generateMetadata() {
   const { profile } = await getSiteContext();
-  return metadataFromConfig("work", { profile });
+  return metadataFromConfig("blog", { profile });
 }
 
-export default async function WorkPage() {
-  const [{ profile, settings }, projects] = await Promise.all([
+export default async function BlogPage() {
+  const [{ profile, settings }, posts] = await Promise.all([
     getSiteContext(),
-    getCollection("projects"),
+    getCollection("posts"),
   ]);
   return (
     <SiteShell profile={profile} settings={settings}>
       <JsonLd
         data={[
           collectionPageJsonLd({
-            name: "Portfolio",
-            description: `Projects by ${profile.name}`,
-            path: "/work",
+            name: "Blogs",
+            description: `Articles by ${profile.name}`,
+            path: "/blogs",
             profile,
-            items: projects.map((project) => ({
-              title: project.title,
-              path: `/work/${project.slug}`,
+            items: posts.map((post) => ({
+              title: post.title,
+              path: `/blogs/${post.slug}`,
             })),
           }),
           breadcrumbJsonLd([
             { name: "Home", path: "/" },
-            { name: "Portfolio", path: "/work" },
+            { name: "Blogs", path: "/blogs" },
           ]),
         ]}
       />
-      <WorkContent projects={projects} />
+      <BlogContent posts={posts} />
       <CtaBanner
-        title="Want results like these for your product?"
-        description="Share your brief and I’ll map a clear design-to-build plan."
+        title="Building something and need a design partner?"
+        description="I help teams turn fuzzy ideas into clear, shippable product interfaces."
       />
     </SiteShell>
   );

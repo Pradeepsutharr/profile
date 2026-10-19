@@ -92,7 +92,7 @@ export function WorkContent({ projects }) {
           transition={{ duration: 0.5 }}
         >
           <Link
-            href={`/work/${first.slug}`}
+            href={`/portfolio/${first.slug}`}
             className="glass-card group mb-5 flex flex-col overflow-hidden rounded-3xl p-3 md:flex-row"
           >
             <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-secondary md:w-[58%]">
@@ -157,7 +157,7 @@ export function WorkContent({ projects }) {
               transition={{ duration: 0.4, delay: index * 0.04 }}
             >
               <Link
-                href={`/work/${project.slug}`}
+                href={`/portfolio/${project.slug}`}
                 className="glass-card group block h-full overflow-hidden rounded-2xl p-3 transition hover:-translate-y-1"
               >
                 <div className="relative aspect-3/2 overflow-hidden rounded-xl bg-secondary">

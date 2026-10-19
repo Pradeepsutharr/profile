@@ -42,6 +42,13 @@ export async function uploadFile(file, folder = "uploads") {
     await client().send(new PutObjectCommand({ Bucket: process.env.S3_BUCKET, Key: objectKey, Body: body, ContentType: file.type }));
     const base = process.env.S3_PUBLIC_URL?.replace(/\/$/, "");
     if (!base) throw new ApiError(503, "S3_PUBLIC_URL is required when S3 uploads are enabled");
+    // Browser-facing URL must be the public R2.dev / custom domain — not the S3 API host.
+    if (/r2\.cloudflarestorage\.com/i.test(base)) {
+      throw new ApiError(
+        503,
+        "S3_PUBLIC_URL must be your public R2 URL (https://pub-xxxx.r2.dev), not r2.cloudflarestorage.com",
+      );
+    }
     return { key: objectKey, url: `${base}/${objectKey}`, name: file.name };
   }
 

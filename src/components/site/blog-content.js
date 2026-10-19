@@ -62,7 +62,7 @@ export function BlogContent({ posts }) {
   return (
     <>
       <PageHero
-        eyebrow="Blog"
+        eyebrow="Blogs"
         title="Product design &"
         accent="frontend insights"
         description="Practical writing on UX, design systems, React, Next.js, and shipping better digital products."
@@ -70,7 +70,7 @@ export function BlogContent({ posts }) {
       {first && (
         <Reveal>
           <Link
-            href={`/blog/${first.slug}`}
+            href={`/blogs/${first.slug}`}
             className="glass-card group mb-5 flex flex-col overflow-hidden rounded-3xl p-3 md:flex-row"
           >
             <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-secondary md:w-1/2">
@@ -107,7 +107,7 @@ export function BlogContent({ posts }) {
             delay={index * 0.08}
           >
             <Link
-              href={`/blog/${post.slug}`}
+              href={`/blogs/${post.slug}`}
               className="glass-card group flex h-full flex-col rounded-3xl p-3 transition hover:-translate-y-1"
             >
               <div className="relative aspect-[16/9] overflow-hidden rounded-2xl bg-secondary">
@@ -211,7 +211,7 @@ export function PostDetail({
   const html = normalizePostHtml(post.content);
   const related = [
     ...relatedProjects.map((item) => ({
-      href: `/work/${item.slug}`,
+      href: `/portfolio/${item.slug}`,
       label: "Related work",
       title: item.title,
     })),
@@ -225,7 +225,7 @@ export function PostDetail({
   return (
     <article className="mx-auto max-w-3xl">
       <Link
-        href="/blog"
+        href="/blogs"
         className="inline-flex items-center gap-2 text-sm text-muted-foreground transition hover:text-foreground"
       >
         <ArrowLeft className="h-4 w-4" />
@@ -294,7 +294,7 @@ export function PostDetail({
       )}
       {nextPost && (
         <Link
-          href={`/blog/${nextPost.slug}`}
+          href={`/blogs/${nextPost.slug}`}
           className="liquid group mt-14 flex items-center justify-between gap-4 rounded-3xl p-6"
         >
           <div className="min-w-0">

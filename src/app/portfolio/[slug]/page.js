@@ -25,7 +25,7 @@ export async function generateMetadata({ params }) {
     title: project.seo_title,
     description: project.seo_description || project.excerpt || project.description,
     keywords: project.keywords || project.tags,
-    path: `/work/${project.slug}`,
+    path: `/portfolio/${project.slug}`,
     image: project.image_url,
   });
 }
@@ -47,8 +47,8 @@ export default async function WorkDetailPage({ params }) {
           projectJsonLd(project, profile),
           breadcrumbJsonLd([
             { name: "Home", path: "/" },
-            { name: "Portfolio", path: "/work" },
-            { name: project.title, path: `/work/${project.slug}` },
+            { name: "Portfolio", path: "/portfolio" },
+            { name: project.title, path: `/portfolio/${project.slug}` },
           ]),
         ]}
       />
