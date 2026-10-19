@@ -39,6 +39,7 @@ const longFields = new Set([
   "outcome",
   "summary",
   "message",
+  "seo_description",
 ]);
 const socialKeys = [
   "github",
@@ -55,7 +56,9 @@ const homeTextareaKeys = new Set([
   "home_testimonials",
   "home_services_description",
   "home_philosophy",
+  "home_faqs",
 ]);
+const seoFields = new Set(["seo_title", "seo_description", "keywords", "og_image_url"]);
 const labelize = (value) =>
   value.replaceAll("_", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
 const inputClass =
@@ -70,6 +73,10 @@ const profileFields = [
   ["location", "Location", "text"],
   ["avatar_url", "Profile image", "image"],
   ["availability", "Availability label", "text"],
+  ["seo_title", "SEO title", "text"],
+  ["seo_description", "SEO description", "textarea"],
+  ["keywords", "SEO keywords (comma separated)", "text"],
+  ["og_image_url", "Social share image", "image"],
   ["home_eyebrow", "Hero eyebrow", "text"],
   ["home_headline", "Hero headline words", "text"],
   ["home_highlight", "Hero highlight title", "text"],
@@ -89,6 +96,7 @@ const profileFields = [
   ],
   ["home_philosophy", "Product philosophy", "textarea"],
   ["home_philosophy_highlight", "Philosophy highlight phrase", "text"],
+  ["home_faqs", "FAQs (one per line: question|answer)", "textarea"],
   ...socialKeys.map((key) => [
     key,
     key === "x" ? "X / Twitter" : labelize(key),
@@ -100,6 +108,12 @@ const profileGroups = [
     title: "Identity",
     description: "Sidebar name, title, avatar, and contact-facing summary.",
     fields: ["name", "title", "intro", "summary", "avatar_url", "availability"],
+  },
+  {
+    title: "SEO & sharing",
+    description:
+      "Titles, descriptions, keywords, and the image used in Google and social previews. Keep the title under ~60 characters and the description under ~160.",
+    fields: ["seo_title", "seo_description", "keywords", "og_image_url"],
   },
   {
     title: "Homepage hero",
@@ -115,7 +129,7 @@ const profileGroups = [
   },
   {
     title: "Homepage sections",
-    description: "Stats, pillars, testimonials, and philosophy blocks.",
+    description: "Stats, pillars, testimonials, philosophy, and FAQs for AEO.",
     fields: [
       "home_stats",
       "home_pillars",
@@ -123,6 +137,7 @@ const profileGroups = [
       "home_testimonials",
       "home_philosophy",
       "home_philosophy_highlight",
+      "home_faqs",
     ],
   },
   {
@@ -278,11 +293,16 @@ function formatDate(value) {
         day: "numeric",
         year: "numeric",
       }).format(new Date(value))
-    : "—";
+    : " - ";
 }
 
 const linkUrlFields = new Set(["project_url"]);
-const imageUploadFields = new Set(["image_url", "gallery", "avatar_url"]);
+const imageUploadFields = new Set([
+  "image_url",
+  "gallery",
+  "avatar_url",
+  "og_image_url",
+]);
 const fileUploadFields = new Set(["attachment_url"]);
 
 function isImageUploadField(field) {
@@ -589,12 +609,21 @@ function sections(fields) {
     [
       "Content",
       "The information visitors will read.",
-      fields.filter((field) => longFields.has(field) || field === "content"),
+      fields.filter(
+        (field) =>
+          (longFields.has(field) || field === "content") &&
+          !seoFields.has(field),
+      ),
     ],
     [
       "Media & links",
       "Upload images or files here. Project links stay as URLs.",
       fields.filter((field) => media.has(field)),
+    ],
+    [
+      "SEO",
+      "Custom title, description, and keywords for Google and social previews. Leave blank to auto-generate from the content.",
+      fields.filter((field) => seoFields.has(field)),
     ],
     [
       "Visibility & placement",
@@ -605,6 +634,7 @@ function sections(fields) {
           details.has(field) ||
           (!primary.has(field) &&
             !media.has(field) &&
+            !seoFields.has(field) &&
             !longFields.has(field) &&
             field !== "content"),
       ),
@@ -972,7 +1002,7 @@ function ResourceList({
                         record.location ||
                         record.email ||
                         record.degree ||
-                        "—"}
+                        " - "}
                     </span>
                     <span className="hidden w-[105px] text-xs text-muted-foreground md:block">
                       {formatDate(record.updated_at || record.created_at)}

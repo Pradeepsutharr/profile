@@ -28,6 +28,12 @@ const schema = z.object({
     .max(120, "Topic must be 120 characters or fewer.")
     .optional()
     .or(z.literal("")),
+  budget: z
+    .string()
+    .trim()
+    .max(40, "Budget must be 40 characters or fewer.")
+    .optional()
+    .or(z.literal("")),
   message: z
     .string({ required_error: "Message is required." })
     .trim()
@@ -43,9 +49,12 @@ export async function POST(request) {
     const data = schema.parse(Object.fromEntries(form));
     const attachment = form.get("attachment");
     const uploaded = attachment?.size ? await uploadFile(attachment, "contact-attachments") : null;
+    const message = data.budget
+      ? `${data.message}\n\n - Budget range: ${data.budget}`
+      : data.message;
     const { rows } = await query(
       "INSERT INTO contacts (name, email, phone, topic, message, attachment_url, attachment_name) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id",
-      [data.name, data.email, data.phone || null, data.topic || null, data.message, uploaded?.url || null, uploaded?.name || null],
+      [data.name, data.email, data.phone || null, data.topic || null, message, uploaded?.url || null, uploaded?.name || null],
     );
     return NextResponse.json({ data: { id: rows[0].id } }, { status: 201 });
   });

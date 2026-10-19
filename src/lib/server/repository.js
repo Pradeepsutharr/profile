@@ -396,6 +396,10 @@ export async function saveProfile(payload) {
     "socials",
     "availability",
     "home",
+    "seo_title",
+    "seo_description",
+    "keywords",
+    "og_image_url",
   ];
   const data = Object.fromEntries(
     allowed

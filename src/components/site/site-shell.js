@@ -186,9 +186,9 @@ function ProfileCard({ profile }) {
           />
         </div>
         <div className="min-w-0 pr-10 lg:mt-5 lg:pr-0">
-          <h2 className="font-display truncate text-lg font-semibold tracking-[-0.025em] lg:text-2xl">
+          <p className="font-display truncate text-lg font-semibold tracking-[-0.025em] lg:text-2xl">
             {profile.name}
-          </h2>
+          </p>
           <span className="mt-2 inline-flex max-w-full items-center gap-1.5 truncate rounded-full border bg-secondary/50 px-3 py-1 text-xs font-medium text-muted-foreground">
             <span className="relative flex h-1.5 w-1.5 shrink-0">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary" />
@@ -260,7 +260,7 @@ function ProfileCard({ profile }) {
         href="/contact"
         className="bg-gradient-accent shadow-soft relative mt-4 flex w-full items-center justify-center gap-2 rounded-2xl py-3 text-sm font-semibold text-primary-foreground transition hover:-translate-y-0.5"
       >
-        Hire me <ArrowUpRight className="h-4 w-4" />
+        Start a project <ArrowUpRight className="h-4 w-4" />
       </Link>
     </aside>
   );
@@ -304,17 +304,17 @@ function MobileNav({ currentPath }) {
       className="mobile-navbar select-none md:hidden"
       aria-label="Mobile navigation"
     >
-      <ul className="flex items-center justify-between gap-1 px-3 py-2">
+      <ul className="grid grid-cols-5 gap-1 px-2 py-2">
         {nav.map((item) => {
           const active =
             item.href === "/"
               ? currentPath === "/"
               : currentPath.startsWith(item.href);
           return (
-            <li key={item.href} className="flex-1 text-center">
+            <li key={item.href} className="min-w-0">
               <Link
                 href={item.href}
-                className={`block rounded-full px-2.5 py-2 text-[12px] font-semibold capitalize transition-all duration-300 ${
+                className={`flex min-h-11 items-center justify-center rounded-full px-1 py-2 text-[11px] font-semibold capitalize transition-all duration-300 ${
                   active
                     ? "border border-primary/15 bg-primary/10 text-primary"
                     : "border border-transparent text-muted-foreground"
@@ -385,6 +385,12 @@ export function SiteShell({ profile, settings, children }) {
       style={colorVariables(previewColors || settings?.colors, theme)}
       className="relative min-h-screen bg-[var(--shell)]"
     >
+      <a
+        href="#main-content"
+        className="fixed left-4 top-4 z-[100] -translate-y-20 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground opacity-0 transition focus:translate-y-0 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring"
+      >
+        Skip to content
+      </a>
       <div className="aurora pointer-events-none fixed inset-0 -z-10" />
       <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
         <motion.div
@@ -411,7 +417,7 @@ export function SiteShell({ profile, settings, children }) {
             <div className="flex items-center gap-3">
               <span className="bg-gradient-accent h-6 w-1 rounded-full" />
               <AnimatePresence mode="wait">
-                <motion.h1
+                <motion.p
                   key={current.label}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -420,7 +426,7 @@ export function SiteShell({ profile, settings, children }) {
                   className="font-display text-2xl font-semibold tracking-[-0.025em] md:text-3xl"
                 >
                   {current.label}
-                </motion.h1>
+                </motion.p>
               </AnimatePresence>
             </div>
             <div className="flex items-center gap-2">
@@ -429,11 +435,13 @@ export function SiteShell({ profile, settings, children }) {
             </div>
           </header>
           <motion.main
+            id="main-content"
             key={pathname}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease }}
             className="p-5 md:p-8"
+            tabIndex={-1}
           >
             {children}
           </motion.main>

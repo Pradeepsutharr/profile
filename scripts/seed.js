@@ -18,19 +18,19 @@ const defaultHomeContent = {
     [
       "01",
       "Product thinking & UX research",
-      "I help startups and businesses design and build high-impact digital products — combining user research, interface design, product thinking and modern front-end development.",
+      "I help startups and businesses design and build high-impact digital products - combining user research, interface design, product thinking and modern front-end development.",
     ],
     [
       "02",
       "Design-to-code engineering",
-      "From validating ideas through research to pixel-perfect UI and production-ready React / Next.js — I deliver complete product solutions, not just screens.",
+      "From validating ideas through research to pixel-perfect UI and production-ready React / Next.js - I deliver complete product solutions, not just screens.",
     ],
   ],
   servicesDescription:
     "Research-driven UI/UX design and front-end development that bridges creative visual logic and technical performance.",
   testimonials: [
     [
-      "Pradeep didn't just design screens — he rethought our whole onboarding. Activation jumped within weeks.",
+      "Pradeep didn't just design screens - he rethought our whole onboarding. Activation jumped within weeks.",
       "Ananya R.",
       "Founder, Fintech startup",
     ],
@@ -46,7 +46,7 @@ const defaultHomeContent = {
     ],
   ],
   philosophy:
-    "I help brands create modern, responsive and user-centred digital products — bridging design and engineering to bring your vision to life with",
+    "I help brands create modern, responsive and user-centred digital products - bridging design and engineering to bring your vision to life with",
   philosophyHighlight: "precision and creativity",
 };
 

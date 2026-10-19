@@ -4,29 +4,29 @@ export const defaultHomeContent = {
   headlineWords: ["Crafting", "SaaS", "&", "Web", "Interfaces", "as", "a"],
   highlight: "Product Designer",
   suffix: "& Frontend Developer",
-  socialProof: "Loved by 40+ founders & teams",
+  socialProof: "Trusted by founders & product teams",
   stats: [
-    ["5+", "Years experience"],
-    ["40+", "Projects shipped"],
-    ["98%", "Client satisfaction"],
+    ["3+", "Years experience"],
+    ["20+", "Projects shipped"],
+    ["12-24h", "Typical reply time"],
   ],
   pillars: [
     [
       "01",
       "Product thinking & UX research",
-      "I help startups and businesses design and build high-impact digital products — combining user research, interface design, product thinking and modern front-end development.",
+      "I help startups and businesses design and build high-impact digital products - combining user research, interface design, product thinking and modern front-end development.",
     ],
     [
       "02",
       "Design-to-code engineering",
-      "From validating ideas through research to pixel-perfect UI and production-ready React / Next.js — I deliver complete product solutions, not just screens.",
+      "From validating ideas through research to pixel-perfect UI and production-ready React / Next.js - I deliver complete product solutions, not just screens.",
     ],
   ],
   servicesDescription:
     "Research-driven UI/UX design and front-end development that bridges creative visual logic and technical performance.",
   testimonials: [
     [
-      "Pradeep didn't just design screens — he rethought our whole onboarding. Activation jumped within weeks.",
+      "Pradeep didn't just design screens - he rethought our whole onboarding. Activation jumped within weeks.",
       "Ananya R.",
       "Founder, Fintech startup",
     ],
@@ -42,8 +42,34 @@ export const defaultHomeContent = {
     ],
   ],
   philosophy:
-    "I help brands create modern, responsive and user-centred digital products — bridging design and engineering to bring your vision to life with",
+    "I help brands create modern, responsive and user-centred digital products - bridging design and engineering to bring your vision to life with",
   philosophyHighlight: "precision and creativity",
+  faqs: [
+    [
+      "What kind of projects do you take on?",
+      "SaaS and digital product work - UX research, interface design, design systems, and React/Next.js frontend builds. Best fit when you need design and implementation to move together.",
+    ],
+    [
+      "Do you handle both design and development?",
+      "Yes. I bridge Figma-to-production so handoff friction drops and the shipped UI matches the intent.",
+    ],
+    [
+      "How quickly can we start?",
+      "Share a brief on the contact page - you’ll usually get a clear next-step plan within 12-24 hours.",
+    ],
+    [
+      "How do engagements usually work?",
+      "Discovery call → scoped plan → design/build sprints with regular reviews. Remote-friendly for teams worldwide.",
+    ],
+    [
+      "What’s a typical budget range?",
+      "Project scope varies. Share goals and timeline on the contact form (budget optional) and I’ll recommend a realistic path.",
+    ],
+    [
+      "Where are you based?",
+      "Ahmedabad, India - working remotely with founders and product teams worldwide.",
+    ],
+  ],
 };
 
 export const defaultProfileIntro =
@@ -100,6 +126,7 @@ export function resolveHomeContent(home) {
       source.philosophyHighlight,
       defaultHomeContent.philosophyHighlight,
     ),
+    faqs: asArray(source.faqs, defaultHomeContent.faqs),
   };
 }
 
@@ -118,6 +145,7 @@ export function flattenHomeFields(home) {
     home_testimonials: formatPipeLines(resolved.testimonials),
     home_philosophy: resolved.philosophy,
     home_philosophy_highlight: resolved.philosophyHighlight,
+    home_faqs: formatPipeLines(resolved.faqs),
   };
 }
 
@@ -130,6 +158,7 @@ export function assembleHomeFromFields(values = {}) {
   const stats = parsePipeLines(values.home_stats, 2);
   const pillars = parsePipeLines(values.home_pillars, 3);
   const testimonials = parsePipeLines(values.home_testimonials, 3);
+  const faqs = parsePipeLines(values.home_faqs, 2);
 
   return resolveHomeContent({
     eyebrow: values.home_eyebrow,
@@ -147,6 +176,7 @@ export function assembleHomeFromFields(values = {}) {
       : defaultHomeContent.testimonials,
     philosophy: values.home_philosophy,
     philosophyHighlight: values.home_philosophy_highlight,
+    faqs: faqs.length ? faqs : defaultHomeContent.faqs,
   });
 }
 
@@ -162,4 +192,5 @@ export const homeAdminFieldKeys = [
   "home_testimonials",
   "home_philosophy",
   "home_philosophy_highlight",
+  "home_faqs",
 ];

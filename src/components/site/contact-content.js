@@ -3,6 +3,99 @@ import { ContactForm } from "./contact-form";
 import { Reveal } from "./motion";
 
 export function ContactContent({ profile }) {
-  const info = [[Mail, "Email", profile.email, `mailto:${profile.email}`], [Phone, "Phone", profile.phone, `tel:${String(profile.phone || "").replace(/\s/g, "")}`], [MapPin, "Location", profile.location, null]];
-  return <><Reveal><span className="font-display text-xl font-semibold text-primary">Get in touch</span><h2 className="font-display mt-2 text-3xl font-semibold tracking-[-.035em] md:text-5xl">Let&apos;s Build Something <span className="text-gradient">Remarkable.</span></h2><div className="mt-6 h-px bg-gradient-to-r from-transparent via-border to-transparent" /><p className="mt-6 max-w-xl text-sm text-muted-foreground">Have a project or just want to say hi? I typically reply within <b className="text-primary">12–24 hours</b>. Share a brief and I&apos;ll get back with next steps.</p></Reveal><div className="mt-8 grid gap-6 xl:grid-cols-[1.5fr_1fr]"><Reveal delay={.05}><ContactForm /></Reveal><div className="space-y-3">{info.map(([Icon, label, value, href], index) => value && <Reveal key={label} delay={.1 + index * .06}>{href ? <a href={href} className="liquid group flex items-center gap-4 rounded-2xl p-4 transition hover:-translate-y-0.5 hover:border-primary/40"><span className="liquid relative z-[1] grid h-11 w-11 place-items-center rounded-xl text-primary transition group-hover:border-primary/50 group-hover:text-primary-foreground group-hover:[background:var(--gradient-accent)]"><Icon className="relative z-[1] h-4 w-4" /></span><span className="relative z-[1] min-w-0"><span className="block text-[10px] font-bold uppercase tracking-[.2em] text-muted-foreground">{label}</span><span className="block truncate text-sm">{value}</span></span></a> : <div className="liquid flex items-center gap-4 rounded-2xl p-4"><span className="liquid relative z-[1] grid h-11 w-11 place-items-center rounded-xl text-primary"><Icon className="relative z-[1] h-4 w-4" /></span><span className="relative z-[1] min-w-0"><span className="block text-[10px] font-bold uppercase tracking-[.2em] text-muted-foreground">{label}</span><span className="block truncate text-sm">{value}</span></span></div>}</Reveal>)}<Reveal delay={.3}><div className="liquid flex items-center gap-3 rounded-2xl p-4 text-xs font-bold uppercase tracking-[.2em] text-primary"><span className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary" /><span className="relative h-2 w-2 rounded-full bg-primary" /></span>{profile.availability || "Available for work"}</div></Reveal></div></div></>;
+  const info = [
+    [Mail, "Email", profile.email, `mailto:${profile.email}`],
+    [
+      Phone,
+      "Phone",
+      profile.phone,
+      `tel:${String(profile.phone || "").replace(/\s/g, "")}`,
+    ],
+    [MapPin, "Location", profile.location, null],
+  ];
+
+  return (
+    <>
+      <Reveal>
+        <span className="font-display text-xl font-semibold text-primary">
+          Hire / Contact
+        </span>
+        <h1 className="font-display mt-2 text-3xl font-semibold tracking-[-.035em] md:text-5xl">
+          Hire a product designer &{" "}
+          <span className="text-gradient">frontend developer</span>
+        </h1>
+        <div className="mt-6 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+        <p className="mt-6 max-w-xl text-sm text-muted-foreground">
+          Looking for UI/UX, product design, or a React/Next.js build? I typically
+          reply within <b className="text-primary">12-24 hours</b> with clear next
+          steps. Share your goal, timeline, and constraints - budget is optional.
+        </p>
+        <ol className="mt-5 max-w-xl space-y-2 text-sm text-muted-foreground">
+          <li>
+            <span className="font-medium text-foreground">1.</span> Send a brief
+            (form below)
+          </li>
+          <li>
+            <span className="font-medium text-foreground">2.</span> I reply with
+            fit + recommended next step
+          </li>
+          <li>
+            <span className="font-medium text-foreground">3.</span> We book a short
+            discovery call if aligned
+          </li>
+        </ol>
+      </Reveal>
+      <div className="mt-8 grid gap-6 xl:grid-cols-[1.5fr_1fr]">
+        <Reveal delay={0.05}>
+          <ContactForm email={profile.email} phone={profile.phone} />
+        </Reveal>
+        <div className="space-y-3">
+          {info.map(
+            ([Icon, label, value, href], index) =>
+              value && (
+                <Reveal key={label} delay={0.1 + index * 0.06}>
+                  {href ? (
+                    <a
+                      href={href}
+                      className="liquid group flex items-center gap-4 rounded-2xl p-4 transition hover:-translate-y-0.5 hover:border-primary/40"
+                    >
+                      <span className="liquid relative z-[1] grid h-11 w-11 place-items-center rounded-xl text-primary transition group-hover:border-primary/50 group-hover:text-primary-foreground group-hover:[background:var(--gradient-accent)]">
+                        <Icon className="relative z-[1] h-4 w-4" />
+                      </span>
+                      <span className="relative z-[1] min-w-0">
+                        <span className="block text-[10px] font-bold uppercase tracking-[.2em] text-muted-foreground">
+                          {label}
+                        </span>
+                        <span className="block truncate text-sm">{value}</span>
+                      </span>
+                    </a>
+                  ) : (
+                    <div className="liquid flex items-center gap-4 rounded-2xl p-4">
+                      <span className="liquid relative z-[1] grid h-11 w-11 place-items-center rounded-xl text-primary">
+                        <Icon className="relative z-[1] h-4 w-4" />
+                      </span>
+                      <span className="relative z-[1] min-w-0">
+                        <span className="block text-[10px] font-bold uppercase tracking-[.2em] text-muted-foreground">
+                          {label}
+                        </span>
+                        <span className="block truncate text-sm">{value}</span>
+                      </span>
+                    </div>
+                  )}
+                </Reveal>
+              ),
+          )}
+          <Reveal delay={0.3}>
+            <div className="liquid flex items-center gap-3 rounded-2xl p-4 text-xs font-bold uppercase tracking-[.2em] text-primary">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary" />
+                <span className="relative h-2 w-2 rounded-full bg-primary" />
+              </span>
+              {profile.availability || "Available for work"}
+            </div>
+          </Reveal>
+        </div>
+      </div>
+    </>
+  );
 }

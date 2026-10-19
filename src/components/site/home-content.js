@@ -98,7 +98,7 @@ function Hero({ profile, home }) {
           <Sparkles className="h-3.5 w-3.5 text-primary" />
           {home.eyebrow}
         </motion.span>
-        <h2 className="font-display mt-5 text-4xl font-semibold leading-[1.08] tracking-[-0.035em] md:text-5xl 2xl:text-[3.4rem]">
+        <h1 className="font-display mt-5 text-4xl font-semibold leading-[1.08] tracking-[-0.035em] md:text-5xl 2xl:text-[3.4rem]">
           {words.map((word, index) => (
             <motion.span
               key={`${word}-${index}`}
@@ -125,7 +125,7 @@ function Hero({ profile, home }) {
           >
             {home.suffix}
           </motion.span>
-        </h2>
+        </h1>
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -160,6 +160,7 @@ function Hero({ profile, home }) {
             {["A", "M", "S", "R"].map((letter, index) => (
               <span
                 key={letter}
+                aria-hidden="true"
                 style={{ zIndex: 4 - index }}
                 className="relative flex h-9 w-9 items-center justify-center rounded-full border-2 border-card bg-secondary text-xs font-semibold"
               >
@@ -196,6 +197,7 @@ function Hero({ profile, home }) {
             width={900}
             height={1399}
             priority
+            sizes="(max-width: 1280px) 70vw, 380px"
             className="h-full w-full object-contain object-bottom"
           />
         </motion.div>
@@ -310,7 +312,7 @@ function Stats({ stats, availability }) {
             {availability}
           </span>
           <span className="font-display mt-4 flex items-center justify-between text-xl font-semibold">
-            Hire me{" "}
+            Start a project{" "}
             <ArrowUpRight className="h-5 w-5 transition group-hover:rotate-45" />
           </span>
         </Link>
@@ -342,14 +344,17 @@ function Pillars({ pillars }) {
   );
 }
 
-function SectionTitle({ label, title, description }) {
+function SectionTitle({ label, title, description, id }) {
   return (
     <Reveal className="mb-8">
       <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[.25em] text-primary">
         <span className="h-px w-6 bg-primary" />
         {label}
       </span>
-      <h2 className="font-display mt-3 text-3xl font-semibold tracking-[-.03em] md:text-4xl">
+      <h2
+        id={id}
+        className="font-display mt-3 text-3xl font-semibold tracking-[-.03em] md:text-4xl"
+      >
         {title}
       </h2>
       {description && (
@@ -462,6 +467,43 @@ function Voices({ testimonials, philosophy, philosophyHighlight }) {
   );
 }
 
+function Faqs({ faqs }) {
+  if (!faqs?.length) return null;
+  return (
+    <section className="mt-16" id="faq" aria-labelledby="faq-heading">
+      <SectionTitle
+        label="FAQ"
+        id="faq-heading"
+        title={
+          <>
+            Answers, <span className="text-gradient">up front</span>
+          </>
+        }
+        description="Clear answers for teams deciding whether we’re a fit - useful for humans and search engines."
+      />
+      <div className="space-y-3">
+        {faqs.map(([question, answer], index) => (
+          <Reveal key={question} delay={index * 0.05}>
+            <details className="glass-card group rounded-2xl p-5 open:border-primary/40">
+              <summary className="cursor-pointer list-none font-display text-lg font-semibold tracking-[-.02em] marker:content-none [&::-webkit-details-marker]:hidden">
+                <span className="flex items-start justify-between gap-4">
+                  {question}
+                  <span className="text-primary transition group-open:rotate-45">
+                    +
+                  </span>
+                </span>
+              </summary>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                {answer}
+              </p>
+            </details>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export function HomeContent({ profile, services }) {
   const home = resolveHomeContent(profile?.home);
   return (
@@ -481,6 +523,7 @@ export function HomeContent({ profile, services }) {
         philosophy={home.philosophy}
         philosophyHighlight={home.philosophyHighlight}
       />
+      <Faqs faqs={home.faqs} />
     </>
   );
 }

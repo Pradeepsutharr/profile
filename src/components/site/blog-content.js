@@ -1,15 +1,57 @@
-/* eslint-disable @next/next/no-img-element -- imported legacy post images may use remote storage URLs. */
+/* eslint-disable @next/next/no-img-element -- remote legacy URLs fall back to <img>. */
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { BlogHtml } from "./blog-code-blocks";
 import { PageHero, Reveal } from "./motion";
 import { dateLabel, readingTime } from "./icons";
 
-function PostImage({ post, className = "" }) {
+function isOptimizableSrc(src) {
+  return typeof src === "string" && src.startsWith("/") && !src.startsWith("//");
+}
+
+function PostImage({
+  post,
+  className = "",
+  priority = false,
+  sizes = "100vw",
+  fill = true,
+  width = 1600,
+  height = 900,
+}) {
+  const url = post.image_url || "/images/hero-illustration.png";
+  if (isOptimizableSrc(url)) {
+    if (fill) {
+      return (
+        <Image
+          src={url}
+          alt={post.title}
+          fill
+          sizes={sizes}
+          priority={priority}
+          className={className}
+        />
+      );
+    }
+    return (
+      <Image
+        src={url}
+        alt={post.title}
+        width={width}
+        height={height}
+        sizes={sizes}
+        priority={priority}
+        className={className}
+      />
+    );
+  }
   return (
     <img
-      src={post.image_url || "/images/hero-illustration.png"}
+      src={url}
       alt={post.title}
+      loading={priority ? "eager" : "lazy"}
+      decoding="async"
+      fetchPriority={priority ? "high" : undefined}
       className={className}
     />
   );
@@ -20,10 +62,10 @@ export function BlogContent({ posts }) {
   return (
     <>
       <PageHero
-        eyebrow="Journal"
-        title="Thoughts &"
-        accent="notes"
-        description="Lessons from the intersection of design and code."
+        eyebrow="Blog"
+        title="Product design &"
+        accent="frontend insights"
+        description="Practical writing on UX, design systems, React, Next.js, and shipping better digital products."
       />
       {first && (
         <Reveal>
@@ -31,10 +73,12 @@ export function BlogContent({ posts }) {
             href={`/blog/${first.slug}`}
             className="glass-card group mb-5 flex flex-col overflow-hidden rounded-3xl p-3 md:flex-row"
           >
-            <div className="aspect-[16/10] overflow-hidden rounded-2xl bg-secondary md:w-1/2">
+            <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-secondary md:w-1/2">
               <PostImage
                 post={first}
-                className="h-full w-full object-cover transition duration-1000 group-hover:scale-[1.04]"
+                priority
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover transition duration-1000 group-hover:scale-[1.04]"
               />
             </div>
             <div className="flex flex-col p-5 md:w-1/2 md:p-7">
@@ -66,10 +110,11 @@ export function BlogContent({ posts }) {
               href={`/blog/${post.slug}`}
               className="glass-card group flex h-full flex-col rounded-3xl p-3 transition hover:-translate-y-1"
             >
-              <div className="aspect-[16/9] overflow-hidden rounded-2xl bg-secondary">
+              <div className="relative aspect-[16/9] overflow-hidden rounded-2xl bg-secondary">
                 <PostImage
                   post={post}
-                  className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover transition duration-700 group-hover:scale-105"
                 />
               </div>
               <div className="flex flex-1 flex-col p-4">
@@ -156,8 +201,27 @@ function normalizePostHtml(content) {
   );
 }
 
-export function PostDetail({ post, nextPost, profile }) {
+export function PostDetail({
+  post,
+  nextPost,
+  profile,
+  relatedProjects = [],
+  relatedServices = [],
+}) {
   const html = normalizePostHtml(post.content);
+  const related = [
+    ...relatedProjects.map((item) => ({
+      href: `/work/${item.slug}`,
+      label: "Related work",
+      title: item.title,
+    })),
+    ...relatedServices.map((item) => ({
+      href: `/services/${item.slug}`,
+      label: "Related service",
+      title: item.title,
+    })),
+  ].slice(0, 2);
+
   return (
     <article className="mx-auto max-w-3xl">
       <Link
@@ -193,13 +257,41 @@ export function PostDetail({ post, nextPost, profile }) {
       </Reveal>
       <Reveal>
         <div className="liquid mt-8 overflow-hidden rounded-3xl p-2">
-          <PostImage
-            post={post}
-            className="aspect-[16/9] w-full rounded-2xl object-cover"
-          />
+          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl">
+            <PostImage
+              post={post}
+              priority
+              sizes="(max-width: 768px) 100vw, 720px"
+              className="object-cover"
+            />
+          </div>
         </div>
       </Reveal>
       <BlogHtml className="blog-content mt-10" html={html} />
+      {related.length > 0 && (
+        <aside className="mt-12">
+          <div className="text-[11px] font-semibold uppercase tracking-[.2em] text-primary">
+            Keep exploring
+          </div>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            {related.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="liquid group flex flex-col rounded-2xl p-5 transition hover:border-primary/40"
+              >
+                <span className="text-[11px] uppercase tracking-[.18em] text-muted-foreground">
+                  {item.label}
+                </span>
+                <span className="font-display mt-2 inline-flex items-center gap-2 text-base font-semibold">
+                  {item.title}
+                  <ArrowUpRight className="h-4 w-4 transition group-hover:rotate-45 group-hover:text-primary" />
+                </span>
+              </Link>
+            ))}
+          </div>
+        </aside>
+      )}
       {nextPost && (
         <Link
           href={`/blog/${nextPost.slug}`}
