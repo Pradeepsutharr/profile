@@ -6,7 +6,9 @@ import { getProfile, getSettings, list } from "./repository";
 async function withFallback(work, fallback) {
   try {
     const result = await work();
-    return Array.isArray(result) && result.length === 0 ? fallback : result || fallback;
+    return Array.isArray(result) && result.length === 0
+      ? fallback
+      : result || fallback;
   } catch (error) {
     return fallback;
   }
@@ -21,7 +23,10 @@ export async function getSiteContext() {
 }
 
 export async function getCollection(resource) {
-  return withFallback(() => list(resource, { publicOnly: true }), fallbackData[resource] || []);
+  return withFallback(
+    () => list(resource, { publicOnly: true }),
+    fallbackData[resource] || [],
+  );
 }
 
 export async function getBySlug(resource, slug) {

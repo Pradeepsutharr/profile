@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS admin_accounts (
 CREATE TABLE IF NOT EXISTS profile (
   id text PRIMARY KEY DEFAULT 'primary', name text NOT NULL, title text NOT NULL, intro text, summary text,
   email text, phone text, location text, avatar_url text, socials jsonb NOT NULL DEFAULT '{}'::jsonb,
-  availability text, created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now()
+  availability text, home jsonb NOT NULL DEFAULT '{}'::jsonb,
+  created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now()
 );
 
 CREATE TABLE IF NOT EXISTS site_settings (
@@ -20,13 +21,13 @@ CREATE TABLE IF NOT EXISTS projects (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(), title text NOT NULL, slug text NOT NULL UNIQUE, excerpt text, description text,
   image_url text, gallery jsonb NOT NULL DEFAULT '[]'::jsonb, tags text[] NOT NULL DEFAULT '{}', tech_stack text[] NOT NULL DEFAULT '{}',
   category text, client text, role text, year text, metrics jsonb NOT NULL DEFAULT '[]'::jsonb, challenge text, approach text, outcome text,
-  project_url text, sort_order integer NOT NULL DEFAULT 0, published boolean NOT NULL DEFAULT false,
+  project_url text, sort_order integer NOT NULL DEFAULT 0, featured boolean NOT NULL DEFAULT false, published boolean NOT NULL DEFAULT false,
   created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now()
 );
 
 CREATE TABLE IF NOT EXISTS blog_posts (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(), title text NOT NULL, slug text NOT NULL UNIQUE, excerpt text, content text NOT NULL DEFAULT '',
-  image_url text, category text, keywords text, published boolean NOT NULL DEFAULT false, published_at timestamptz,
+  image_url text, category text, keywords text, featured boolean NOT NULL DEFAULT false, published boolean NOT NULL DEFAULT false, published_at timestamptz,
   created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now()
 );
 
@@ -78,6 +79,10 @@ CREATE INDEX IF NOT EXISTS posts_public_idx ON blog_posts (published, published_
 CREATE INDEX IF NOT EXISTS services_public_idx ON services (published, sort_order);
 CREATE INDEX IF NOT EXISTS contacts_created_idx ON contacts (created_at DESC);
 CREATE INDEX IF NOT EXISTS emails_thread_idx ON emails (gmail_thread_id, created_at);
+
+ALTER TABLE projects ADD COLUMN IF NOT EXISTS featured boolean NOT NULL DEFAULT false;
+ALTER TABLE blog_posts ADD COLUMN IF NOT EXISTS featured boolean NOT NULL DEFAULT false;
+ALTER TABLE profile ADD COLUMN IF NOT EXISTS home jsonb NOT NULL DEFAULT '{}'::jsonb;
 
 CREATE OR REPLACE FUNCTION set_updated_at() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN NEW.updated_at = now(); RETURN NEW; END; $$;
 DO $$ DECLARE table_name text; BEGIN

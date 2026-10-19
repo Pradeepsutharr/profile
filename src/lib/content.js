@@ -1,11 +1,22 @@
 import { defaultColors } from "./site-config";
+import {
+  defaultHomeContent,
+  defaultProfileIntro,
+  defaultProfileSummary,
+} from "./profile-home";
 
 export const fallbackProfile = {
-  name: "Pradeep Suthar", title: "Product Designer & Frontend Developer", email: "hello@pradeepsuthar.com", phone: "+91 70239 27315",
-  location: "Ahmedabad, Gujarat, India", avatar_url: "/images/logo.png", availability: "Available for select product work",
-  intro: "Crafting SaaS & web interfaces as a product designer and frontend developer.",
-  summary: "I help startups and businesses turn complex ideas into clear, useful digital products through research, interface design, and production-ready frontend engineering.",
+  name: "Pradeep Suthar",
+  title: "Product Designer",
+  email: "hello@pradeepsuthar.com",
+  phone: "+91 70239 27315",
+  location: "Ahmedabad, Gujarat, India",
+  avatar_url: "/images/logo.png",
+  availability: "Available for work",
+  intro: defaultProfileIntro,
+  summary: defaultProfileSummary,
   socials: { github: "#", linkedin: "#", instagram: "#" },
+  home: defaultHomeContent,
 };
 
 export const fallbackData = {

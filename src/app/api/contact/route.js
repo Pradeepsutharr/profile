@@ -5,7 +5,35 @@ import { ApiError, withApi } from "@/lib/server/errors";
 import { limit } from "@/lib/server/rate-limit";
 import { uploadFile } from "@/lib/server/storage";
 
-const schema = z.object({ name: z.string().trim().min(2).max(120), email: z.string().email().max(160), phone: z.string().trim().max(40).optional(), topic: z.string().trim().max(120).optional(), message: z.string().trim().min(10).max(3000) });
+const schema = z.object({
+  name: z
+    .string({ required_error: "Name is required." })
+    .trim()
+    .min(2, "Name must be at least 2 characters.")
+    .max(120, "Name must be 120 characters or fewer."),
+  email: z
+    .string({ required_error: "Email is required." })
+    .trim()
+    .email("Enter a valid email address.")
+    .max(160, "Email must be 160 characters or fewer."),
+  phone: z
+    .string()
+    .trim()
+    .max(40, "Phone must be 40 characters or fewer.")
+    .optional()
+    .or(z.literal("")),
+  topic: z
+    .string()
+    .trim()
+    .max(120, "Topic must be 120 characters or fewer.")
+    .optional()
+    .or(z.literal("")),
+  message: z
+    .string({ required_error: "Message is required." })
+    .trim()
+    .min(10, "Message must be at least 10 characters.")
+    .max(3000, "Message must be 3000 characters or fewer."),
+});
 
 export async function POST(request) {
   return withApi(async () => {

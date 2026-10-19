@@ -117,8 +117,8 @@ async function importProfile(destination, users, profileRows) {
   const title = storedProfile.title || active.profile_titles?.[0] || active.roles?.[0] || "Product Designer";
   const summary = storedProfile.summary || active.profile_summaries?.join(" ") || metadata.summary || "";
   await destination.query(
-    `INSERT INTO profile (id, name, title, intro, summary, email, phone, location, avatar_url, socials, availability)
-     VALUES ('primary', $1, $2, $3, $4, $5, $6, $7, $8, $9::jsonb, $10)
+    `INSERT INTO profile (id, name, title, intro, summary, email, phone, location, avatar_url, socials, availability, home)
+     VALUES ('primary', $1, $2, $3, $4, $5, $6, $7, $8, $9::jsonb, $10, COALESCE'::jsonb)
      ON CONFLICT (id) DO UPDATE SET
        name = EXCLUDED.name, title = EXCLUDED.title, intro = EXCLUDED.intro, summary = EXCLUDED.summary,
        email = EXCLUDED.email, phone = EXCLUDED.phone, location = EXCLUDED.location, avatar_url = EXCLUDED.avatar_url,

@@ -7,8 +7,8 @@ export const defaultColors = {
 };
 
 export const adminResources = {
-  projects: { label: "Projects", table: "projects", order: "sort_order ASC, created_at DESC", fields: ["title", "slug", "excerpt", "description", "image_url", "gallery", "tags", "tech_stack", "category", "client", "role", "year", "metrics", "challenge", "approach", "outcome", "project_url", "sort_order", "published"] },
-  posts: { label: "Posts", table: "blog_posts", order: "published_at DESC", fields: ["title", "slug", "excerpt", "content", "image_url", "category", "keywords", "published", "published_at"] },
+  projects: { label: "Projects", table: "projects", order: "featured DESC, sort_order ASC, created_at DESC", fields: ["title", "slug", "excerpt", "description", "image_url", "gallery", "tags", "tech_stack", "category", "client", "role", "year", "metrics", "challenge", "approach", "outcome", "project_url", "sort_order", "featured", "published"] },
+  posts: { label: "Posts", table: "blog_posts", order: "featured DESC, published_at DESC", fields: ["title", "slug", "excerpt", "content", "image_url", "category", "keywords", "featured", "published", "published_at"] },
   services: { label: "Services", table: "services", order: "sort_order ASC, created_at DESC", fields: ["title", "slug", "description", "icon", "tags", "sort_order", "published"] },
   skills: { label: "Skills", table: "skills", order: "sort_order ASC, created_at DESC", fields: ["name", "category", "score", "sort_order"] },
   experience: { label: "Experience", table: "experience", order: "sort_order ASC, start_date DESC", fields: ["company", "title", "start_date", "end_date", "location", "summary", "bullets", "sort_order"] },
