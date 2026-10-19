@@ -1,5 +1,6 @@
 import "./globals.css";
 import { DM_Sans } from "next/font/google";
+import { GoogleAnalytics } from "@/components/site/google-analytics";
 import { fallbackProfile } from "@/lib/content";
 import {
   defaultKeywords,
@@ -95,7 +96,10 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" data-theme="dark" className={dmSans.variable}>
-      <body className={dmSans.className}>{children}</body>
+      <body className={dmSans.className}>
+        <GoogleAnalytics />
+        {children}
+      </body>
     </html>
   );
 }
