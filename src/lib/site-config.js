@@ -38,8 +38,22 @@ export const adminResources = {
   skills: { label: "Skills", table: "skills", order: "sort_order ASC, created_at DESC", fields: ["name", "category", "score", "sort_order"] },
   experience: { label: "Experience", table: "experience", order: "sort_order ASC, start_date DESC", fields: ["company", "title", "start_date", "end_date", "location", "summary", "bullets", "sort_order"] },
   education: { label: "Education", table: "education", order: "sort_order ASC, start_date DESC", fields: ["institution", "degree", "start_date", "end_date", "location", "summary", "sort_order"] },
+  testimonials: {
+    label: "Testimonials",
+    table: "testimonials",
+    order: "sort_order ASC, created_at DESC",
+    fields: ["quote", "author_name", "author_role", "sort_order", "published"],
+  },
   contacts: { label: "Inquiries", table: "contacts", order: "created_at DESC", fields: ["name", "email", "phone", "topic", "message", "attachment_url", "status"] },
   emails: { label: "Inbox", table: "emails", order: "created_at DESC", fields: ["from_name", "from_email", "to_email", "subject", "body_text", "is_read", "is_starred"] },
 };
 
-export const publicResources = new Set(["projects", "posts", "services", "skills", "experience", "education"]);
+export const publicResources = new Set([
+  "projects",
+  "posts",
+  "services",
+  "skills",
+  "experience",
+  "education",
+  "testimonials",
+]);

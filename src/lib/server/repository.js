@@ -273,6 +273,14 @@ export function validatePayload(resource, payload, { partial = false } = {}) {
     throw new ApiError(400, "Institution is required.", {
       field: "institution",
     });
+  if (!partial && resource === "testimonials") {
+    if (!data.quote)
+      throw new ApiError(400, "Quote is required.", { field: "quote" });
+    if (!data.author_name)
+      throw new ApiError(400, "Author name is required.", {
+        field: "author_name",
+      });
+  }
   if (!partial && resource === "contacts") {
     if (!data.name)
       throw new ApiError(400, "Name is required.", { field: "name" });
@@ -306,7 +314,10 @@ export async function list(resource, { publicOnly = false, slug } = {}) {
     throw new ApiError(404, "Resource is not public");
   const conditions = [];
   const values = [];
-  if (publicOnly && ["projects", "posts", "services"].includes(resource))
+  if (
+    publicOnly &&
+    ["projects", "posts", "services", "testimonials"].includes(resource)
+  )
     conditions.push("published = true");
   if (slug) {
     values.push(slug);
@@ -359,6 +370,7 @@ export async function update(resource, id, payload) {
     "skills",
     "experience",
     "education",
+    "testimonials",
   ].includes(resource)
     ? ", updated_at = now()"
     : "";

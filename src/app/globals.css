@@ -305,6 +305,107 @@
   }
 }
 
+/* Hero visual motion (CSS-only — no framer-motion on the critical path). */
+.hero-orbit {
+  animation: spin 18s linear infinite;
+}
+.hero-float-a {
+  animation: hero-float 7s ease-in-out infinite;
+}
+.hero-float-b {
+  animation: hero-float 8.5s ease-in-out infinite reverse;
+  animation-delay: 0.4s;
+}
+.hero-float-c {
+  animation: hero-float 6.5s ease-in-out infinite;
+  animation-delay: 0.8s;
+}
+.hero-cursor {
+  animation: hero-cursor 8s ease-in-out infinite;
+}
+@keyframes hero-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0);
+  }
+}
+@keyframes hero-cursor {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  25% {
+    transform: translate3d(28px, -14px, 0);
+  }
+  55% {
+    transform: translate3d(8px, 18px, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-orbit,
+  .hero-float-a,
+  .hero-float-b,
+  .hero-float-c,
+  .hero-cursor {
+    animation: none !important;
+  }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 14px, 0);
+  transition:
+    opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal-in {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  will-change: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Mobile: drop heavy GPU filters/animations (main cause of lag + low PSI). */
+@media (max-width: 767px) {
+  .liquid,
+  .glass-card,
+  .nav-glass,
+  .mobile-navbar,
+  .panel {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: var(--card);
+  }
+  .panel {
+    background: var(--background);
+  }
+  .aurora,
+  .spin-slow,
+  .animate-ping {
+    animation: none !important;
+  }
+  .aurora {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora,
+  .spin-slow {
+    animation: none !important;
+  }
+}
+
 /* Blog article content + code blocks */
 .blog-content {
   color: var(--muted-foreground);

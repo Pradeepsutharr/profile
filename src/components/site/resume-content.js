@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Briefcase, GraduationCap } from "lucide-react";
 import { Reveal } from "./motion";
 
@@ -61,7 +60,7 @@ function Timeline({ icon: Icon, title, items, kind }) {
   );
 }
 
-function SkillBar({ skill, delay }) {
+function SkillBar({ skill }) {
   const score = Math.min(100, Math.max(0, Number(skill.score) || 0));
   return (
     <div>
@@ -70,12 +69,9 @@ function SkillBar({ skill, delay }) {
         <span className="text-muted-foreground">{score}%</span>
       </div>
       <div className="h-2 overflow-hidden rounded-full bg-secondary">
-        <motion.div
+        <div
           className="bg-gradient-accent shadow-glow h-full rounded-full"
-          initial={{ width: 0 }}
-          whileInView={{ width: `${score}%` }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 1, delay, ease: [0.16, 1, 0.3, 1] }}
+          style={{ width: `${score}%` }}
         />
       </div>
     </div>
@@ -87,7 +83,7 @@ export function ResumeContent({ experience, education, skills }) {
     <>
       <Reveal className="mb-10">
         <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[.25em] text-primary">
-          <span className="h-px w-6 bg-primary" />
+          {/* <span className="h-px w-6 bg-primary" /> */}
           Resume / CV
         </span>
         <h1 className="font-display mt-3 text-3xl font-semibold tracking-[-.03em] md:text-4xl">
@@ -117,7 +113,7 @@ export function ResumeContent({ experience, education, skills }) {
       <section className="mt-10">
         <Reveal className="mb-8">
           <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[.25em] text-primary">
-            <span className="h-px w-6 bg-primary" />
+            {/* <span className="h-px w-6 bg-primary" /> */}
             Skills
           </span>
           <h2 className="font-display mt-3 text-3xl font-semibold tracking-[-.03em] md:text-4xl">
@@ -126,7 +122,7 @@ export function ResumeContent({ experience, education, skills }) {
         </Reveal>
         <div className="liquid grid gap-5 rounded-2xl p-6 md:grid-cols-2">
           {skills.map((skill, index) => (
-            <SkillBar key={skill.id} skill={skill} delay={index * 0.08} />
+            <SkillBar key={skill.id} skill={skill} />
           ))}
         </div>
       </section>
