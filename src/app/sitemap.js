@@ -1,7 +1,7 @@
 import { getCollection } from "@/lib/server/site-data";
 import { absoluteUrl } from "@/lib/seo";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export default async function sitemap() {
   const [projects, posts, services] = await Promise.all([

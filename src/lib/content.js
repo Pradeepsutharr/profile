@@ -44,6 +44,35 @@ export const fallbackData = {
   skills: [{ id: "skill-1", name: "Product design", category: "Design", score: 96 }, { id: "skill-2", name: "UX research", category: "Design", score: 89 }, { id: "skill-3", name: "Figma", category: "Tools", score: 94 }, { id: "skill-4", name: "React & Next.js", category: "Development", score: 90 }],
   experience: [{ id: "exp-1", company: "Independent", title: "Product Designer & Frontend Developer", start_date: "2021-01-01", location: "Ahmedabad, India", summary: "Partnering with founders and teams to shape products from research through implementation.", bullets: ["Led product discovery and interface design", "Built responsive React and Next.js applications"] }],
   education: [{ id: "edu-1", institution: "Design & Technology", degree: "Product design and frontend practice", start_date: "2017-01-01", location: "India", summary: "A continuing practice of design, technology, and product thinking." }],
+  testimonials: [
+    {
+      id: "testimonial-1",
+      quote:
+        "Pradeep didn't just design screens - he rethought our whole onboarding. Activation jumped within weeks.",
+      author_name: "Ananya R.",
+      author_role: "Founder, Fintech startup",
+      published: true,
+      sort_order: 0,
+    },
+    {
+      id: "testimonial-2",
+      quote:
+        "Rare combination: a designer who writes production-grade React. Handoff friction went to zero.",
+      author_name: "Marcus L.",
+      author_role: "CTO, SaaS company",
+      published: true,
+      sort_order: 1,
+    },
+    {
+      id: "testimonial-3",
+      quote:
+        "Fast, thoughtful and genuinely invested in the outcome. Our design system finally makes sense.",
+      author_name: "Sofia K.",
+      author_role: "Head of Product",
+      published: true,
+      sort_order: 2,
+    },
+  ],
 };
 
 export const fallbackSettings = { colors: defaultColors };

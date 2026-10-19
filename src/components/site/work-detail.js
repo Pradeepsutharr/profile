@@ -3,7 +3,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import {
   ArrowLeft,
   ArrowRight,
@@ -210,12 +209,7 @@ export function WorkDetail({ project, nextProject }) {
   ].filter(([, text]) => text);
   return (
     <article>
-      <motion.section
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.55 }}
-        className="liquid overflow-hidden rounded-3xl"
-      >
+      <section className="liquid overflow-hidden rounded-3xl">
         <div className="flex max-h-[min(78dvh,720px)] flex-col">
           <div className="shrink-0 px-5 pb-4 pt-5 md:px-7 md:pb-5 md:pt-6">
             <Link
@@ -255,7 +249,7 @@ export function WorkDetail({ project, nextProject }) {
             </div>
           </div>
         </div>
-      </motion.section>
+      </section>
       <div className="mt-6 flex flex-wrap gap-3">
         {facts.map(([label, value]) => (
           <div

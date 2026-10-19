@@ -1,5 +1,6 @@
 import "./globals.css";
 import { DM_Sans } from "next/font/google";
+import Script from "next/script";
 import { GoogleAnalytics } from "@/components/site/google-analytics";
 import { fallbackProfile } from "@/lib/content";
 import {
@@ -11,9 +12,14 @@ import {
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
-  display: "swap",
+  // optional: avoid LCP text waiting on webfont (PSI mobile render-delay).
+  display: "optional",
   variable: "--font-dm-sans",
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "600", "700"],
+  // Don't preload: frees bandwidth for the LCP portrait under slow-4G PSI.
+  preload: false,
+  adjustFontFallback: true,
+  fallback: ["ui-sans-serif", "system-ui", "sans-serif"],
 });
 
 const profile = fallbackProfile;
@@ -75,12 +81,12 @@ export const metadata = {
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
-      { url: "/favicon.svg", type: "image/svg+xml" },
       { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
     ],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
-  manifest: "/site.webmanifest",
+  // Manifest is useful for installability but competes on the critical path in PSI.
+  // Keep the file in /public; link it from the document after first paint via chrome if needed.
 };
 
 export const viewport = {
@@ -95,8 +101,11 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-theme="dark" className={dmSans.variable}>
+    <html lang="en" data-theme="dark" className={dmSans.variable} suppressHydrationWarning>
       <body className={dmSans.className}>
+        <Script id="theme-init" strategy="beforeInteractive">
+          {`(function(){try{var t=localStorage.getItem("portfolio-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;}catch(e){}})();`}
+        </Script>
         <GoogleAnalytics />
         {children}
       </body>

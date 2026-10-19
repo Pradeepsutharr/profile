@@ -111,6 +111,21 @@ async function main() {
         JSON.stringify(defaultHomeContent),
       ],
     );
+    const existingTestimonials = await client.query(
+      "SELECT COUNT(*)::int AS count FROM testimonials",
+    );
+    if (existingTestimonials.rows[0].count === 0) {
+      for (let index = 0; index < defaultHomeContent.testimonials.length; index += 1) {
+        const [quote, author_name, author_role] =
+          defaultHomeContent.testimonials[index];
+        await client.query(
+          `INSERT INTO testimonials (quote, author_name, author_role, sort_order, published)
+           VALUES ($1, $2, $3, $4, true)`,
+          [quote, author_name, author_role, index],
+        );
+      }
+      console.log("Seeded default testimonials.");
+    }
     console.log(`Admin account ready for ${ADMIN_EMAIL.toLowerCase()}.`);
     console.log("Profile homepage content is ready.");
   } finally {

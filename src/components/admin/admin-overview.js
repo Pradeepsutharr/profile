@@ -9,6 +9,7 @@ import {
   GraduationCap,
   Inbox,
   Layers3,
+  MessageSquareQuote,
   MessageSquareText,
   Sparkles,
   Wrench,
@@ -31,6 +32,12 @@ const links = [
     "Education",
     "Keep your academic record current",
     GraduationCap,
+  ],
+  [
+    "testimonials",
+    "Testimonials",
+    "Add, edit, and publish client quotes",
+    MessageSquareQuote,
   ],
   [
     "contacts",

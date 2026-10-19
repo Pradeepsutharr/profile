@@ -1,4 +1,5 @@
 import { HomeContent } from "@/components/site/home-content";
+import { HomeHero } from "@/components/site/home-hero";
 import { JsonLd } from "@/components/site/json-ld";
 import { NivaLoader } from "@/components/site/niva-loader";
 import { SiteShell } from "@/components/site/site-shell";
@@ -12,7 +13,7 @@ import {
   websiteJsonLd,
 } from "@/lib/seo";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export async function generateMetadata() {
   const { profile } = await getSiteContext();
@@ -23,10 +24,10 @@ export async function generateMetadata() {
 }
 
 export default async function HomePage() {
-  const [{ profile, settings }, projects, services] = await Promise.all([
+  const [{ profile, settings }, services, testimonials] = await Promise.all([
     getSiteContext(),
-    getCollection("projects"),
     getCollection("services"),
+    getCollection("testimonials"),
   ]);
   const home = resolveHomeContent(profile.home);
   return (
@@ -40,7 +41,12 @@ export default async function HomePage() {
         ]}
       />
       <NivaLoader />
-      <HomeContent profile={profile} projects={projects} services={services} />
+      <HomeHero profile={profile} home={home} />
+      <HomeContent
+        profile={profile}
+        services={services}
+        testimonials={testimonials}
+      />
     </SiteShell>
   );
 }

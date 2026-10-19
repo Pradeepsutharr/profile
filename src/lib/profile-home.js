@@ -142,7 +142,6 @@ export function flattenHomeFields(home) {
     home_stats: formatPipeLines(resolved.stats),
     home_pillars: formatPipeLines(resolved.pillars),
     home_services_description: resolved.servicesDescription,
-    home_testimonials: formatPipeLines(resolved.testimonials),
     home_philosophy: resolved.philosophy,
     home_philosophy_highlight: resolved.philosophyHighlight,
     home_faqs: formatPipeLines(resolved.faqs),
@@ -150,15 +149,16 @@ export function flattenHomeFields(home) {
 }
 
 /** Build profile.home from admin form values. */
-export function assembleHomeFromFields(values = {}) {
+export function assembleHomeFromFields(values = {}, previousHome = {}) {
   const headlineWords = String(values.home_headline || "")
     .trim()
     .split(/\s+/)
     .filter(Boolean);
   const stats = parsePipeLines(values.home_stats, 2);
   const pillars = parsePipeLines(values.home_pillars, 3);
-  const testimonials = parsePipeLines(values.home_testimonials, 3);
   const faqs = parsePipeLines(values.home_faqs, 2);
+  const previous =
+    previousHome && typeof previousHome === "object" ? previousHome : {};
 
   return resolveHomeContent({
     eyebrow: values.home_eyebrow,
@@ -171,9 +171,8 @@ export function assembleHomeFromFields(values = {}) {
     stats: stats.length ? stats : defaultHomeContent.stats,
     pillars: pillars.length ? pillars : defaultHomeContent.pillars,
     servicesDescription: values.home_services_description,
-    testimonials: testimonials.length
-      ? testimonials
-      : defaultHomeContent.testimonials,
+    // Quotes are managed via the Testimonials resource; preserve legacy JSON.
+    testimonials: asArray(previous.testimonials, defaultHomeContent.testimonials),
     philosophy: values.home_philosophy,
     philosophyHighlight: values.home_philosophy_highlight,
     faqs: faqs.length ? faqs : defaultHomeContent.faqs,
@@ -189,7 +188,6 @@ export const homeAdminFieldKeys = [
   "home_stats",
   "home_pillars",
   "home_services_description",
-  "home_testimonials",
   "home_philosophy",
   "home_philosophy_highlight",
   "home_faqs",

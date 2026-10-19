@@ -39,6 +39,7 @@ const longFields = new Set([
   "outcome",
   "summary",
   "message",
+  "quote",
   "seo_description",
 ]);
 const socialKeys = [
@@ -53,7 +54,6 @@ const socialKeys = [
 const homeTextareaKeys = new Set([
   "home_stats",
   "home_pillars",
-  "home_testimonials",
   "home_services_description",
   "home_philosophy",
   "home_faqs",
@@ -87,11 +87,6 @@ const profileFields = [
   [
     "home_services_description",
     "Services section description",
-    "textarea",
-  ],
-  [
-    "home_testimonials",
-    "Testimonials (one per line: quote|name|role)",
     "textarea",
   ],
   ["home_philosophy", "Product philosophy", "textarea"],
@@ -129,12 +124,12 @@ const profileGroups = [
   },
   {
     title: "Homepage sections",
-    description: "Stats, pillars, testimonials, philosophy, and FAQs for AEO.",
+    description:
+      "Stats, pillars, philosophy, and FAQs. Manage client quotes under Testimonials.",
     fields: [
       "home_stats",
       "home_pillars",
       "home_services_description",
-      "home_testimonials",
       "home_philosophy",
       "home_philosophy_highlight",
       "home_faqs",
@@ -270,6 +265,7 @@ function recordTitle(record = {}) {
   return (
     record.title ||
     record.name ||
+    record.author_name ||
     record.company ||
     record.institution ||
     record.subject ||
@@ -281,6 +277,7 @@ function recordSummary(record = {}) {
     record.excerpt ||
     record.description ||
     record.summary ||
+    record.quote ||
     record.message ||
     record.from_email ||
     "No summary added yet."
@@ -441,7 +438,14 @@ function ResourceField({ field, value, change, upload, disabled, error }) {
     field,
   );
   const long = longFields.has(field) || jsonFields.has(field);
-  const required = ["title", "name", "company", "institution"].includes(field);
+  const required = [
+    "title",
+    "name",
+    "company",
+    "institution",
+    "quote",
+    "author_name",
+  ].includes(field);
   const type = field.includes("date")
     ? "date"
     : field === "score" || field === "sort_order"
@@ -579,6 +583,8 @@ function sections(fields) {
   const primary = new Set([
     "title",
     "name",
+    "author_name",
+    "author_role",
     "company",
     "institution",
     "slug",
@@ -1344,8 +1350,10 @@ function ConfigEditor({
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
   const [saving, setSaving] = useState(false);
+  const previousHomeRef = useRef(null);
   const hydrate = useCallback(
     (source) => {
+      if (profile) previousHomeRef.current = source.home || {};
       const homeValues = profile ? flattenHomeFields(source.home) : {};
       setValues(
         Object.fromEntries(
@@ -1426,7 +1434,10 @@ function ConfigEditor({
             .filter(([, value]) => value),
         );
         if (payload.socials.x) payload.socials.twitter = payload.socials.x;
-        payload.home = assembleHomeFromFields(values);
+        payload.home = assembleHomeFromFields(
+          values,
+          previousHomeRef.current,
+        );
       }
       const data = await api(endpoint, {
         method: "PUT",

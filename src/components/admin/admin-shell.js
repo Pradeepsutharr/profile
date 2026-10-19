@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BookOpen, BriefcaseBusiness, ChevronRight, GraduationCap, Inbox, Layers3, LogOut, Palette, Settings2, Sparkles, UserRound, Wrench } from "lucide-react";
+import { BookOpen, BriefcaseBusiness, ChevronRight, GraduationCap, Inbox, Layers3, LogOut, MessageSquareQuote, Palette, Settings2, Sparkles, UserRound, Wrench } from "lucide-react";
 
-const links = [["/admin", "Overview", Settings2], ["/admin/projects", "Projects", BriefcaseBusiness], ["/admin/posts", "Posts", BookOpen], ["/admin/services", "Services", Sparkles], ["/admin/skills", "Skills", Wrench], ["/admin/experience", "Experience", Layers3], ["/admin/education", "Education", GraduationCap], ["/admin/contacts", "Inquiries", Inbox], ["/admin/emails", "Inbox", Inbox], ["/admin/profile", "Profile", UserRound], ["/admin/appearance", "Appearance", Palette]];
+const links = [["/admin", "Overview", Settings2], ["/admin/projects", "Projects", BriefcaseBusiness], ["/admin/posts", "Posts", BookOpen], ["/admin/services", "Services", Sparkles], ["/admin/skills", "Skills", Wrench], ["/admin/experience", "Experience", Layers3], ["/admin/education", "Education", GraduationCap], ["/admin/testimonials", "Testimonials", MessageSquareQuote], ["/admin/contacts", "Inquiries", Inbox], ["/admin/emails", "Inbox", Inbox], ["/admin/profile", "Profile", UserRound], ["/admin/appearance", "Appearance", Palette]];
 
 export function AdminShell({ email, children }) {
   const pathname = usePathname(); const router = useRouter();
