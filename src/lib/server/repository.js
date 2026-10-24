@@ -340,9 +340,26 @@ export async function getOne(resource, id) {
   return normalizeRecord(resource, rows[0]);
 }
 
+async function uniqueSlug(table, desired, excludeId) {
+  const base = slugify(desired) || "item";
+  for (let suffix = 1; suffix < 1000; suffix += 1) {
+    const slug = suffix === 1 ? base : `${base}-${suffix}`;
+    const { rows } = await query(
+      excludeId
+        ? `SELECT id FROM ${table} WHERE slug = $1 AND id <> $2 LIMIT 1`
+        : `SELECT id FROM ${table} WHERE slug = $1 LIMIT 1`,
+      excludeId ? [slug, excludeId] : [slug],
+    );
+    if (!rows[0]) return slug;
+  }
+  return `${base}-${Date.now()}`;
+}
+
 export async function create(resource, payload) {
   const { table } = config(resource);
   const data = encodeDbValues(validatePayload(resource, payload));
+  if (["projects", "posts", "services"].includes(resource))
+    data.slug = await uniqueSlug(table, data.slug || data.title);
   const columns = Object.keys(data);
   const values = Object.values(data);
   const placeholders = columns.map((_, index) => `$${index + 1}`).join(", ");
@@ -358,6 +375,11 @@ export async function update(resource, id, payload) {
   const data = encodeDbValues(
     validatePayload(resource, payload, { partial: true }),
   );
+  if (
+    ["projects", "posts", "services"].includes(resource) &&
+    Object.hasOwn(data, "slug")
+  )
+    data.slug = await uniqueSlug(table, data.slug || data.title, id);
   const columns = Object.keys(data);
   const values = Object.values(data);
   const assignments = columns
