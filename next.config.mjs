@@ -13,6 +13,7 @@ const nextConfig = {
   htmlLimitedBots: /.*/,
   images: {
     formats: ["image/avif", "image/webp"],
+    qualities: [50, 60, 70, 80, 90, 100],
     remotePatterns: [{ protocol: "https", hostname: "**" }],
   },
   poweredByHeader: false,

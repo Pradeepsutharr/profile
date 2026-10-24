@@ -1,4 +1,4 @@
-# App Router Portfolio
+# Pradeep's Portfolio
 
 A JavaScript-only Next.js App Router portfolio with Tailwind CSS, DM Sans, PostgreSQL, HTTP-only JWT admin sessions, S3-compatible uploads, and optional Gmail integration. There is no Supabase runtime dependency or compatibility layer.
 

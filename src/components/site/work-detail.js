@@ -43,6 +43,7 @@ function ProjectImage({
           sizes={sizes}
           priority={priority}
           className={className}
+          quality={100}
         />
       );
     }
@@ -55,6 +56,7 @@ function ProjectImage({
         sizes={sizes}
         priority={priority}
         className={className}
+        quality={100}
       />
     );
   }
@@ -65,6 +67,7 @@ function ProjectImage({
       loading={priority ? "eager" : "lazy"}
       decoding="async"
       className={className}
+      quality={100}
     />
   );
 }
@@ -245,6 +248,7 @@ export function WorkDetail({ project, nextProject }) {
                 priority
                 sizes="(max-width: 768px) 100vw, 720px"
                 className="object-cover object-top"
+                quality={100}
               />
             </div>
           </div>

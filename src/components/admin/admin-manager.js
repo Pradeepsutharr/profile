@@ -255,31 +255,35 @@ function initialValue(record, field) {
       : value
         ? JSON.stringify(value, null, 2)
         : "[]";
-  if (["published", "featured", "is_read", "is_starred"].includes(field))
+  if (["published", "featured", "is_read", "is_starred"].includes(field)) {
+    if (value === undefined || value === null) return field === "published";
     return Boolean(value);
+  }
   if (["start_date", "end_date", "published_at"].includes(field) && value)
     return String(value).slice(0, 10);
   return value ?? "";
 }
-function recordTitle(record = {}) {
+function recordTitle(record) {
+  const item = record || {};
   return (
-    record.title ||
-    record.name ||
-    record.author_name ||
-    record.company ||
-    record.institution ||
-    record.subject ||
+    item.title ||
+    item.name ||
+    item.author_name ||
+    item.company ||
+    item.institution ||
+    item.subject ||
     "New record"
   );
 }
-function recordSummary(record = {}) {
+function recordSummary(record) {
+  const item = record || {};
   return (
-    record.excerpt ||
-    record.description ||
-    record.summary ||
-    record.quote ||
-    record.message ||
-    record.from_email ||
+    item.excerpt ||
+    item.description ||
+    item.summary ||
+    item.quote ||
+    item.message ||
+    item.from_email ||
     "No summary added yet."
   );
 }
@@ -533,6 +537,7 @@ function ResourceField({ field, value, change, upload, disabled, error }) {
         <textarea
           disabled={disabled}
           name={field}
+          required={required}
           aria-invalid={Boolean(error)}
           rows={jsonFields.has(field) ? 7 : 5}
           value={value}
@@ -545,7 +550,7 @@ function ResourceField({ field, value, change, upload, disabled, error }) {
           name={field}
           aria-invalid={Boolean(error)}
           required={required}
-          type={type}
+          type={type === "url" && !value ? "text" : type}
           value={value}
           onChange={(event) => change(field, event.target.value)}
           className={`${inputClass} ${error ? "border-red-500 focus:border-red-500 focus:ring-red-500/10" : ""}`}
@@ -649,9 +654,10 @@ function sections(fields) {
 }
 function ResourceEditor({ resource, record, onClose, onSaved, onRemove }) {
   const config = adminResources[resource];
+  const draft = record || {};
   const [values, setValues] = useState(() =>
     Object.fromEntries(
-      config.fields.map((field) => [field, initialValue(record, field)]),
+      config.fields.map((field) => [field, initialValue(draft, field)]),
     ),
   );
   const [saving, setSaving] = useState(false);
@@ -659,7 +665,7 @@ function ResourceEditor({ resource, record, onClose, onSaved, onRemove }) {
   const [fieldErrors, setFieldErrors] = useState({});
   const [notice, setNotice] = useState("");
   const [slugEdited, setSlugEdited] = useState(false);
-  const existing = Boolean(record?.id);
+  const existing = Boolean(draft.id);
   function change(field, value) {
     setFieldErrors((current) => {
       if (!current[field]) return current;
@@ -725,7 +731,7 @@ function ResourceEditor({ resource, record, onClose, onSaved, onRemove }) {
     setError("");
     try {
       const result = await api(
-        `/api/admin/resources/${resource}${existing ? `/${record.id}` : ""}`,
+        `/api/admin/resources/${resource}${existing ? `/${draft.id}` : ""}`,
         { method: existing ? "PATCH" : "POST", body: JSON.stringify(values) },
       );
       onSaved(result, existing);
@@ -764,7 +770,7 @@ function ResourceEditor({ resource, record, onClose, onSaved, onRemove }) {
             {existing ? "Editing" : "New record"}
           </span>
           <h1 className="font-display mt-1 text-3xl font-semibold tracking-[-.035em]">
-            {recordTitle(record)}
+            {recordTitle(draft)}
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
             Changes are made in this dedicated editor and publish when saved.
@@ -774,7 +780,7 @@ function ResourceEditor({ resource, record, onClose, onSaved, onRemove }) {
           <button
             type="button"
             disabled={saving}
-            onClick={() => onRemove(record.id)}
+            onClick={() => onRemove(draft.id)}
             className="inline-flex h-fit items-center gap-2 rounded-xl border border-red-500/25 px-3.5 py-2.5 text-sm font-medium text-red-500 hover:bg-red-500/10"
           >
             <Trash2 className="h-4 w-4" />
@@ -912,7 +918,7 @@ function ResourceList({
               Sync Gmail
             </button>
           )}
-          {!email && (
+          {!email && !inquiry && (
             <button
               type="button"
               onClick={onNew}
@@ -1052,6 +1058,16 @@ function ResourceList({
                   ? "Try a different search term."
                   : "Create the first record to populate this section."}
               </p>
+              {!query && (
+                <button
+                  type="button"
+                  onClick={onNew}
+                  className="bg-gradient-accent mt-5 inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-soft"
+                >
+                  <Plus className="h-4 w-4" />
+                  New {config.label.slice(0, -1)}
+                </button>
+              )}
             </div>
           )}
         </>
